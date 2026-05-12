@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier MB4'
+packageKey: 'Zhimi Air Purifier MB4 Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -1,0 +1,5 @@
+name: 'Zhimi Humidifier CB1'
+packageKey: 'Zhimi Humidifier CB1 Driver'
+permissions:
+  lan: {}
+  discovery: {}

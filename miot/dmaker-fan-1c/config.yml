@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan 1C'
+packageKey: 'Xiaomi Fan 1C Driver'
+permissions:
+  lan: {}
+  discovery: {}

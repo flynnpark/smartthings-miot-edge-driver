@@ -1,0 +1,135 @@
+$ErrorActionPreference = "Stop"
+
+$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+$groups = @(
+    @{
+        Source = "libs\miot.lua"
+        Targets = @(
+            "miot\zhimi-air-purifier-mb5\src\miot.lua",
+            "miot\zhimi-air-purifier-mb5a\src\miot.lua",
+            "miot\zhimi-air-purifier-va2\src\miot.lua",
+            "miot\zhimi-air-purifier-vb4\src\miot.lua",
+            "miot\zhimi-air-purifier-rmb1\src\miot.lua",
+            "miot\zhimi-air-purifier-rma1\src\miot.lua",
+            "miot\zhimi-air-purifier-rma2\src\miot.lua",
+            "miot\zhimi-air-purifier-za1\src\miot.lua",
+            "miot\zhimi-air-purifier-cpa4\src\miot.lua",
+            "miot\zhimi-air-purifier-mb4\src\miot.lua",
+            "miot\zhimi-air-purifier-mb4a\src\miot.lua",
+            "miot\zhimi-air-purifier-ma4\src\miot.lua",
+            "miot\zhimi-air-purifier-mb3\src\miot.lua",
+            "miot\zhimi-air-purifier-mb3a\src\miot.lua",
+            "miot\zhimi-air-purifier-airp-mb3a\src\miot.lua",
+            "miot\zhimi-air-purifier-va1\src\miot.lua",
+            "miot\zhimi-air-purifier-vb2\src\miot.lua",
+            "miot\zhimi-humidifier-ca4\src\miot.lua",
+            "miot\zhimi-humidifier-ca6\src\miot.lua",
+            "miot\deerma-humidifier-jsq5\src\miot.lua",
+            "miot\deerma-humidifier-jsq2w\src\miot.lua",
+            "miot\xiaomi-humidifier-p800\src\miot.lua",
+            "miot\xiaomi-humidifier-p1200\src\miot.lua",
+            "miot\xiaomi-humidifier-3lite\src\miot.lua",
+            "miot\xiaomi-dehumidifier-lite\src\miot.lua",
+            "miot\xiaomi-dehumidifier-13l\src\miot.lua",
+            "miot\qingping-air-monitor-lite\src\miot.lua",
+            "miot\dmaker-fan-1c\src\miot.lua",
+            "miot\dmaker-fan-p10\src\miot.lua",
+            "miot\dmaker-fan-p33\src\miot.lua",
+            "miot\dmaker-fan-p18\src\miot.lua",
+            "miot\xiaomi-fan-p45\src\miot.lua"
+        )
+    },
+    @{
+        Source = "libs\miio.lua"
+        Targets = @(
+            "miIo\zhimi-air-purifier-mc1\src\miio.lua",
+            "miIo\zhimi-air-purifier-mc2\src\miio.lua",
+            "miIo\zhimi-air-purifier-v1\src\miio.lua",
+            "miIo\zhimi-air-purifier-v2\src\miio.lua",
+            "miIo\zhimi-air-purifier-v3\src\miio.lua",
+            "miIo\zhimi-air-purifier-v5\src\miio.lua",
+            "miIo\zhimi-air-purifier-v6\src\miio.lua",
+            "miIo\zhimi-air-purifier-v7\src\miio.lua",
+            "miIo\zhimi-air-purifier-m1\src\miio.lua",
+            "miIo\zhimi-air-purifier-m2\src\miio.lua",
+            "miIo\zhimi-air-purifier-ma1\src\miio.lua",
+            "miIo\zhimi-air-purifier-ma2\src\miio.lua",
+            "miIo\zhimi-air-purifier-sa1\src\miio.lua",
+            "miIo\zhimi-air-purifier-sa2\src\miio.lua",
+            "miIo\zhimi-humidifier-v1\src\miio.lua",
+            "miIo\zhimi-humidifier-ca1\src\miio.lua",
+            "miIo\zhimi-humidifier-cb1\src\miio.lua",
+            "miIo\zhimi-humidifier-cb2\src\miio.lua",
+            "miIo\philips-sread1\src\miio.lua",
+            "miIo\philips-sread2\src\miio.lua"
+        )
+    },
+    @{
+        Source = "libs\md5.lua"
+        Targets = @(
+            "miot\zhimi-air-purifier-mb5\src\md5.lua",
+            "miot\zhimi-air-purifier-mb5a\src\md5.lua",
+            "miot\zhimi-air-purifier-va2\src\md5.lua",
+            "miot\zhimi-air-purifier-vb4\src\md5.lua",
+            "miot\zhimi-air-purifier-rmb1\src\md5.lua",
+            "miot\zhimi-air-purifier-rma1\src\md5.lua",
+            "miot\zhimi-air-purifier-rma2\src\md5.lua",
+            "miot\zhimi-air-purifier-za1\src\md5.lua",
+            "miot\zhimi-air-purifier-cpa4\src\md5.lua",
+            "miot\zhimi-air-purifier-mb4\src\md5.lua",
+            "miot\zhimi-air-purifier-mb4a\src\md5.lua",
+            "miot\zhimi-air-purifier-ma4\src\md5.lua",
+            "miot\zhimi-air-purifier-mb3\src\md5.lua",
+            "miot\zhimi-air-purifier-mb3a\src\md5.lua",
+            "miot\zhimi-air-purifier-airp-mb3a\src\md5.lua",
+            "miot\zhimi-air-purifier-va1\src\md5.lua",
+            "miot\zhimi-air-purifier-vb2\src\md5.lua",
+            "miot\zhimi-humidifier-ca4\src\md5.lua",
+            "miot\zhimi-humidifier-ca6\src\md5.lua",
+            "miot\deerma-humidifier-jsq5\src\md5.lua",
+            "miot\deerma-humidifier-jsq2w\src\md5.lua",
+            "miot\xiaomi-humidifier-p800\src\md5.lua",
+            "miot\xiaomi-humidifier-p1200\src\md5.lua",
+            "miot\xiaomi-humidifier-3lite\src\md5.lua",
+            "miot\xiaomi-dehumidifier-lite\src\md5.lua",
+            "miot\xiaomi-dehumidifier-13l\src\md5.lua",
+            "miot\qingping-air-monitor-lite\src\md5.lua",
+            "miot\dmaker-fan-1c\src\md5.lua",
+            "miot\dmaker-fan-p10\src\md5.lua",
+            "miot\dmaker-fan-p33\src\md5.lua",
+            "miot\dmaker-fan-p18\src\md5.lua",
+            "miot\xiaomi-fan-p45\src\md5.lua",
+            "miIo\zhimi-air-purifier-mc1\src\md5.lua",
+            "miIo\zhimi-air-purifier-mc2\src\md5.lua",
+            "miIo\zhimi-air-purifier-v1\src\md5.lua",
+            "miIo\zhimi-air-purifier-v2\src\md5.lua",
+            "miIo\zhimi-air-purifier-v3\src\md5.lua",
+            "miIo\zhimi-air-purifier-v5\src\md5.lua",
+            "miIo\zhimi-air-purifier-v6\src\md5.lua",
+            "miIo\zhimi-air-purifier-v7\src\md5.lua",
+            "miIo\zhimi-air-purifier-m1\src\md5.lua",
+            "miIo\zhimi-air-purifier-m2\src\md5.lua",
+            "miIo\zhimi-air-purifier-ma1\src\md5.lua",
+            "miIo\zhimi-air-purifier-ma2\src\md5.lua",
+            "miIo\zhimi-air-purifier-sa1\src\md5.lua",
+            "miIo\zhimi-air-purifier-sa2\src\md5.lua",
+            "miIo\zhimi-humidifier-v1\src\md5.lua",
+            "miIo\zhimi-humidifier-ca1\src\md5.lua",
+            "miIo\zhimi-humidifier-cb1\src\md5.lua",
+            "miIo\zhimi-humidifier-cb2\src\md5.lua",
+            "miIo\philips-sread1\src\md5.lua",
+            "miIo\philips-sread2\src\md5.lua"
+        )
+    }
+)
+
+foreach ($group in $groups) {
+    $source = Join-Path $root $group.Source
+    foreach ($targetPath in $group.Targets) {
+        $target = Join-Path $root $targetPath
+        Copy-Item -LiteralPath $source -Destination $target -Force
+    }
+}
+
+Write-Host "Synced shared Lua libraries from libs/ to driver src/ folders."

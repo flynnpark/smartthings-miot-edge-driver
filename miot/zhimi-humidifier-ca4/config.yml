@@ -1,0 +1,5 @@
+name: 'Zhimi Humidifier CA4'
+packageKey: 'Zhimi Humidifier CA4 Driver'
+permissions:
+  lan: {}
+  discovery: {}

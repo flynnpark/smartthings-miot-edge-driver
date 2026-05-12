@@ -1,0 +1,7 @@
+name: 'Zhimi Air Purifier MC2'
+packageKey: 'Zhimi Air Purifier MC2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
+
+

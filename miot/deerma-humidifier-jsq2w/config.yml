@@ -1,0 +1,5 @@
+name: 'Deerma Humidifier JSQ2W'
+packageKey: 'Deerma Humidifier JSQ2W Driver'
+permissions:
+  lan: {}
+  discovery: {}

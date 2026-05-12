@@ -1,0 +1,6 @@
+name: 'Zhimi Air Purifier VB2'
+packageKey: 'Zhimi Air Purifier VB2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
+

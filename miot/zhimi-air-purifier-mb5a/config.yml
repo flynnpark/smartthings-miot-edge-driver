@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier MB5A'
+packageKey: 'Zhimi Air Purifier MB5A Driver'
+permissions:
+  lan: {}
+  discovery: {}

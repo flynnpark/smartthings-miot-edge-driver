@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Tower Fan 2'
+packageKey: 'Xiaomi Tower Fan 2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

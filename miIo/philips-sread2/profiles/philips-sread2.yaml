@@ -1,0 +1,47 @@
+name: philips-sread2
+components:
+- id: main
+  capabilities:
+  - id: switch
+    version: 1
+  - id: switchLevel
+    version: 1
+  - id: concertmirror08464.philipsLightMode
+    version: 1
+  - id: refresh
+    version: 1
+  categories:
+  - name: Light
+preferences:
+- name: ipAddress
+  title: IP Address
+  description: Philips Smart Desk Lamp 2 IP address
+  required: true
+  preferenceType: string
+  definition:
+    stringType: text
+    default: ""
+- name: token
+  title: Token
+  description: Philips Smart Desk Lamp 2 token (32 chars)
+  required: true
+  preferenceType: string
+  definition:
+    stringType: text
+    default: ""
+- name: pollingInterval
+  title: Polling interval (sec)
+  description: Status refresh interval
+  required: false
+  preferenceType: integer
+  definition:
+    minimum: 30
+    maximum: 300
+    default: 60
+- name: createDev
+  title: Create another device
+  description: Toggle on/off to create another desk lamp device
+  required: false
+  preferenceType: boolean
+  definition:
+    default: false

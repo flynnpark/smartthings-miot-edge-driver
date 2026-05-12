@@ -1,0 +1,6 @@
+name: 'Zhimi Air Purifier MB3'
+packageKey: 'Zhimi Air Purifier MB3 Driver'
+permissions:
+  lan: {}
+  discovery: {}
+

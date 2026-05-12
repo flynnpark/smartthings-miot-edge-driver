@@ -1,0 +1,8 @@
+name: 'Zhimi Air Purifier M1'
+packageKey: 'Zhimi Air Purifier M1 Driver'
+permissions:
+  lan: {}
+  discovery: {}
+
+
+

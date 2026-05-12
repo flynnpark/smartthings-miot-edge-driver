@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan P10'
+packageKey: 'Xiaomi Fan P10 Driver'
+permissions:
+  lan: {}
+  discovery: {}

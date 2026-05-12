@@ -1,0 +1,5 @@
+name: 'Deerma Humidifier JSQ5'
+packageKey: 'Deerma Humidifier JSQ5 Driver'
+permissions:
+  lan: {}
+  discovery: {}

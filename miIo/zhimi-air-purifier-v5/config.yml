@@ -1,0 +1,8 @@
+name: 'Zhimi Air Purifier V5'
+packageKey: 'Zhimi Air Purifier V5 Driver'
+permissions:
+  lan: {}
+  discovery: {}
+
+
+

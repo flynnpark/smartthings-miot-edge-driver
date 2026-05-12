@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier VB4'
+packageKey: 'Zhimi Air Purifier VB4 Driver'
+permissions:
+  lan: {}
+  discovery: {}

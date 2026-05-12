@@ -1,0 +1,5 @@
+name: 'Xiaomi Dehumidifier Lite'
+packageKey: 'Xiaomi Dehumidifier Lite Driver'
+permissions:
+  lan: {}
+  discovery: {}

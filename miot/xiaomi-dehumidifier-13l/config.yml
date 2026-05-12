@@ -1,0 +1,5 @@
+name: 'Xiaomi Dehumidifier 13L'
+packageKey: 'Xiaomi Dehumidifier 13L Driver'
+permissions:
+  lan: {}
+  discovery: {}

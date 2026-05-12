@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Standing Fan 2'
+packageKey: 'Xiaomi Smart Standing Fan 2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -1,0 +1,131 @@
+name: zhimi-humidifier-cb1
+components:
+- id: main
+  capabilities:
+  - id: switch
+    version: 1
+  - id: concertmirror08464.zhimiHumidifierClassicCore
+    version: 1
+  - id: concertmirror08464.zhimiHumidifierClassicWater
+    version: 1
+  - id: temperatureMeasurement
+    version: 1
+  - id: relativeHumidityMeasurement
+    version: 1
+  - id: concertmirror08464.xiaomiDeviceControls
+    version: 1
+  - id: refresh
+    version: 1
+  categories:
+  - name: Humidifier
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: switch
+        version: 1
+        group: main
+        values:
+          - label: "{{switch.value}}"
+        composite: true
+      - component: main
+        capability: relativeHumidityMeasurement
+        version: 1
+        group: main
+        values:
+          - label: "{{humidity.value}}%"
+        composite: true
+      - component: main
+        capability: concertmirror08464.xiaomiDeviceControls
+        version: 1
+    actions:
+      - component: main
+        capability: concertmirror08464.xiaomiDeviceControls
+        version: 1
+      - component: main
+        capability: switch
+        version: 1
+    basicPlus: []
+  detailView:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHumidifierClassicCore
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHumidifierClassicWater
+      version: 1
+    - component: main
+      capability: temperatureMeasurement
+      version: 1
+    - component: main
+      capability: relativeHumidityMeasurement
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDeviceControls
+      version: 1
+    - component: main
+      capability: refresh
+      version: 1
+  automation:
+    conditions:
+      - component: main
+        capability: switch
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumidifierClassicCore
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumidifierClassicWater
+        version: 1
+      - component: main
+        capability: temperatureMeasurement
+        version: 1
+      - component: main
+        capability: relativeHumidityMeasurement
+        version: 1
+    actions:
+      - component: main
+        capability: switch
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumidifierClassicCore
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumidifierClassicWater
+        version: 1
+
+preferences:
+- name: ipAddress
+  title: IP Address
+  description: Zhimi Humidifier CB1 IP address
+  required: true
+  preferenceType: string
+  definition:
+    stringType: text
+    default: ""
+- name: token
+  title: Token
+  description: Zhimi Humidifier CB1 token (32 chars)
+  required: true
+  preferenceType: string
+  definition:
+    stringType: text
+    default: ""
+- name: pollingInterval
+  title: Polling interval (sec)
+  description: Status refresh interval
+  required: false
+  preferenceType: integer
+  definition:
+    minimum: 30
+    maximum: 300
+    default: 60
+- name: createDev
+  title: Create another device
+  description: Toggle on/off to create another humidifier device
+  required: false
+  preferenceType: boolean
+  definition:
+    default: false

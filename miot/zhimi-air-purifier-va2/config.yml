@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier VA2'
+packageKey: 'Zhimi Air Purifier VA2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

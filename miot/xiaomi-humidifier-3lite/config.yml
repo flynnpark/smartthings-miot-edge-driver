@@ -1,0 +1,5 @@
+name: 'Xiaomi Humidifier 3lite'
+packageKey: 'Xiaomi Humidifier 3lite Driver'
+permissions:
+  lan: {}
+  discovery: {}

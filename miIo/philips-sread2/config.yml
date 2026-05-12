@@ -1,0 +1,5 @@
+name: 'Philips Smart Desk Lamp 2'
+packageKey: 'Philips Light Sread2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -1,0 +1,5 @@
+name: 'Xiaomi Humidifier P1200'
+packageKey: 'Xiaomi Humidifier P1200 Driver'
+permissions:
+  lan: {}
+  discovery: {}
