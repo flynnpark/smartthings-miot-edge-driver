@@ -1,0 +1,5 @@
+name: 'Mi Smart Tower Fan'
+packageKey: 'Mi Smart Tower Fan Driver'
+permissions:
+  lan: {}
+  discovery: {}

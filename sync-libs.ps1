@@ -37,6 +37,7 @@ $groups = @(
             "miot\dmaker-fan-p10\src\miot.lua",
             "miot\dmaker-fan-p11\src\miot.lua",
             "miot\dmaker-fan-p15\src\miot.lua",
+            "miot\dmaker-fan-p9\src\miot.lua",
             "miot\dmaker-fan-p33\src\miot.lua",
             "miot\dmaker-fan-p18\src\miot.lua",
             "miot\xiaomi-fan-p45\src\miot.lua"
@@ -101,6 +102,7 @@ $groups = @(
             "miot\dmaker-fan-p10\src\md5.lua",
             "miot\dmaker-fan-p11\src\md5.lua",
             "miot\dmaker-fan-p15\src\md5.lua",
+            "miot\dmaker-fan-p9\src\md5.lua",
             "miot\dmaker-fan-p33\src\md5.lua",
             "miot\dmaker-fan-p18\src\md5.lua",
             "miot\xiaomi-fan-p45\src\md5.lua",
