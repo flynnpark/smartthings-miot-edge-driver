@@ -1,0 +1,5 @@
+name: 'Mijia Smart Air Purifier MAX'
+packageKey: 'Mijia Air Purifier MAX Driver'
+permissions:
+  lan: {}
+  discovery: {}
