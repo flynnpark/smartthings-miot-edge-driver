@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Air Purifier Elite'
+packageKey: 'Xiaomi Air Purifier Elite Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -24,6 +24,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/zhimi-air-purifier-rma1` | MIoT | `zhimi.airpurifier.rma1` | Xiaomi Smart Air Purifier 4 Lite |
 | `miot/zhimi-air-purifier-rma2` | MIoT | `zhimi.airpurifier.rma2` | Xiaomi Smart Air Purifier 4 Lite |
 | `miot/zhimi-air-purifier-za1` | MIoT | `zhimi.airpurifier.za1` | Smartmi Air Purifier |
+| `miot/zhimi-air-purifier-meb1` | MIoT | `zhimi.airp.meb1` | Xiaomi Smart Air Purifier Elite |
 | `miot/zhimi-air-purifier-cpa4` | MIoT | `zhimi.airp.cpa4` | Xiaomi Smart Air Purifier 4 Compact |
 | `miot/zhimi-air-purifier-mb4` | MIoT | `zhimi.airpurifier.mb4` | Xiaomi Mi Air Purifier 3C |
 | `miot/zhimi-air-purifier-mb4a` | MIoT | `zhimi.airp.mb4a` | Xiaomi Mi Air Purifier 3C v2 |
