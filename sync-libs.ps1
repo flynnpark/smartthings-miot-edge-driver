@@ -8,6 +8,7 @@ $groups = @(
         Targets = @(
             "miot\zhimi-air-purifier-mb5\src\miot.lua",
             "miot\zhimi-air-purifier-airp-mb5\src\miot.lua",
+            "miot\xiaomi-air-purifier-va5\src\miot.lua",
             "miot\zhimi-air-purifier-mb5a\src\miot.lua",
             "miot\zhimi-air-purifier-va2\src\miot.lua",
             "miot\zhimi-air-purifier-vb4\src\miot.lua",
@@ -74,6 +75,7 @@ $groups = @(
         Targets = @(
             "miot\zhimi-air-purifier-mb5\src\md5.lua",
             "miot\zhimi-air-purifier-airp-mb5\src\md5.lua",
+            "miot\xiaomi-air-purifier-va5\src\md5.lua",
             "miot\zhimi-air-purifier-mb5a\src\md5.lua",
             "miot\zhimi-air-purifier-va2\src\md5.lua",
             "miot\zhimi-air-purifier-vb4\src\md5.lua",

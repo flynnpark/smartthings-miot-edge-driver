@@ -1,0 +1,5 @@
+name: 'Mijia Smart Air Purifier 5 Pro'
+packageKey: 'Mijia Air Purifier 5 Pro Driver'
+permissions:
+  lan: {}
+  discovery: {}
