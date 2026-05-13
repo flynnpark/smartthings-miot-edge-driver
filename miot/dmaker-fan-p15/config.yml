@@ -1,0 +1,5 @@
+name: 'Mi Smart Standing Fan Pro'
+packageKey: 'Mi Smart Standing Fan Pro Driver'
+permissions:
+  lan: {}
+  discovery: {}
