@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Air Purifier 4'
+packageKey: 'Xiaomi Smart Air Purifier 4 Driver'
+permissions:
+  lan: {}
+  discovery: {}
