@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Fan V2'
+packageKey: 'Xiaomi Smart Fan V2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

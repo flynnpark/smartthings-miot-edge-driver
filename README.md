@@ -43,6 +43,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/qingping-air-monitor-lite` | MIoT | `cgllc.airm.cgd1st` | Qingping Air Monitor Lite |
 | `miot/dmaker-fan-1c` | MIoT | `dmaker.fan.1c` | Mi Smart Standing Fan 1C |
 | `miot/dmaker-fan-p10` | MIoT | `dmaker.fan.p10` | Mi Smart Standing Fan 2 |
+| `miot/dmaker-fan-p11` | MIoT | `dmaker.fan.p11` | Xiaomi Smart Fan V2 |
 | `miot/dmaker-fan-p33` | MIoT | `dmaker.fan.p33` | Xiaomi Smart Standing Fan 2 Pro |
 | `miot/dmaker-fan-p18` | MIoT | `dmaker.fan.p18` | Mi Smart Fan 2 |
 | `miot/xiaomi-fan-p45` | MIoT | `xiaomi.fan.p45` | Xiaomi Smart Tower Fan 2 |

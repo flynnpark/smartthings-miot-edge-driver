@@ -35,6 +35,7 @@ $groups = @(
             "miot\qingping-air-monitor-lite\src\miot.lua",
             "miot\dmaker-fan-1c\src\miot.lua",
             "miot\dmaker-fan-p10\src\miot.lua",
+            "miot\dmaker-fan-p11\src\miot.lua",
             "miot\dmaker-fan-p33\src\miot.lua",
             "miot\dmaker-fan-p18\src\miot.lua",
             "miot\xiaomi-fan-p45\src\miot.lua"
@@ -97,6 +98,7 @@ $groups = @(
             "miot\qingping-air-monitor-lite\src\md5.lua",
             "miot\dmaker-fan-1c\src\md5.lua",
             "miot\dmaker-fan-p10\src\md5.lua",
+            "miot\dmaker-fan-p11\src\md5.lua",
             "miot\dmaker-fan-p33\src\md5.lua",
             "miot\dmaker-fan-p18\src\md5.lua",
             "miot\xiaomi-fan-p45\src\md5.lua",
