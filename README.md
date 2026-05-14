@@ -40,6 +40,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/zhimi-humidifier-ca6` | MIoT | `zhimi.humidifier.ca6` | Smartmi Evaporative Humidifier CA6 |
 | `miot/deerma-humidifier-jsq5` | MIoT | `deerma.humidifier.jsq5` | Xiaomi Mi Smart Antibacterial Humidifier S |
 | `miot/deerma-humidifier-jsq2w` | MIoT | `deerma.humidifier.jsq2w` | Xiaomi Smart Humidifier 2 |
+| `miot/xiaomi-humidifier-airmx` | MIoT | `xiaomi.humidifier.airmx` | Mijia Mist-Free Humidifier 3 Pro |
 | `miot/xiaomi-humidifier-p800` | MIoT | `xiaomi.humidifier.p800` | Mijia Mist-Free Humidifier 3 (800) |
 | `miot/xiaomi-humidifier-p1200` | MIoT | `xiaomi.humidifier.p1200` | Mijia No-Fog Humidifier 3 1200 |
 | `miot/xiaomi-humidifier-3lite` | MIoT | `xiaomi.humidifier.3lite` | Xiaomi Smart Humidifier 3 Lite |

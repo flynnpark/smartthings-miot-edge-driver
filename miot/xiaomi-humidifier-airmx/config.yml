@@ -1,0 +1,5 @@
+name: 'Mijia Mist-Free Humidifier 3 Pro'
+packageKey: 'Xiaomi Humidifier Airmx Driver'
+permissions:
+  lan: {}
+  discovery: {}
