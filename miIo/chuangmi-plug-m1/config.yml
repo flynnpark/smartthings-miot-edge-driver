@@ -1,0 +1,5 @@
+name: 'Chuangmi Plug M1'
+packageKey: 'Chuangmi Plug M1 Driver'
+permissions:
+  lan: {}
+  discovery: {}
