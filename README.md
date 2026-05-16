@@ -75,6 +75,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miIo/zhimi-humidifier-cb2` | miIO | `zhimi.humidifier.cb2` | Smartmi Air Humidifier 2 |
 | `miIo/chuangmi-plug-m1` | miIO | `chuangmi.plug.m1` | Xiaomi Smart WiFi Socket |
 | `miIo/chuangmi-plug-m3` | miIO | `chuangmi.plug.m3` | Xiaomi Smart WiFi Socket |
+| `miIo/chuangmi-plug-v2` | miIO | `chuangmi.plug.v2` | Xiaomi Smart WiFi Socket |
 | `miIo/philips-sread1` | miIO | `philips.light.sread1` | Philips Smart Desk Lamp |
 | `miIo/philips-sread2` | miIO | `philips.light.sread2` | Philips Smart Desk Lamp 2 |
 

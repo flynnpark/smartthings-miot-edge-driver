@@ -72,6 +72,7 @@ $groups = @(
             "miIo\zhimi-humidifier-cb2\src\miio.lua",
             "miIo\chuangmi-plug-m1\src\miio.lua",
             "miIo\chuangmi-plug-m3\src\miio.lua",
+            "miIo\chuangmi-plug-v2\src\miio.lua",
             "miIo\philips-sread1\src\miio.lua",
             "miIo\philips-sread2\src\miio.lua"
         )
@@ -140,6 +141,7 @@ $groups = @(
             "miIo\zhimi-humidifier-cb2\src\md5.lua",
             "miIo\chuangmi-plug-m1\src\md5.lua",
             "miIo\chuangmi-plug-m3\src\md5.lua",
+            "miIo\chuangmi-plug-v2\src\md5.lua",
             "miIo\philips-sread1\src\md5.lua",
             "miIo\philips-sread2\src\md5.lua"
         )
