@@ -1,0 +1,5 @@
+name: 'Chuangmi Plug M3'
+packageKey: 'Chuangmi Plug M3 Driver'
+permissions:
+  lan: {}
+  discovery: {}
