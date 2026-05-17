@@ -1,0 +1,5 @@
+name: 'Mijia DC Inverter Tower Fan 2'
+packageKey: 'Mijia DC Inverter Tower Fan 2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
