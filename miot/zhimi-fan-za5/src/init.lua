@@ -1,0 +1,354 @@
+-- Smartmi Standing Fan 3 Driver
+
+local capabilities = require "st.capabilities"
+local Driver = require "st.driver"
+local discovery = require "discovery"
+local miot = require "miot"
+
+local fanControls = capabilities["concertmirror08464.zhimiFanZa5Controls"]
+
+local POLLING_TIMER = "polling_timer"
+local DEFAULT_POLLING_INTERVAL = 60
+
+-- MIoT model: zhimi.fan.za5
+-- Source: python-miio FanZA5, MIoT spec zhimi-za5 v4, Smartmi Standing Fan 3 model docs.
+-- Fan service (siid=2)
+local FAN_SIID = 2
+local POWER_PIID = 1
+local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4, not exposed separately
+local SWING_MODE_PIID = 3         -- RW horizontal oscillation on/off
+local SWING_ANGLE_PIID = 5        -- RW 30..120; not exposed
+local MODE_PIID = 7               -- RW 0=Nature, 1=Normal
+local POWER_OFF_TIME_PIID = 10    -- RW off-delay seconds, not exposed
+local ANION_PIID = 11             -- RW anion on/off
+
+-- Physical controls locked service (siid=3)
+local CHILD_LOCK_SIID = 3
+local CHILD_LOCK_PIID = 1         -- RW child lock on/off
+
+-- Indicator light service (siid=4)
+local INDICATOR_LIGHT_SIID = 4
+local DISPLAY_BRIGHTNESS_PIID = 3 -- RW display brightness 0..100%
+
+-- Alarm service (siid=5)
+local BUZZER_SIID = 5
+local BUZZER_PIID = 1             -- RW alarm/buzzer on/off
+
+-- Zhimi custom service (siid=6)
+local CUSTOM_SERVICE_SIID = 6
+local BUTTON_PRESS_PIID = 1       -- R button record, not exposed
+local BATTERY_STATE_PIID = 2      -- R battery/power metadata, not exposed
+local SET_MOVE_PIID = 3           -- W step move, not exposed
+local SPEED_RPM_PIID = 4          -- R motor RPM, not exposed
+local AC_STATE_PIID = 5           -- R power supply metadata, not exposed
+local FAN_SPEED_PIID = 8          -- RW speed level 1..100
+
+-- Environment service (siid=7)
+local ENVIRONMENT_SIID = 7
+local HUMIDITY_PIID = 1           -- R relative humidity %
+local TEMPERATURE_PIID = 7        -- R temperature C
+
+local MODE_TO_ST = {
+    [0] = "nature",
+    [1] = "normal"
+}
+
+local ST_TO_MODE = {
+    nature = 0,
+    normal = 1
+}
+
+local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
+
+local function get_device_config(device)
+    local ip = device.preferences.ipAddress
+    local token = device.preferences.token
+
+    if ip and ip ~= "" and token and #token == 32 then
+        return ip, token
+    end
+    return nil, nil
+end
+
+local function emit_on_off(device, capability_attr, value)
+    device:emit_event(capability_attr({value = value and "on" or "off"}))
+end
+
+local function poll_device_status(device)
+    local ip, token = get_device_config(device)
+    if not ip then
+        return
+    end
+
+    local properties = {
+        {siid = FAN_SIID, piid = POWER_PIID},
+        {siid = FAN_SIID, piid = FAN_LEVEL_PIID},
+        {siid = FAN_SIID, piid = SWING_MODE_PIID},
+        {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
+        {siid = FAN_SIID, piid = MODE_PIID},
+        {siid = FAN_SIID, piid = POWER_OFF_TIME_PIID},
+        {siid = FAN_SIID, piid = ANION_PIID},
+        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
+        {siid = INDICATOR_LIGHT_SIID, piid = DISPLAY_BRIGHTNESS_PIID},
+        {siid = BUZZER_SIID, piid = BUZZER_PIID},
+        {siid = CUSTOM_SERVICE_SIID, piid = BUTTON_PRESS_PIID},
+        {siid = CUSTOM_SERVICE_SIID, piid = BATTERY_STATE_PIID},
+        {siid = CUSTOM_SERVICE_SIID, piid = SPEED_RPM_PIID},
+        {siid = CUSTOM_SERVICE_SIID, piid = AC_STATE_PIID},
+        {siid = CUSTOM_SERVICE_SIID, piid = FAN_SPEED_PIID},
+        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID},
+        {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID}
+    }
+
+    local ok, response = pcall(miot.gets, device, ip, token, properties)
+    if not ok or not response or not response.result then
+        return
+    end
+
+    for _, result in ipairs(response.result) do
+        if result.code == 0 then
+            local siid = result.siid
+            local piid = result.piid
+            local value = result.value
+
+            if siid == FAN_SIID then
+                if piid == POWER_PIID then
+                    device:emit_event(capabilities.switch.switch(value and "on" or "off"))
+                elseif piid == MODE_PIID then
+                    local mode = MODE_TO_ST[value]
+                    if mode then
+                        device:emit_event(fanControls.fanMode({value = mode}))
+                    end
+                elseif piid == SWING_MODE_PIID then
+                    device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == ANION_PIID then
+                    emit_on_off(device, fanControls.anion, value)
+                end
+            elseif siid == CUSTOM_SERVICE_SIID and piid == FAN_SPEED_PIID then
+                device:emit_event(capabilities.fanSpeed.fanSpeed(value))
+            elseif siid == INDICATOR_LIGHT_SIID and piid == DISPLAY_BRIGHTNESS_PIID then
+                device:emit_event(fanControls.displayBrightness({value = value, unit = "%"}))
+            elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
+                emit_on_off(device, fanControls.buzzer, value)
+            elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
+                emit_on_off(device, fanControls.childLock, value)
+            elseif siid == ENVIRONMENT_SIID then
+                if piid == HUMIDITY_PIID then
+                    device:emit_event(capabilities.relativeHumidityMeasurement.humidity(value))
+                elseif piid == TEMPERATURE_PIID then
+                    device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
+                end
+            end
+        end
+    end
+end
+
+local function start_polling_timer(device)
+    local interval = device.preferences.pollingInterval or DEFAULT_POLLING_INTERVAL
+    local timer = device.thread:call_on_schedule(interval, function()
+        pcall(poll_device_status, device)
+    end, "Polling")
+    device:set_field(POLLING_TIMER, timer)
+end
+
+local function stop_polling_timer(device)
+    local timer = device:get_field(POLLING_TIMER)
+    if timer then
+        device.thread:cancel_timer(timer)
+        device:set_field(POLLING_TIMER, nil)
+    end
+end
+
+local function switch_on_handler(_, device, _)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, true)
+    if ok then
+        device:emit_event(capabilities.switch.switch.on())
+        device.thread:call_with_delay(1, function()
+            pcall(poll_device_status, device)
+        end)
+    end
+end
+
+local function switch_off_handler(_, device, _)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, false)
+    if ok then
+        device:emit_event(capabilities.switch.switch.off())
+    end
+end
+
+local function set_fan_speed_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local speed = math.max(1, math.min(100, command.args.speed))
+    local ok = pcall(miot.set, device, ip, token, CUSTOM_SERVICE_SIID, FAN_SPEED_PIID, speed)
+    if ok then
+        device:emit_event(capabilities.fanSpeed.fanSpeed(speed))
+    end
+end
+
+local function set_fan_oscillation_mode_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local mode = command.args.fanOscillationMode
+    if mode ~= "off" and mode ~= "horizontal" then return end
+
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_MODE_PIID, mode == "horizontal")
+    if ok then
+        device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(mode))
+    end
+end
+
+local function set_fan_mode_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local mode = command.args.mode
+    local value = ST_TO_MODE[mode]
+    if value == nil then return end
+
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
+    if ok then
+        device:emit_event(fanControls.fanMode({value = mode}))
+    end
+end
+
+local function set_anion_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local anion = command.args.anion
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, ANION_PIID, anion == "on")
+    if ok then
+        device:emit_event(fanControls.anion({value = anion}))
+    end
+end
+
+local function set_display_brightness_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local brightness = math.max(0, math.min(100, command.args.displayBrightness))
+    local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, DISPLAY_BRIGHTNESS_PIID, brightness)
+    if ok then
+        device:emit_event(fanControls.displayBrightness({value = brightness, unit = "%"}))
+    end
+end
+
+local function set_buzzer_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local buzzer = command.args.buzzer
+    local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
+    if ok then
+        device:emit_event(fanControls.buzzer({value = buzzer}))
+    end
+end
+
+local function set_child_lock_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local child_lock = command.args.childLock
+    local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
+    if ok then
+        device:emit_event(fanControls.childLock({value = child_lock}))
+    end
+end
+
+local function refresh_handler(_, device, _)
+    pcall(poll_device_status, device)
+end
+
+local function device_added(_, device)
+    device:emit_event(capabilities.switch.switch.off())
+    device:emit_event(capabilities.fanSpeed.fanSpeed(1))
+    device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
+    device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
+    device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
+    device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
+    device:emit_event(fanControls.fanMode({value = "normal"}))
+    device:emit_event(fanControls.anion({value = "off"}))
+    device:emit_event(fanControls.displayBrightness({value = 100, unit = "%"}))
+    device:emit_event(fanControls.buzzer({value = "off"}))
+    device:emit_event(fanControls.childLock({value = "off"}))
+end
+
+local function device_init(_, device)
+    device:online()
+
+    local ip = get_device_config(device)
+    if ip then
+        start_polling_timer(device)
+        pcall(poll_device_status, device)
+    end
+end
+
+local function device_removed(_, device)
+    stop_polling_timer(device)
+end
+
+local function device_info_changed(driver, device, _, args)
+    if not args.old_st_store or not args.old_st_store.preferences then
+        return
+    end
+
+    local old = args.old_st_store.preferences
+    local new = device.preferences
+
+    if old.createDev == false and new.createDev == true then
+        discovery.create_device(driver)
+    end
+
+    if old.ipAddress ~= new.ipAddress or old.token ~= new.token or old.pollingInterval ~= new.pollingInterval then
+        stop_polling_timer(device)
+
+        local ip = get_device_config(device)
+        if ip then
+            start_polling_timer(device)
+            pcall(poll_device_status, device)
+        end
+    end
+end
+
+local driver = Driver("miot-zhimi-fan-za5", {
+    discovery = discovery.handle_discovery,
+    lifecycle_handlers = {
+        added = device_added,
+        init = device_init,
+        removed = device_removed,
+        infoChanged = device_info_changed
+    },
+    capability_handlers = {
+        [capabilities.switch.ID] = {
+            [capabilities.switch.commands.on.NAME] = switch_on_handler,
+            [capabilities.switch.commands.off.NAME] = switch_off_handler
+        },
+        [capabilities.fanSpeed.ID] = {
+            [capabilities.fanSpeed.commands.setFanSpeed.NAME] = set_fan_speed_handler
+        },
+        [capabilities.fanOscillationMode.ID] = {
+            [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
+        },
+        [fanControls.ID] = {
+            [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
+            [fanControls.commands.setAnion.NAME] = set_anion_handler,
+            [fanControls.commands.setDisplayBrightness.NAME] = set_display_brightness_handler,
+            [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
+            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [capabilities.refresh.ID] = {
+            [capabilities.refresh.commands.refresh.NAME] = refresh_handler
+        }
+    }
+})
+
+driver:run()

@@ -1,0 +1,5 @@
+name: 'Smartmi Standing Fan 3'
+packageKey: 'Smartmi Fan 3 Driver'
+permissions:
+  lan: {}
+  discovery: {}
