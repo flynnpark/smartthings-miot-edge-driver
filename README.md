@@ -54,6 +54,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/dmaker-fan-p11` | MIoT | `dmaker.fan.p11` | Xiaomi Smart Fan V2 |
 | `miot/dmaker-fan-p15` | MIoT | `dmaker.fan.p15` | Mi Smart Standing Fan Pro |
 | `miot/dmaker-fan-p9` | MIoT | `dmaker.fan.p9` | Mi Smart Tower Fan |
+| `miot/dmaker-fan-p39` | MIoT | `dmaker.fan.p39` | Xiaomi Smart Tower Fan |
 | `miot/dmaker-fan-p33` | MIoT | `dmaker.fan.p33` | Xiaomi Smart Standing Fan 2 Pro |
 | `miot/dmaker-fan-p18` | MIoT | `dmaker.fan.p18` | Mi Smart Fan 2 |
 | `miot/xiaomi-fan-p45` | MIoT | `xiaomi.fan.p45` | Xiaomi Smart Tower Fan 2 |
