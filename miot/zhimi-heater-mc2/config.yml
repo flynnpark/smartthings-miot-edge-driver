@@ -1,0 +1,6 @@
+name: 'Mi Smart Space Heater S'
+packageKey: 'Mi Smart Space Heater S Driver'
+permissions:
+  lan: {}
+  discovery: {}
+

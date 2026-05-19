@@ -1,0 +1,50 @@
+name: zhimi-heater-mc2
+components:
+- id: main
+  capabilities:
+  - id: switch
+    version: 1
+  - id: temperatureMeasurement
+    version: 1
+  - id: thermostatHeatingSetpoint
+    version: 1
+  - id: concertmirror08464.zhimiHeaterMc2Controls
+    version: 1
+  - id: refresh
+    version: 1
+  categories:
+  - name: Thermostat
+preferences:
+- name: ipAddress
+  title: IP Address
+  description: Mi Smart Space Heater S IP address
+  required: true
+  preferenceType: string
+  definition:
+    stringType: text
+    default: ""
+- name: token
+  title: Token
+  description: Mi Smart Space Heater S token (32 hex characters)
+  required: true
+  preferenceType: string
+  definition:
+    stringType: text
+    default: ""
+- name: pollingInterval
+  title: Polling interval (seconds)
+  description: How often to refresh the heater state (default 60 seconds)
+  required: false
+  preferenceType: integer
+  definition:
+    minimum: 30
+    maximum: 300
+    default: 60
+- name: createDev
+  title: Create another device
+  description: Toggle on to create another Mi Smart Space Heater S device.
+  required: false
+  preferenceType: boolean
+  definition:
+    default: false
+
