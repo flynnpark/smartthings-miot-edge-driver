@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `zhimi.fan.za5`.
 ## Exposed Capabilities
 
 - `switch`
-- `fanSpeed`
+- `fanSpeedPercent`
 - `fanOscillationMode`
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
@@ -25,7 +25,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `zhimi.fan.za5`.
 | Feature | Access | MIoT Key | SmartThings |
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `switch` |
-| Fan speed | RW | `siid=6`, `piid=8`, `1..100` | `fanSpeed` |
+| Fan speed percent | RW | `siid=6`, `piid=8`, `1..100` | `fanSpeedPercent` |
 | Horizontal oscillation | RW | `siid=2`, `piid=3` | `fanOscillationMode` |
 | Wind mode | RW | `siid=2`, `piid=7`, `0=nature`, `1=normal` | `zhimiFanZa5Controls.fanMode` |
 | Anion | RW | `siid=2`, `piid=11` | `zhimiFanZa5Controls.anion` |

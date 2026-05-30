@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p45`.
 ## Exposed capabilities
 
 - `switch`: power
-- `fanSpeed`: stepless fan level, 1-100
+- `fanSpeedPercent`: stepless fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
 - `concertmirror08464.xiaomiTowerFan2Controls`
   - `fanMode`: `normal` / `nature` / `sleep`

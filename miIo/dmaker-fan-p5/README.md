@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for one miIO model: `dmaker.fan.p5`.
 ## Exposed capabilities
 
 - `switch`: power
-- `fanSpeed`: fan speed, 0-100
+- `fanSpeedPercent`: fan speed percent, 0-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
 - `concertmirror08464.xiaomiFanControls`
   - `fanMode`: `normal` / `nature`

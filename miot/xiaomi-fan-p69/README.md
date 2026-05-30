@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p69`.
 ## Exposed Capabilities
 
 - `switch`
-- `fanSpeed`
+- `fanSpeedPercent`
 - `fanOscillationMode`
 - `concertmirror08464.xiaomiFanControls`
 - `refresh`
@@ -23,7 +23,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p69`.
 | Feature | Access | MIoT Key | SmartThings |
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `switch` |
-| Fan speed | RW | `siid=2`, `piid=5`, `1..100` | `fanSpeed` |
+| Fan speed percent | RW | `siid=2`, `piid=5`, `1..100` | `fanSpeedPercent` |
 | Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `xiaomiFanControls.fanMode` |
 | Horizontal swing | RW | `siid=2`, `piid=6` | `fanOscillationMode`: `horizontal` / `all` |
 | Vertical swing | RW | `siid=2`, `piid=8` | `fanOscillationMode`: `vertical` / `all` |

@@ -7,6 +7,8 @@ local miot = require "miot"
 
 local fanControls = capabilities["concertmirror08464.xiaomiFanControls"]
 
+local fanSpeedPercent = capabilities["fanSpeedPercent"]
+
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
@@ -110,7 +112,7 @@ local function poll_device_status(device)
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
                 elseif piid == FAN_SPEED_PIID then
-                    device:emit_event(capabilities.fanSpeed.fanSpeed(value))
+                    device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
                 emit_on_off(device, fanControls.indicatorLight, value)
@@ -166,10 +168,10 @@ local function set_fan_speed_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local speed = math.max(1, math.min(100, command.args.speed))
+    local speed = math.max(1, math.min(100, command.args.percent))
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_SPEED_PIID, speed)
     if ok then
-        device:emit_event(capabilities.fanSpeed.fanSpeed(speed))
+        device:emit_event(fanSpeedPercent.percent({value = speed, unit = "%"}))
     end
 end
 
@@ -239,7 +241,7 @@ end
 
 local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(capabilities.fanSpeed.fanSpeed(1))
+    device:emit_event(fanSpeedPercent.percent({value = 1, unit = "%"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(fanControls.fanMode({value = "normal"}))
@@ -298,8 +300,8 @@ local driver = Driver("miot-dmaker-fan-p33", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [capabilities.fanSpeed.ID] = {
-            [capabilities.fanSpeed.commands.setFanSpeed.NAME] = set_fan_speed_handler
+        [fanSpeedPercent.ID] = {
+            [fanSpeedPercent.commands.setPercent.NAME] = set_fan_speed_handler
         },
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
