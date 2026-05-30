@@ -1,4 +1,4 @@
--- Xiaomi Smart Standing Fan 2 Driver
+-- Mijia Smart Desktop Air Circulation Fan Driver
 
 local capabilities = require "st.capabilities"
 local Driver = require "st.driver"
@@ -10,24 +10,49 @@ local fanControls = capabilities["concertmirror08464.xiaomiFanControls"]
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
--- MIoT model: dmaker.fan.p18
--- Source: python-miio FanMiot mapping; dmaker.fan.p18 uses dmaker.fan.p10 mapping.
+-- MIoT model: xiaomi.fan.p69
+-- Source: real device LAN response, MIoT spec xiaomi-p69 v1, and user device report.
 -- Fan service (siid=2)
 local FAN_SIID = 2
 local POWER_PIID = 1
-local FAN_LEVEL_PIID = 2          -- read only level bucket
-local MODE_PIID = 3               -- 0=Normal, 1=Nature
-local SWING_MODE_PIID = 4         -- horizontal oscillation on/off
-local SWING_ANGLE_PIID = 5        -- 30, 60, 90, 120, 140; read only here
-local POWER_OFF_TIME_PIID = 6     -- read only countdown minutes
-local INDICATOR_LIGHT_PIID = 7    -- on/off
-local BUZZER_PIID = 8             -- on/off
-local FAN_SPEED_PIID = 10         -- 1..100
-local SET_MOVE_PIID = 9           -- action-like direction value; not exposed
+local FAULT_PIID = 2              -- R 0=No fault, diagnostic only
+local MODE_PIID = 3               -- RW 0=Straight, 1=Natural
+local GEAR_FAN_LEVEL_PIID = 4     -- RW level bucket 0..3, not exposed separately
+local FAN_SPEED_PIID = 5          -- RW stepless fan level 1..100
+local HORIZONTAL_SWING_PIID = 6   -- RW horizontal oscillation on/off
+local HORIZONTAL_ANGLE_PIID = 7   -- RW 30, 60, 90, 120; not exposed
+local VERTICAL_SWING_PIID = 8     -- RW vertical oscillation on/off
+local VERTICAL_ANGLE_PIID = 9     -- RW 30, 60, 90, 100; not exposed
 
--- Physical controls locked service (siid=3)
-local CHILD_LOCK_SIID = 3
-local CHILD_LOCK_PIID = 1
+-- Fan actions (siid=2), not exposed because switch and oscillation controls cover core use.
+local TOGGLE_ACTION_IID = 3
+local TURN_LEFT_ACTION_IID = 4
+local TURN_RIGHT_ACTION_IID = 5
+local TURN_UPWARD_ACTION_IID = 6
+local TURN_DOWNWARD_ACTION_IID = 7
+
+-- Indicator light service (siid=5)
+local INDICATOR_LIGHT_SIID = 5
+local INDICATOR_LIGHT_PIID = 1    -- RW on/off
+
+-- Alarm service (siid=7)
+local BUZZER_SIID = 7
+local BUZZER_PIID = 1             -- RW alarm/buzzer on/off
+
+-- Physical controls locked service (siid=8)
+local CHILD_LOCK_SIID = 8
+local CHILD_LOCK_PIID = 1         -- RW child lock on/off
+
+-- Delay service (siid=9)
+local DELAY_SIID = 9
+local DELAY_ENABLED_PIID = 1      -- RW delay on/off, not exposed
+local DELAY_TIME_PIID = 2         -- RW countdown minutes, not exposed
+local DELAY_REMAIN_TIME_PIID = 4  -- R countdown minutes, not exposed
+
+-- Xiaomi dm-service (siid=11), shortcut actions are not exposed.
+local DM_SERVICE_SIID = 11
+local TOGGLE_MODE_ACTION_IID = 1
+local LOOP_GEAR_ACTION_IID = 2
 
 local MODE_TO_ST = {
     [0] = "normal",
@@ -39,7 +64,7 @@ local ST_TO_MODE = {
     nature = 1
 }
 
-local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
+local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal", "vertical", "all"}
 
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
@@ -64,10 +89,11 @@ local function poll_device_status(device)
     local properties = {
         {siid = FAN_SIID, piid = POWER_PIID},
         {siid = FAN_SIID, piid = MODE_PIID},
-        {siid = FAN_SIID, piid = SWING_MODE_PIID},
-        {siid = FAN_SIID, piid = INDICATOR_LIGHT_PIID},
-        {siid = FAN_SIID, piid = BUZZER_PIID},
         {siid = FAN_SIID, piid = FAN_SPEED_PIID},
+        {siid = FAN_SIID, piid = HORIZONTAL_SWING_PIID},
+        {siid = FAN_SIID, piid = VERTICAL_SWING_PIID},
+        {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
+        {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
     }
 
@@ -75,6 +101,9 @@ local function poll_device_status(device)
     if not ok or not response or not response.result then
         return
     end
+
+    local horizontal_swing = nil
+    local vertical_swing = nil
 
     for _, result in ipairs(response.result) do
         if result.code == 0 then
@@ -90,19 +119,33 @@ local function poll_device_status(device)
                     if mode then
                         device:emit_event(fanControls.fanMode({value = mode}))
                     end
-                elseif piid == SWING_MODE_PIID then
-                    device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
-                elseif piid == INDICATOR_LIGHT_PIID then
-                    emit_on_off(device, fanControls.indicatorLight, value)
-                elseif piid == BUZZER_PIID then
-                    emit_on_off(device, fanControls.buzzer, value)
                 elseif piid == FAN_SPEED_PIID then
                     device:emit_event(capabilities.fanSpeed.fanSpeed(value))
+                elseif piid == HORIZONTAL_SWING_PIID then
+                    horizontal_swing = value
+                elseif piid == VERTICAL_SWING_PIID then
+                    vertical_swing = value
                 end
+            elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
+                emit_on_off(device, fanControls.indicatorLight, value)
+            elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
+                emit_on_off(device, fanControls.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
                 emit_on_off(device, fanControls.childLock, value)
             end
         end
+    end
+
+    if horizontal_swing ~= nil or vertical_swing ~= nil then
+        local mode = "off"
+        if horizontal_swing and vertical_swing then
+            mode = "all"
+        elseif horizontal_swing then
+            mode = "horizontal"
+        elseif vertical_swing then
+            mode = "vertical"
+        end
+        device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(mode))
     end
 end
 
@@ -161,10 +204,13 @@ local function set_fan_oscillation_mode_handler(_, device, command)
     if not ip then return end
 
     local mode = command.args.fanOscillationMode
-    if mode ~= "off" and mode ~= "horizontal" then return end
+    if mode ~= "off" and mode ~= "horizontal" and mode ~= "vertical" and mode ~= "all" then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_MODE_PIID, mode == "horizontal")
-    if ok then
+    local horizontal = mode == "horizontal" or mode == "all"
+    local vertical = mode == "vertical" or mode == "all"
+    local ok_horizontal = pcall(miot.set, device, ip, token, FAN_SIID, HORIZONTAL_SWING_PIID, horizontal)
+    local ok_vertical = pcall(miot.set, device, ip, token, FAN_SIID, VERTICAL_SWING_PIID, vertical)
+    if ok_horizontal and ok_vertical then
         device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(mode))
     end
 end
@@ -188,7 +234,7 @@ local function set_indicator_light_handler(_, device, command)
     if not ip then return end
 
     local indicator_light = command.args.indicatorLight
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
+    local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
     if ok then
         device:emit_event(fanControls.indicatorLight({value = indicator_light}))
     end
@@ -199,7 +245,7 @@ local function set_buzzer_handler(_, device, command)
     if not ip then return end
 
     local buzzer = command.args.buzzer
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, BUZZER_PIID, buzzer == "on")
+    local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
     if ok then
         device:emit_event(fanControls.buzzer({value = buzzer}))
     end
@@ -268,7 +314,7 @@ local function device_info_changed(driver, device, _, args)
     end
 end
 
-local driver = Driver("miot-dmaker-fan-p18", {
+local driver = Driver("miot-xiaomi-fan-p69", {
     discovery = discovery.handle_discovery,
     lifecycle_handlers = {
         added = device_added,

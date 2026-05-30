@@ -1,0 +1,5 @@
+name: 'Mijia Desktop Circulation Fan'
+packageKey: 'Mijia Desktop Fan Driver'
+permissions:
+  lan: {}
+  discovery: {}

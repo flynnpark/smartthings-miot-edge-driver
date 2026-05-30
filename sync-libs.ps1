@@ -51,6 +51,7 @@ $groups = @(
             "miot\dmaker-fan-p18\src\miot.lua",
             "miot\dmaker-fan-p45\src\miot.lua",
             "miot\xiaomi-fan-p45\src\miot.lua",
+            "miot\xiaomi-fan-p69\src\miot.lua",
             "miot\zhimi-fan-za5\src\miot.lua"
         )
     },
@@ -131,6 +132,7 @@ $groups = @(
             "miot\dmaker-fan-p18\src\md5.lua",
             "miot\dmaker-fan-p45\src\md5.lua",
             "miot\xiaomi-fan-p45\src\md5.lua",
+            "miot\xiaomi-fan-p69\src\md5.lua",
             "miot\zhimi-fan-za5\src\md5.lua",
             "miIo\zhimi-air-purifier-mc1\src\md5.lua",
             "miIo\zhimi-air-purifier-mc2\src\md5.lua",
