@@ -1,48 +1,52 @@
--- Mi Smart Standing Fan Pro Driver
+-- Smartmi Standing Fan 2S Driver
 
 local capabilities = require "st.capabilities"
 local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.xiaomiFanControls"]
-
+local fanControls = capabilities["concertmirror08464.zhimiFanZa4Controls"]
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
--- MIoT model: dmaker.fan.p15
--- Source: python-miio FanMiot P15 mapping, openHAB model docs, and MIoT spec dmaker-p15 v1.
+-- MIoT model: zhimi.fan.za4
+-- specModel: zhimi-za4
+-- URN: urn:miot-spec-v2:device:fan:0000A005:zhimi-za4:3
+--
 -- Fan service (siid=2)
+--   piid=1 power, bool, RW
+--   piid=2 fan-level bucket, uint8, RW: 1..4, not exposed separately
+--   piid=3 horizontal-swing, bool, RW
+--   piid=4 horizontal-swing-included-angle, uint16, RW, 0..120, not exposed
+--   piid=5 mode, uint8, RW: 0=normal, 1=nature
+--   piid=6 stepless fan level, uint8, RW, 1..100
+-- Physical controls locked service (siid=3)
+--   piid=1 child lock, bool, RW
+-- Alarm service (siid=4)
+--   piid=1 alarm/buzzer, bool, RW
+-- Indicator light service (siid=5)
+--   piid=1 brightness, uint8, RW: 0=normal, 1=dim, 2=off
+-- Countdown service (siid=6)
+--   piid=1 countdown-time, uint32 seconds, RW, not exposed
+
 local FAN_SIID = 2
 local POWER_PIID = 1
-local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4, not exposed separately
-local MODE_PIID = 3               -- RW 0=Normal, 1=Nature
-local SWING_MODE_PIID = 4         -- RW horizontal oscillation on/off
-local SWING_ANGLE_PIID = 5        -- RW 30, 60, 90, 120, 140; not exposed
-local FAN_SPEED_PIID = 6          -- R 1..100 in spec; python-miio FanMiot maps this as writable speed
+local FAN_LEVEL_PIID = 2
+local SWING_MODE_PIID = 3
+local SWING_ANGLE_PIID = 4
+local MODE_PIID = 5
+local FAN_SPEED_PIID = 6
 
--- Off delay time service (siid=3)
-local OFF_DELAY_SIID = 3
-local POWER_OFF_TIME_PIID = 1     -- RW countdown minutes, not exposed
+local CHILD_LOCK_SIID = 3
+local CHILD_LOCK_PIID = 1
 
--- Indicator light service (siid=4)
-local INDICATOR_LIGHT_SIID = 4
-local INDICATOR_LIGHT_PIID = 1    -- RW on/off
+local BUZZER_SIID = 4
+local BUZZER_PIID = 1
 
--- Alarm service (siid=5)
-local BUZZER_SIID = 5
-local BUZZER_PIID = 1             -- RW alarm/buzzer on/off
-
--- Motor controller service (siid=6)
-local MOTOR_CONTROLLER_SIID = 6
-local SET_MOVE_PIID = 1           -- W 0=None, 1=Left, 2=Right; not exposed
-local FAULT_PIID = 2              -- R fault code; diagnostic only
-
--- Physical controls locked service (siid=7)
-local CHILD_LOCK_SIID = 7
-local CHILD_LOCK_PIID = 1         -- RW child lock on/off
+local INDICATOR_LIGHT_SIID = 5
+local DISPLAY_BRIGHTNESS_PIID = 1
 
 local MODE_TO_ST = {
     [0] = "normal",
@@ -54,18 +58,19 @@ local ST_TO_MODE = {
     nature = 1
 }
 
+local DISPLAY_BRIGHTNESS_TO_ST = {
+    [0] = "normal",
+    [1] = "dim",
+    [2] = "off"
+}
+
+local ST_TO_DISPLAY_BRIGHTNESS = {
+    normal = 0,
+    dim = 1,
+    off = 2
+}
+
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
-
-local function speed_to_level(speed)
-    if speed <= 25 then return 1 end
-    if speed <= 50 then return 2 end
-    if speed <= 75 then return 3 end
-    return 4
-end
-
-local function level_to_speed(level)
-    return ({[1] = 1, [2] = 34, [3] = 67, [4] = 100})[level] or 1
-end
 
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
@@ -90,15 +95,13 @@ local function poll_device_status(device)
     local properties = {
         {siid = FAN_SIID, piid = POWER_PIID},
         {siid = FAN_SIID, piid = FAN_LEVEL_PIID},
-        {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = SWING_MODE_PIID},
         {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
+        {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = FAN_SPEED_PIID},
-        {siid = OFF_DELAY_SIID, piid = POWER_OFF_TIME_PIID},
-        {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
+        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
-        {siid = MOTOR_CONTROLLER_SIID, piid = FAULT_PIID},
-        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
+        {siid = INDICATOR_LIGHT_SIID, piid = DISPLAY_BRIGHTNESS_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -125,12 +128,15 @@ local function poll_device_status(device)
                 elseif piid == FAN_SPEED_PIID then
                     device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 end
-            elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
-                emit_on_off(device, fanControls.indicatorLight, value)
-            elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, fanControls.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
                 emit_on_off(device, fanControls.childLock, value)
+            elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
+                emit_on_off(device, fanControls.buzzer, value)
+            elseif siid == INDICATOR_LIGHT_SIID and piid == DISPLAY_BRIGHTNESS_PIID then
+                local brightness = DISPLAY_BRIGHTNESS_TO_ST[value]
+                if brightness then
+                    device:emit_event(fanControls.displayBrightness({value = brightness}))
+                end
             end
         end
     end
@@ -183,13 +189,6 @@ local function set_fan_speed_handler(_, device, command)
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_SPEED_PIID, speed)
     if ok then
         device:emit_event(fanSpeedPercent.percent({value = speed, unit = "%"}))
-        return
-    end
-
-    local level = speed_to_level(speed)
-    ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_LEVEL_PIID, level)
-    if ok then
-        device:emit_event(fanSpeedPercent.percent({value = level_to_speed(level), unit = "%"}))
     end
 end
 
@@ -220,14 +219,17 @@ local function set_fan_mode_handler(_, device, command)
     end
 end
 
-local function set_indicator_light_handler(_, device, command)
+local function set_display_brightness_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local indicator_light = command.args.indicatorLight
-    local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
+    local brightness = command.args.displayBrightness
+    local value = ST_TO_DISPLAY_BRIGHTNESS[brightness]
+    if value == nil then return end
+
+    local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, DISPLAY_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(fanControls.indicatorLight({value = indicator_light}))
+        device:emit_event(fanControls.displayBrightness({value = brightness}))
     end
 end
 
@@ -263,7 +265,7 @@ local function device_added(_, device)
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(fanControls.fanMode({value = "normal"}))
-    device:emit_event(fanControls.indicatorLight({value = "on"}))
+    device:emit_event(fanControls.displayBrightness({value = "normal"}))
     device:emit_event(fanControls.buzzer({value = "off"}))
     device:emit_event(fanControls.childLock({value = "off"}))
 end
@@ -305,7 +307,7 @@ local function device_info_changed(driver, device, _, args)
     end
 end
 
-local driver = Driver("miot-dmaker-fan-p15", {
+local driver = Driver("miot-zhimi-fan-za4", {
     discovery = discovery.handle_discovery,
     lifecycle_handlers = {
         added = device_added,
@@ -326,7 +328,7 @@ local driver = Driver("miot-dmaker-fan-p15", {
         },
         [fanControls.ID] = {
             [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
+            [fanControls.commands.setDisplayBrightness.NAME] = set_display_brightness_handler,
             [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
             [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
         },

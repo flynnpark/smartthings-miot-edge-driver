@@ -31,7 +31,7 @@ Fan service `siid=2`:
 - `piid=3` mode, read/write, `0=normal`, `1=nature`
 - `piid=4` horizontal swing, read/write
 - `piid=5` horizontal angle `30/60/90/120/140`, read/write, not exposed
-- `piid=6` status/speed `1..100`, read in spec; python-miio maps it as writable fan speed
+- `piid=6` status/speed `1..100`, read in spec; python-miio maps it as writable fan speed. If exact speed write is rejected, the driver falls back to `piid=2` fan level `1..4`.
 
 Off delay time service `siid=3`:
 

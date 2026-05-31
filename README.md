@@ -64,6 +64,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/xiaomi-fan-p90` | MIoT | `xiaomi.fan.p90` | Mijia Smart Inverter Air Circulation Fan Pro |
 | `miot/pinlo-fan-fs1` | MIoT | `pinlo.fan.fs1` | Plabson Slim Fan |
 | `miot/dmaker-fan-p45` | MIoT | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 |
+| `miot/zhimi-fan-za4` | MIoT | `zhimi.fan.za4` | Smartmi Standing Fan 2S |
 | `miot/zhimi-fan-za5` | MIoT | `zhimi.fan.za5` | Smartmi Standing Fan 3 |
 | `miIo/dmaker-fan-p5` | miIO | `dmaker.fan.p5` | Mi Smart Standing Fan 1X |
 | `miIo/zhimi-air-purifier-mc1` | miIO | `zhimi.airpurifier.mc1` | Xiaomi Air Purifier 2S Global Version |
@@ -89,6 +90,8 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miIo/chuangmi-plug-v2` | miIO | `chuangmi.plug.v2` | Xiaomi Smart WiFi Socket |
 | `miIo/philips-sread1` | miIO | `philips.light.sread1` | Philips Smart Desk Lamp |
 | `miIo/philips-sread2` | miIO | `philips.light.sread2` | Philips Smart Desk Lamp 2 |
+| `miIo/yeelink-light-lamp1` | miIO | `yeelink.light.lamp1` | Xiaomi Mi Desk Lamp |
+| `miIo/yeelink-light-mono1` | miIO | `yeelink.light.mono1` | Yeelight Mono Bulb |
 
 
 

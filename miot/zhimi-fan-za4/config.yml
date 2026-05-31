@@ -1,0 +1,5 @@
+name: 'Smartmi Standing Fan 2S'
+packageKey: 'Smartmi Fan 2S Driver'
+permissions:
+  lan: {}
+  discovery: {}

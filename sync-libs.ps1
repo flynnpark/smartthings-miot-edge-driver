@@ -56,6 +56,7 @@ $groups = @(
             "miot\xiaomi-fan-p69\src\miot.lua",
             "miot\xiaomi-fan-p90\src\miot.lua",
             "miot\pinlo-fan-fs1\src\miot.lua",
+            "miot\zhimi-fan-za4\src\miot.lua",
             "miot\zhimi-fan-za5\src\miot.lua"
         )
     },
@@ -85,7 +86,9 @@ $groups = @(
             "miIo\chuangmi-plug-m3\src\miio.lua",
             "miIo\chuangmi-plug-v2\src\miio.lua",
             "miIo\philips-sread1\src\miio.lua",
-            "miIo\philips-sread2\src\miio.lua"
+            "miIo\philips-sread2\src\miio.lua",
+            "miIo\yeelink-light-lamp1\src\miio.lua",
+            "miIo\yeelink-light-mono1\src\miio.lua"
         )
     },
     @{
@@ -141,6 +144,7 @@ $groups = @(
             "miot\xiaomi-fan-p69\src\md5.lua",
             "miot\xiaomi-fan-p90\src\md5.lua",
             "miot\pinlo-fan-fs1\src\md5.lua",
+            "miot\zhimi-fan-za4\src\md5.lua",
             "miot\zhimi-fan-za5\src\md5.lua",
             "miIo\zhimi-air-purifier-mc1\src\md5.lua",
             "miIo\zhimi-air-purifier-mc2\src\md5.lua",
@@ -165,7 +169,9 @@ $groups = @(
             "miIo\chuangmi-plug-m3\src\md5.lua",
             "miIo\chuangmi-plug-v2\src\md5.lua",
             "miIo\philips-sread1\src\md5.lua",
-            "miIo\philips-sread2\src\md5.lua"
+            "miIo\philips-sread2\src\md5.lua",
+            "miIo\yeelink-light-lamp1\src\md5.lua",
+            "miIo\yeelink-light-mono1\src\md5.lua"
         )
     }
 )

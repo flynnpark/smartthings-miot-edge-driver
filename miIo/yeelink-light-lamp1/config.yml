@@ -1,0 +1,5 @@
+name: 'Xiaomi Mi Desk Lamp'
+packageKey: 'Xiaomi Mi Desk Lamp Driver'
+permissions:
+  lan: {}
+  discovery: {}

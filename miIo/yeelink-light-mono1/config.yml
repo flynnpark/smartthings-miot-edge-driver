@@ -1,0 +1,5 @@
+name: 'Yeelight Mono Bulb'
+packageKey: 'Yeelight Mono Bulb Driver'
+permissions:
+  lan: {}
+  discovery: {}
