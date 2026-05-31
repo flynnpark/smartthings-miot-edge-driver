@@ -44,6 +44,7 @@ local SET_MOVE_PIID = 3           -- W step move, not exposed
 local SPEED_RPM_PIID = 4          -- R motor RPM, not exposed
 local AC_STATE_PIID = 5           -- R power supply metadata, not exposed
 local FAN_SPEED_PIID = 8          -- RW speed level 1..100
+local TEMP_SENSOR_PIID = 10       -- RW temperature sensor enable
 
 -- Environment service (siid=7)
 local ENVIRONMENT_SIID = 7
@@ -74,6 +75,10 @@ end
 
 local function emit_on_off(device, capability_attr, value)
     device:emit_event(capability_attr({value = value and "on" or "off"}))
+end
+
+local function ensure_temperature_sensor(device, ip, token)
+    pcall(miot.set, device, ip, token, CUSTOM_SERVICE_SIID, TEMP_SENSOR_PIID, true)
 end
 
 local function poll_device_status(device)
@@ -282,6 +287,8 @@ local function device_init(_, device)
 
     local ip = get_device_config(device)
     if ip then
+        local _, token = get_device_config(device)
+        ensure_temperature_sensor(device, ip, token)
         start_polling_timer(device)
         pcall(poll_device_status, device)
     end
@@ -308,6 +315,8 @@ local function device_info_changed(driver, device, _, args)
 
         local ip = get_device_config(device)
         if ip then
+            local _, token = get_device_config(device)
+            ensure_temperature_sensor(device, ip, token)
             start_polling_timer(device)
             pcall(poll_device_status, device)
         end

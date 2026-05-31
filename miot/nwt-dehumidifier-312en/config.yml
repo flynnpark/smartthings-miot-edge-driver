@@ -1,0 +1,5 @@
+name: 'NWT Dehumidifier 312EN'
+packageKey: 'NWT Dehumidifier 312EN Driver'
+permissions:
+  lan: {}
+  discovery: {}

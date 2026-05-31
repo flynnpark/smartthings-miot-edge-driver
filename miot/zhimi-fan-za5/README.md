@@ -35,4 +35,4 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `zhimi.fan.za5`.
 | Humidity | R | `siid=7`, `piid=1`, `%` | `relativeHumidityMeasurement` |
 | Temperature | R | `siid=7`, `piid=7`, `C` | `temperatureMeasurement` |
 
-Not exposed: fan level bucket, horizontal angle, off-delay, button record, battery/power metadata, step movement, motor RPM, motor status, country code, and private temperature-sensor setting because they are auxiliary, diagnostic, or not core SmartThings controls.
+Not exposed: fan level bucket, horizontal angle, off-delay, button record, battery/power metadata, step movement, motor RPM, motor status, country code, and the private temperature-sensor switch because they are auxiliary, diagnostic, or not core SmartThings controls. The driver enables the private temperature-sensor switch before polling so `temperatureMeasurement` can update.

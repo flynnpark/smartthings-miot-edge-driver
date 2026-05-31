@@ -45,8 +45,10 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/xiaomi-humidifier-p1200` | MIoT | `xiaomi.humidifier.p1200` | Mijia No-Fog Humidifier 3 1200 |
 | `miot/xiaomi-humidifier-3lite` | MIoT | `xiaomi.humidifier.3lite` | Xiaomi Smart Humidifier 3 Lite |
 | `miot/xiaomi-humidifier-4lite` | MIoT | `xiaomi.humidifier.4lite` | Xiaomi Humidifier 4 Lite |
+| `miot/xiaomi-humidifier-600` | MIoT | `xiaomi.humidifier.600` | Xiaomi Humidifier 600 |
 | `miot/xiaomi-dehumidifier-lite` | MIoT | `xiaomi.derh.lite` | Xiaomi Smart Dehumidifier Lite |
 | `miot/xiaomi-dehumidifier-13l` | MIoT | `xiaomi.derh.13l` | Xiaomi Smart Dehumidifier 13L |
+| `miot/nwt-dehumidifier-312en` | MIoT | `nwt.derh.312en` | NWT Dehumidifier 312EN |
 | `miot/zhimi-heater-mc2` | MIoT | `zhimi.heater.mc2` | Mi Smart Space Heater S |
 | `miot/qingping-air-monitor-lite` | MIoT | `cgllc.airm.cgd1st` | Qingping Air Monitor Lite |
 | `miot/dmaker-fan-1c` | MIoT | `dmaker.fan.1c` | Mi Smart Standing Fan 1C |
