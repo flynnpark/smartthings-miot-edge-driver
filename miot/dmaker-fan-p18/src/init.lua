@@ -17,7 +17,7 @@ local DEFAULT_POLLING_INTERVAL = 60
 -- Fan service (siid=2)
 local FAN_SIID = 2
 local POWER_PIID = 1
-local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4
+local FAN_LEVEL_PIID = 2          -- read only level bucket
 local MODE_PIID = 3               -- 0=Normal, 1=Nature
 local SWING_MODE_PIID = 4         -- horizontal oscillation on/off
 local SWING_ANGLE_PIID = 5        -- 30, 60, 90, 120, 140; read only here
@@ -42,17 +42,6 @@ local ST_TO_MODE = {
 }
 
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
-
-local function speed_to_level(speed)
-    if speed <= 25 then return 1 end
-    if speed <= 50 then return 2 end
-    if speed <= 75 then return 3 end
-    return 4
-end
-
-local function level_to_speed(level)
-    return ({[1] = 1, [2] = 34, [3] = 67, [4] = 100})[level] or 1
-end
 
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
@@ -163,24 +152,9 @@ local function set_fan_speed_handler(_, device, command)
     if not ip then return end
 
     local speed = math.max(1, math.min(100, command.args.percent))
-    local level = speed_to_level(speed)
-
-    pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, true)
-    local level_ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_LEVEL_PIID, level)
-    local speed_ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_SPEED_PIID, speed)
-
-    if speed_ok then
-        device:emit_event(capabilities.switch.switch.on())
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_SPEED_PIID, speed)
+    if ok then
         device:emit_event(fanSpeedPercent.percent({value = speed, unit = "%"}))
-        device.thread:call_with_delay(1, function()
-            pcall(poll_device_status, device)
-        end)
-    elseif level_ok then
-        device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(fanSpeedPercent.percent({value = level_to_speed(level), unit = "%"}))
-        device.thread:call_with_delay(1, function()
-            pcall(poll_device_status, device)
-        end)
     end
 end
 
