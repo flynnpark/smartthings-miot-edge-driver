@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p18`.
 ## Exposed capabilities
 
 - `switch`: power
-- `fanSpeedPercent`: fan speed percent, 1-100%
+- `fanSpeedPercent`: fan speed percent, 1-100% with 1-4 gear fallback
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
 - `concertmirror08464.xiaomiFanControls`
   - `fanMode`: `normal` / `nature`
@@ -27,7 +27,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p18`.
 Fan service `siid=2`:
 
 - `piid=1` power, read/write
-- `piid=2` fan level bucket, read only
+- `piid=2` fan level bucket, read/write, used as compatibility fallback before exact speed writes
 - `piid=3` mode, read/write, `0=normal`, `1=nature`
 - `piid=4` horizontal swing, read/write
 - `piid=5` swing angle, read only in this driver
