@@ -66,6 +66,7 @@ These LAN drivers need the device Xiaomi token and local IP address. Use [Xiaomi
 | `miot/dmaker-fan-p45` | MIoT | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 | `Mijia DC Inverter Tower Fan 2` |
 | `miot/zhimi-fan-za4` | MIoT | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
 | `miot/zhimi-fan-za5` | MIoT | `zhimi.fan.za5` | Smartmi Standing Fan 3 | `Smartmi Standing Fan 3` |
+| `miIo/zhimi-fan-v3` | miIO | `zhimi.fan.v3` | Smartmi DC Pedestal Fan | `Zhimi Fan V3` |
 | `miIo/dmaker-fan-p5` | miIO | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
 | `miIo/zhimi-air-purifier-mc1` | miIO | `zhimi.airpurifier.mc1` | Xiaomi Air Purifier 2S Global Version | `Zhimi Air Purifier MC1` |
 | `miIo/zhimi-air-purifier-mc2` | miIO | `zhimi.airpurifier.mc2` | Xiaomi Air Purifier 2H | `Zhimi Air Purifier MC2` |

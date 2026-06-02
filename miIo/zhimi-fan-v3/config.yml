@@ -1,0 +1,5 @@
+name: "Zhimi Fan V3"
+packageKey: "Zhimi Fan V3 Driver"
+permissions:
+  lan: {}
+  discovery: {}
