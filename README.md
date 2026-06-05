@@ -2,9 +2,20 @@
 
 Installation channel (`wonjj_miot`): [open SmartThings channel](https://bestow-regional.api.smartthings.com/invite/r3MyzkOpOz2p)
 
-SmartThings Edge LAN drivers for Xiaomi ecosystem devices using the MIoT and miIO protocols. Each driver targets one exact Xiaomi model id.
+SmartThings Edge LAN drivers for Xiaomi ecosystem devices using the MIoT and miIO protocols.
 
-## Token and Local IP
+Each driver targets one exact Xiaomi model id. Do not choose by retail product name alone because Xiaomi often reuses the same product name for different hardware models.
+
+## Choosing a Driver
+
+1. Check the Xiaomi model id from Mi Home, Xiaomi Cloud Tokens Extractor, or the device information page.
+2. Find the exact same value in the `Device model` column below.
+3. Install the matching `SmartThings driver name` from the `wonjj_miot` channel.
+4. If several rows have the same `Product name`, use `Device model` as the deciding value.
+
+The `SmartThings driver name` column is the name shown in the SmartThings Edge channel. The `Driver folder` column is included for source review and issue reports.
+
+## Requirements
 
 These LAN drivers need the Xiaomi device token and local IP address. Use [Xiaomi Cloud Tokens Extractor](https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor), select the same Xiaomi server region used in Mi Home, then copy the device `token` and `ip` into the SmartThings device preferences.
 
@@ -16,10 +27,9 @@ These LAN drivers need the Xiaomi device token and local IP address. Use [Xiaomi
 4. Enter `ipAddress`, `token`, and `pollingInterval` in device preferences.
 5. Toggle `createDev` when using the LAN manual creation pattern.
 
-Some products share the same retail name, so choose by `Device model` first. `SmartThings driver name` is the name shown in the SmartThings Edge channel after installation.
-
-
 ## Drivers
+
+Supported drivers are grouped by protocol and device type.
 
 ### MIoT Air Purifiers
 
