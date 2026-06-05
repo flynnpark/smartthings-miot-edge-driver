@@ -102,6 +102,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-fan-p45` | `xiaomi.fan.p45` | Xiaomi Smart Tower Fan 2 | `Xiaomi Smart Tower Fan 2` |
 | `miot/xiaomi-fan-p69` | `xiaomi.fan.p69` | Mijia Smart Desktop Air Circulation Fan | `Mijia Desktop Circulation Fan` |
 | `miot/xiaomi-fan-p70` | `xiaomi.fan.p70` | Xiaomi BPLDS10DM Smart Desktop Air Circulation Fan | `Xiaomi Fan P70` |
+| `miot/xiaomi-fan-p76` | `xiaomi.fan.p76` | Xiaomi Smart Standing Air Circulation Fan | `Xiaomi Fan P76` |
 | `miot/xiaomi-fan-p90` | `xiaomi.fan.p90` | Mijia Smart Inverter Air Circulation Fan Pro | `Mijia Circulation Fan Pro` |
 | `miot/pinlo-fan-fs1` | `pinlo.fan.fs1` | Plabson Slim Fan | `Plabson Slim Fan` |
 | `miot/dmaker-fan-p45` | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 | `Mijia DC Inverter Tower Fan 2` |

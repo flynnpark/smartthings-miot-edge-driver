@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan P76'
+packageKey: 'Xiaomi Fan P76 Driver'
+permissions:
+  lan: {}
+  discovery: {}
