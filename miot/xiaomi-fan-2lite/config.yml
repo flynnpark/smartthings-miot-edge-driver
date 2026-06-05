@@ -1,0 +1,5 @@
+name: "Xiaomi Fan 2 Lite"
+packageKey: "Xiaomi Fan 2 Lite Driver"
+permissions:
+  lan: {}
+  discovery: {}

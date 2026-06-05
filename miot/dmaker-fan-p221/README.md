@@ -1,4 +1,4 @@
-# Mijia Smart DC Circulating Standing Fan Battery Edition
+# Mijia Smart DC Inverter Circulating Standing Fan Battery Edition
 
 SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.p221`.
 
