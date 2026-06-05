@@ -1,0 +1,5 @@
+name: "Mijia Fan P220"
+packageKey: "Mijia Fan P220 Driver"
+permissions:
+  lan: {}
+  discovery: {}
