@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan P30'
+packageKey: 'Xiaomi Fan P30 Driver'
+permissions:
+  lan: {}
+  discovery: {}
