@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan P70'
+packageKey: 'Xiaomi Fan P70 Driver'
+permissions:
+  lan: {}
+  discovery: {}
