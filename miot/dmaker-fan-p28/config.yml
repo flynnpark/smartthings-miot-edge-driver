@@ -1,0 +1,5 @@
+name: "Mijia Fan P28"
+packageKey: "Mijia Fan P28 Driver"
+permissions:
+  lan: {}
+  discovery: {}

@@ -86,6 +86,7 @@ Some products share the same retail name, so choose by `Device model` first. `Sm
 | `miot/dmaker-fan-p18` | `dmaker.fan.p18` | Mi Smart Fan 2 | `Xiaomi Smart Standing Fan 2` |
 | `miot/dmaker-fan-p220` | `dmaker.fan.p220` | Mijia Smart DC Inverter Circulating Standing Fan | `Mijia Fan P220` |
 | `miot/dmaker-fan-p221` | `dmaker.fan.p221` | Mijia Smart DC Inverter Circulating Standing Fan Battery Edition | `Mijia Fan P221` |
+| `miot/dmaker-fan-p28` | `dmaker.fan.p28` | Mijia Smart DC Inverter Circulating Fan Floor Type | `Mijia Fan P28` |
 | `miot/xiaomi-fan-2lite` | `xiaomi.fan.2lite` | Mi Smart Standing Fan 2 Lite | `Xiaomi Fan 2 Lite` |
 | `miot/xiaomi-fan-p45` | `xiaomi.fan.p45` | Xiaomi Smart Tower Fan 2 | `Xiaomi Smart Tower Fan 2` |
 | `miot/xiaomi-fan-p69` | `xiaomi.fan.p69` | Mijia Smart Desktop Air Circulation Fan | `Mijia Desktop Circulation Fan` |
