@@ -3,69 +3,42 @@
 local capabilities = require "st.capabilities"
 local Driver = require "st.driver"
 local discovery = require "discovery"
-local miot = require "miot"
+local miio = require "miio"
 
-local fanControls = capabilities["concertmirror08464.zhimiFanZa4Controls"]
+local fanControls = capabilities["concertmirror08464.zhimiFanV3Controls"]
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
+local CURRENT_FAN_MODE = "current_fan_mode"
+local CURRENT_PERCENT = "current_percent"
 
--- MIoT model: zhimi.fan.sa1
--- specModel: zhimi-sa1
--- URN: urn:miot-spec-v2:device:fan:0000A005:zhimi-sa1:3
---
--- Fan service (siid=2)
---   piid=1 power, bool, RW
---   piid=2 fan-level bucket, uint8, RW: 1..4, not exposed separately
---   piid=3 horizontal-swing, bool, RW
---   piid=4 horizontal-swing-included-angle, uint16, RW, 0..120, not exposed
---   piid=5 mode, uint8, RW: 1=nature, 2=normal
---   piid=6 stepless fan level, uint8, RW, 1..100
--- Physical controls locked service (siid=3)
---   piid=1 child lock, bool, RW
--- Alarm service (siid=4)
---   piid=1 alarm/buzzer, bool, RW
--- Indicator light service (siid=5)
---   piid=1 brightness, uint8, RW: 0=normal, 1=dim, 2=off
--- Countdown service (siid=6)
---   piid=1 countdown-time, uint32 seconds, RW, not exposed
+-- miIO model: zhimi.fan.sa1
+-- Source: python-miio miio.integrations.zhimi.fan.fan classic Fan mapping.
+-- Read properties: power, angle_enable, speed_level, natural_level, child_lock,
+--                  buzzer, led_b
+-- Write methods: set_power, set_speed_level, set_natural_level,
+--                set_angle_enable, set_led_b, set_buzzer, set_child_lock
+-- SA1 buzzer uses numeric miIO values: 2=on, 0=off.
 
-local FAN_SIID = 2
-local POWER_PIID = 1
-local FAN_LEVEL_PIID = 2
-local SWING_MODE_PIID = 3
-local SWING_ANGLE_PIID = 4
-local MODE_PIID = 5
-local FAN_SPEED_PIID = 6
-
-local CHILD_LOCK_SIID = 3
-local CHILD_LOCK_PIID = 1
-
-local BUZZER_SIID = 4
-local BUZZER_PIID = 1
-
-local INDICATOR_LIGHT_SIID = 5
-local DISPLAY_BRIGHTNESS_PIID = 1
-
-local MODE_TO_ST = {
-    [1] = "nature",
-    [2] = "normal"
+local PROPERTIES = {
+    "power",
+    "angle_enable",
+    "speed_level",
+    "natural_level",
+    "child_lock",
+    "buzzer",
+    "led_b"
 }
 
-local ST_TO_MODE = {
-    nature = 1,
-    normal = 2
-}
-
-local DISPLAY_BRIGHTNESS_TO_ST = {
-    [0] = "normal",
+local LED_BRIGHTNESS_TO_ST = {
+    [0] = "bright",
     [1] = "dim",
     [2] = "off"
 }
 
-local ST_TO_DISPLAY_BRIGHTNESS = {
-    normal = 0,
+local ST_TO_LED_BRIGHTNESS = {
+    bright = 0,
     dim = 1,
     off = 2
 }
@@ -82,8 +55,16 @@ local function get_device_config(device)
     return nil, nil
 end
 
+local function clamp(value, minimum, maximum)
+    return math.max(minimum, math.min(maximum, value))
+end
+
+local function on_off_to_bool(value)
+    return value == "on" or value == true or value == 1 or value == 2
+end
+
 local function emit_on_off(device, capability_attr, value)
-    device:emit_event(capability_attr({value = value and "on" or "off"}))
+    device:emit_event(capability_attr({value = on_off_to_bool(value) and "on" or "off"}))
 end
 
 local function poll_device_status(device)
@@ -92,52 +73,52 @@ local function poll_device_status(device)
         return
     end
 
-    local properties = {
-        {siid = FAN_SIID, piid = POWER_PIID},
-        {siid = FAN_SIID, piid = FAN_LEVEL_PIID},
-        {siid = FAN_SIID, piid = SWING_MODE_PIID},
-        {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
-        {siid = FAN_SIID, piid = MODE_PIID},
-        {siid = FAN_SIID, piid = FAN_SPEED_PIID},
-        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
-        {siid = BUZZER_SIID, piid = BUZZER_PIID},
-        {siid = INDICATOR_LIGHT_SIID, piid = DISPLAY_BRIGHTNESS_PIID}
-    }
-
-    local ok, response = pcall(miot.gets, device, ip, token, properties)
-    if not ok or not response or not response.result then
+    local response = miio.cmd(device, ip, token, "get_prop", PROPERTIES)
+    if not response or not response.result then
         return
     end
 
-    for _, result in ipairs(response.result) do
-        if result.code == 0 then
-            local siid = result.siid
-            local piid = result.piid
-            local value = result.value
+    local values = {}
+    for index, property in ipairs(PROPERTIES) do
+        values[property] = response.result[index]
+    end
 
-            if siid == FAN_SIID then
-                if piid == POWER_PIID then
-                    device:emit_event(capabilities.switch.switch(value and "on" or "off"))
-                elseif piid == MODE_PIID then
-                    local mode = MODE_TO_ST[value]
-                    if mode then
-                        device:emit_event(fanControls.fanMode({value = mode}))
-                    end
-                elseif piid == SWING_MODE_PIID then
-                    device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
-                elseif piid == FAN_SPEED_PIID then
-                    device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
-                end
-            elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                emit_on_off(device, fanControls.childLock, value)
-            elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, fanControls.buzzer, value)
-            elseif siid == INDICATOR_LIGHT_SIID and piid == DISPLAY_BRIGHTNESS_PIID then
-                local brightness = DISPLAY_BRIGHTNESS_TO_ST[value]
-                if brightness then
-                    device:emit_event(fanControls.displayBrightness({value = brightness}))
-                end
-            end
+    if values.power ~= nil then
+        device:emit_event(capabilities.switch.switch(on_off_to_bool(values.power) and "on" or "off"))
+    end
+
+    local mode = "normal"
+    local percent = values.speed_level
+    if type(values.natural_level) == "number" and values.natural_level > 0 then
+        mode = "nature"
+        percent = values.natural_level
+    end
+
+    device:set_field(CURRENT_FAN_MODE, mode)
+    device:emit_event(fanControls.fanMode({value = mode}))
+
+    if type(percent) == "number" then
+        local safe_percent = clamp(percent, 1, 100)
+        device:set_field(CURRENT_PERCENT, safe_percent)
+        device:emit_event(fanSpeedPercent.percent({value = safe_percent, unit = "%"}))
+    end
+
+    if values.angle_enable ~= nil then
+        device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(on_off_to_bool(values.angle_enable) and "horizontal" or "off"))
+    end
+
+    if values.child_lock ~= nil then
+        emit_on_off(device, fanControls.childLock, values.child_lock)
+    end
+
+    if values.buzzer ~= nil then
+        emit_on_off(device, fanControls.buzzer, values.buzzer)
+    end
+
+    if type(values.led_b) == "number" then
+        local brightness = LED_BRIGHTNESS_TO_ST[values.led_b]
+        if brightness then
+            device:emit_event(fanControls.ledBrightness({value = brightness}))
         end
     end
 end
@@ -160,10 +141,7 @@ end
 
 local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, true)
-    if ok then
+    if ip and miio.set_prop(device, ip, token, "set_power", {"on"}) then
         device:emit_event(capabilities.switch.switch.on())
         device.thread:call_with_delay(1, function()
             pcall(poll_device_status, device)
@@ -173,10 +151,7 @@ end
 
 local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, false)
-    if ok then
+    if ip and miio.set_prop(device, ip, token, "set_power", {"off"}) then
         device:emit_event(capabilities.switch.switch.off())
     end
 end
@@ -185,10 +160,13 @@ local function set_fan_speed_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local speed = math.max(1, math.min(100, command.args.percent))
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_SPEED_PIID, speed)
-    if ok then
-        device:emit_event(fanSpeedPercent.percent({value = speed, unit = "%"}))
+    local percent = clamp(command.args.percent, 1, 100)
+    local mode = device:get_field(CURRENT_FAN_MODE) or "normal"
+    local method = mode == "nature" and "set_natural_level" or "set_speed_level"
+
+    if miio.set_prop(device, ip, token, method, {percent}) then
+        device:set_field(CURRENT_PERCENT, percent)
+        device:emit_event(fanSpeedPercent.percent({value = percent, unit = "%"}))
     end
 end
 
@@ -199,8 +177,7 @@ local function set_fan_oscillation_mode_handler(_, device, command)
     local mode = command.args.fanOscillationMode
     if mode ~= "off" and mode ~= "horizontal" then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_MODE_PIID, mode == "horizontal")
-    if ok then
+    if miio.set_prop(device, ip, token, "set_angle_enable", {mode == "horizontal" and "on" or "off"}) then
         device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(mode))
     end
 end
@@ -210,26 +187,37 @@ local function set_fan_mode_handler(_, device, command)
     if not ip then return end
 
     local mode = command.args.mode
-    local value = ST_TO_MODE[mode]
-    if value == nil then return end
+    if mode ~= "normal" and mode ~= "nature" then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
+    local percent = device:get_field(CURRENT_PERCENT) or 1
+    if percent < 1 then percent = 1 end
+
+    local ok
+    if mode == "nature" then
+        ok = miio.set_prop(device, ip, token, "set_natural_level", {percent})
+    else
+        ok = miio.set_prop(device, ip, token, "set_natural_level", {0})
+    end
+
     if ok then
+        device:set_field(CURRENT_FAN_MODE, mode)
         device:emit_event(fanControls.fanMode({value = mode}))
+        device.thread:call_with_delay(1, function()
+            pcall(poll_device_status, device)
+        end)
     end
 end
 
-local function set_display_brightness_handler(_, device, command)
+local function set_led_brightness_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local brightness = command.args.displayBrightness
-    local value = ST_TO_DISPLAY_BRIGHTNESS[brightness]
+    local brightness = command.args.brightness
+    local value = ST_TO_LED_BRIGHTNESS[brightness]
     if value == nil then return end
 
-    local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, DISPLAY_BRIGHTNESS_PIID, value)
-    if ok then
-        device:emit_event(fanControls.displayBrightness({value = brightness}))
+    if miio.set_prop(device, ip, token, "set_led_b", {value}) then
+        device:emit_event(fanControls.ledBrightness({value = brightness}))
     end
 end
 
@@ -238,8 +226,8 @@ local function set_buzzer_handler(_, device, command)
     if not ip then return end
 
     local buzzer = command.args.buzzer
-    local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
-    if ok then
+    local value = buzzer == "on" and 2 or 0
+    if miio.set_prop(device, ip, token, "set_buzzer", {value}) then
         device:emit_event(fanControls.buzzer({value = buzzer}))
     end
 end
@@ -249,8 +237,7 @@ local function set_child_lock_handler(_, device, command)
     if not ip then return end
 
     local child_lock = command.args.childLock
-    local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
-    if ok then
+    if miio.set_prop(device, ip, token, "set_child_lock", {child_lock}) then
         device:emit_event(fanControls.childLock({value = child_lock}))
     end
 end
@@ -265,9 +252,11 @@ local function device_added(_, device)
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(fanControls.fanMode({value = "normal"}))
-    device:emit_event(fanControls.displayBrightness({value = "normal"}))
+    device:emit_event(fanControls.ledBrightness({value = "bright"}))
     device:emit_event(fanControls.buzzer({value = "off"}))
     device:emit_event(fanControls.childLock({value = "off"}))
+    device:set_field(CURRENT_FAN_MODE, "normal")
+    device:set_field(CURRENT_PERCENT, 1)
 end
 
 local function device_init(_, device)
@@ -307,7 +296,7 @@ local function device_info_changed(driver, device, _, args)
     end
 end
 
-local driver = Driver("miot-zhimi-fan-sa1", {
+local driver = Driver("miio-zhimi-fan-sa1", {
     discovery = discovery.handle_discovery,
     lifecycle_handlers = {
         added = device_added,
@@ -328,7 +317,7 @@ local driver = Driver("miot-zhimi-fan-sa1", {
         },
         [fanControls.ID] = {
             [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setDisplayBrightness.NAME] = set_display_brightness_handler,
+            [fanControls.commands.setLedBrightness.NAME] = set_led_brightness_handler,
             [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
             [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
         },

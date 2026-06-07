@@ -107,7 +107,6 @@ Supported drivers are grouped by protocol and device type.
 | `miot/pinlo-fan-fs1` | `pinlo.fan.fs1` | Plabson Slim Fan | `Plabson Slim Fan` |
 | `miot/dmaker-fan-p45` | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 | `Mijia DC Inverter Tower Fan 2` |
 | `miot/xiaomi-fan-p43` | `xiaomi.fan.p43` | Xiaomi Fan P43 | `Xiaomi Fan P43` |
-| `miot/zhimi-fan-sa1` | `zhimi.fan.sa1` | Zhimi Fan SA1 | `Zhimi Fan SA1` |
 | `miot/zhimi-fan-za4` | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
 | `miot/zhimi-fan-za5` | `zhimi.fan.za5` | Smartmi Standing Fan 3 | `Smartmi Standing Fan 3` |
 
@@ -151,6 +150,7 @@ Supported drivers are grouped by protocol and device type.
 
 | Driver folder | Device model | Product name | SmartThings driver name |
 |---------------|--------------|--------------|-------------------------|
+| `miIo/zhimi-fan-sa1` | `zhimi.fan.sa1` | Zhimi Fan SA1 | `Zhimi Fan SA1` |
 | `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi DC Pedestal Fan | `Zhimi Fan V3` |
 | `miIo/dmaker-fan-p5` | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
 

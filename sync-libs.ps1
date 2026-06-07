@@ -66,7 +66,6 @@ $groups = @(
             "miot\xiaomi-fan-p90\src\miot.lua",
             "miot\pinlo-fan-fs1\src\miot.lua",
             "miot\xiaomi-fan-p43\src\miot.lua",
-            "miot\zhimi-fan-sa1\src\miot.lua",
             "miot\zhimi-fan-za4\src\miot.lua",
             "miot\zhimi-fan-za5\src\miot.lua"
         )
@@ -93,6 +92,7 @@ $groups = @(
             "miIo\zhimi-humidifier-cb1\src\miio.lua",
             "miIo\zhimi-humidifier-cb2\src\miio.lua",
             "miIo\dmaker-fan-p5\src\miio.lua",
+            "miIo\zhimi-fan-sa1\src\miio.lua",
             "miIo\zhimi-fan-v3\src\miio.lua",
             "miIo\chuangmi-plug-m1\src\miio.lua",
             "miIo\chuangmi-plug-m3\src\miio.lua",
@@ -168,7 +168,6 @@ $groups = @(
             "miot\xiaomi-fan-p90\src\md5.lua",
             "miot\pinlo-fan-fs1\src\md5.lua",
             "miot\xiaomi-fan-p43\src\md5.lua",
-            "miot\zhimi-fan-sa1\src\md5.lua",
             "miot\zhimi-fan-za4\src\md5.lua",
             "miot\zhimi-fan-za5\src\md5.lua",
             "miIo\zhimi-air-purifier-mc1\src\md5.lua",
@@ -190,6 +189,7 @@ $groups = @(
             "miIo\zhimi-humidifier-cb1\src\md5.lua",
             "miIo\zhimi-humidifier-cb2\src\md5.lua",
             "miIo\dmaker-fan-p5\src\md5.lua",
+            "miIo\zhimi-fan-sa1\src\md5.lua",
             "miIo\zhimi-fan-v3\src\md5.lua",
             "miIo\chuangmi-plug-m1\src\md5.lua",
             "miIo\chuangmi-plug-m3\src\md5.lua",

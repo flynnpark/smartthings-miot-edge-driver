@@ -3,8 +3,8 @@ local json = require "st.json"
 local security = require "st.security"
 local md5 = require "md5"
 
--- MIoT 프로토콜 모듈
-local miot = {}
+-- miIO 프로토콜 모듈
+local miio = {}
 
 local PORT = 54321
 local HEADER_SIZE = 32
@@ -43,15 +43,6 @@ local function next_message_id(device)
     return message_id
 end
 
-local function assert_success(response)
-    local result = response and response.result and response.result[1]
-    if not result or result.code ~= 0 then
-        local code = result and result.code or "nil"
-        error("MIoT 명령 실패: " .. tostring(code))
-    end
-    return response
-end
-
 -- Hello 메시지 전송 (장치 검색)
 local function send_hello(ip)
     local udp = create_udp()
@@ -71,7 +62,7 @@ local function send_hello(ip)
     return device_id, time_offset
 end
 
--- MIoT 메시지 생성 (crypto params 반환하여 재사용)
+-- miIO 메시지 생성 (crypto params 반환하여 재사용)
 local function create_message(device, ip, token, method, params, force_hello)
     -- 장치 정보가 없거나 강제 갱신이면 Hello 전송
     if device:get_field(DEV_ID) == nil or force_hello then
@@ -147,39 +138,24 @@ end
 
 -- 공개 API
 
--- 단일 속성 조회: miot.get(device, ip, token, siid, piid)
-function miot.get(device, ip, token, siid, piid)
-    return send_with_retry(device, ip, token, "get_properties", {
-        {siid = siid, piid = piid}
-    })
+-- 단일 속성 조회: miio.get_prop(device, ip, token, prop_name)
+function miio.get_prop(device, ip, token, prop_name)
+    local response = send_with_retry(device, ip, token, "get_prop", {prop_name})
+    if response and response.result and response.result[1] ~= nil then
+        return response.result[1]
+    end
+    return nil
 end
 
--- 단일 속성 설정: miot.set(device, ip, token, siid, piid, value)
-function miot.set(device, ip, token, siid, piid, value)
-    local response = send_with_retry(device, ip, token, "set_properties", {
-        {siid = siid, piid = piid, value = value}
-    })
-    return assert_success(response)
+-- 속성 설정: miio.set_prop(device, ip, token, method, params)
+function miio.set_prop(device, ip, token, method, params)
+    local response = send_with_retry(device, ip, token, method, params)
+    return response and response.result and response.result[1] == "ok"
 end
 
--- 다중 속성 조회: miot.gets(device, ip, token, properties)
-function miot.gets(device, ip, token, properties)
-    return send_with_retry(device, ip, token, "get_properties", properties)
-end
-
--- 액션 호출: miot.action(device, ip, token, siid, aiid, params)
-function miot.action(device, ip, token, siid, aiid, params)
-    local response = send_with_retry(device, ip, token, "action", {
-        siid = siid,
-        aiid = aiid,
-        ["in"] = params or {}
-    })
-    return assert_success(response)
-end
-
--- 커스텀 명령: miot.cmd(device, ip, token, method, params)
-function miot.cmd(device, ip, token, method, params)
+-- 커스텀 명령: miio.cmd(device, ip, token, method, params)
+function miio.cmd(device, ip, token, method, params)
     return send_with_retry(device, ip, token, method, params)
 end
 
-return miot
+return miio
