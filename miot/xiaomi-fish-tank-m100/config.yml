@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Fish Tank MYG100'
+packageKey: 'Xiaomi Smart Fish Tank MYG100 Driver'
+permissions:
+  lan: {}
+  discovery: {}

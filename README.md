@@ -115,6 +115,7 @@ Supported drivers are grouped by protocol and device type.
 
 | Driver folder | Device model | Product name | SmartThings driver name |
 |---------------|--------------|--------------|-------------------------|
+| `miot/xiaomi-fish-tank-m100` | `hfjh.fishbowl.m100` | Xiaomi Smart Fish Tank MYG100 | `Xiaomi Smart Fish Tank MYG100` |
 | `miot/zhimi-heater-mc2` | `zhimi.heater.mc2` | Mi Smart Space Heater S | `Mi Smart Space Heater S` |
 | `miot/qingping-air-monitor-lite` | `cgllc.airm.cgd1st` | Qingping Air Monitor Lite | `Qingping Air Monitor Lite2` |
 
