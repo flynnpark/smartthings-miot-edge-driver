@@ -1,0 +1,5 @@
+name: 'Yeelight Color Bulb V2'
+packageKey: 'Yeelight Color Bulb V2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

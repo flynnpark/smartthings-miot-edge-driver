@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan P43'
+packageKey: 'Xiaomi Fan P43 Driver'
+permissions:
+  lan: {}
+  discovery: {}

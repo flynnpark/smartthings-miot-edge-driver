@@ -1,0 +1,5 @@
+name: 'Mi Bedside Lamp 2'
+packageKey: 'Mi Bedside Lamp 2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -106,6 +106,8 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-fan-p90` | `xiaomi.fan.p90` | Mijia Smart Inverter Air Circulation Fan Pro | `Mijia Circulation Fan Pro` |
 | `miot/pinlo-fan-fs1` | `pinlo.fan.fs1` | Plabson Slim Fan | `Plabson Slim Fan` |
 | `miot/dmaker-fan-p45` | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 | `Mijia DC Inverter Tower Fan 2` |
+| `miot/xiaomi-fan-p43` | `xiaomi.fan.p43` | Xiaomi Fan P43 | `Xiaomi Fan P43` |
+| `miot/zhimi-fan-sa1` | `zhimi.fan.sa1` | Zhimi Fan SA1 | `Zhimi Fan SA1` |
 | `miot/zhimi-fan-za4` | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
 | `miot/zhimi-fan-za5` | `zhimi.fan.za5` | Smartmi Standing Fan 3 | `Smartmi Standing Fan 3` |
 
@@ -160,6 +162,8 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/chuangmi-plug-v2` | `chuangmi.plug.v2` | Xiaomi Smart WiFi Socket | `Chuangmi Plug V2` |
 | `miIo/philips-sread1` | `philips.light.sread1` | Philips Smart Desk Lamp | `Philips Smart Desk Lamp` |
 | `miIo/philips-sread2` | `philips.light.sread2` | Philips Smart Desk Lamp 2 | `Philips Smart Desk Lamp 2` |
+| `miIo/yeelink-light-bslamp2` | `yeelink.light.bslamp2` | Mi Bedside Lamp 2 | `Mi Bedside Lamp 2` |
+| `miIo/yeelink-light-color2` | `yeelink.light.color2` | Yeelight Color Bulb V2 | `Yeelight Color Bulb V2` |
 | `miIo/yeelink-light-lamp1` | `yeelink.light.lamp1` | Xiaomi Mi Desk Lamp | `Xiaomi Mi Desk Lamp` |
 | `miIo/yeelink-light-mono1` | `yeelink.light.mono1` | Yeelight Mono Bulb | `Yeelight Mono Bulb` |
 
