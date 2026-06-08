@@ -1,0 +1,5 @@
+name: 'Mijia Dehumidifier 22L'
+packageKey: 'Mijia Dehumidifier 22L Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -80,6 +80,7 @@ Supported drivers are grouped by protocol and device type.
 |---------------|--------------|--------------|-------------------------|
 | `miot/xiaomi-dehumidifier-lite` | `xiaomi.derh.lite` | Xiaomi Smart Dehumidifier Lite | `Xiaomi Dehumidifier Lite` |
 | `miot/xiaomi-dehumidifier-13l` | `xiaomi.derh.13l` | Xiaomi Smart Dehumidifier 13L | `Xiaomi Dehumidifier 13L` |
+| `miot/dmaker-dehumidifier-22l` | `dmaker.derh.22l` | Mijia Smart Dehumidifier 22L | `Mijia Dehumidifier 22L` |
 | `miot/nwt-dehumidifier-312en` | `nwt.derh.312en` | NWT Dehumidifier 312EN | `NWT Dehumidifier 312EN` |
 
 ### MIoT Fans
@@ -151,6 +152,7 @@ Supported drivers are grouped by protocol and device type.
 | Driver folder | Device model | Product name | SmartThings driver name |
 |---------------|--------------|--------------|-------------------------|
 | `miIo/zhimi-fan-sa1` | `zhimi.fan.sa1` | Zhimi Fan SA1 | `Zhimi Fan SA1` |
+| `miIo/zhimi-fan-za1` | `zhimi.fan.za1` | Smartmi Inverter Pedestal Fan | `Zhimi Fan ZA1` |
 | `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi DC Pedestal Fan | `Zhimi Fan V3` |
 | `miIo/dmaker-fan-p5` | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
 
