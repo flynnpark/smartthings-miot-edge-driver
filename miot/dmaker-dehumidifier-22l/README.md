@@ -15,8 +15,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `dmaker.derh.
 - `switch`
 - `relativeHumidityMeasurement`
 - `temperatureMeasurement`
-- `concertmirror08464.xiaomiDehumidifier13lControls`
-- `concertmirror08464.xiaomiDehumidifier13lStatus`
+- `concertmirror08464.mijiaDehumidifier22lControls`
+- `concertmirror08464.mijiaDehumidifier22lStatus`
 - `refresh`
 
 ## MIoT Mapping
@@ -24,18 +24,18 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `dmaker.derh.
 | Feature | Access | MIoT Key | SmartThings |
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `switch` |
-| Fault | R | `siid=2`, `piid=2`; `0=noFaults`, `1=waterFull`, `2=sensorFault1`, `3=sensorFault2`, `4=communicationFault1`, `5=filterClean`, `6=defrost`, `7=fanMotor`, `8=overload`, `9=lackOfRefrigerant` | `xiaomiDehumidifier13lStatus.fault` |
-| Water tank status | R | derived from `siid=2`, `piid=2`; `1=waterFull`, otherwise `normal` | `xiaomiDehumidifier13lStatus.tankStatus` |
-| Filter status | R | derived from `siid=2`, `piid=2`; `5=filterClean`, otherwise `normal` | `xiaomiDehumidifier13lStatus.filterStatus` |
-| Mode | RW | `siid=2`, `piid=3`; `0=smart`, `1=sleep`, `2=clothesDrying` | `xiaomiDehumidifier13lControls.mode` |
-| Target humidity | RW | `siid=2`, `piid=5`; 30..70 %, step 1 | `xiaomiDehumidifier13lControls.targetHumidity` |
+| Fault | R | `siid=2`, `piid=2`; `0=noFaults`, `1=waterFull`, `2=sensorFault1`, `3=sensorFault2`, `4=communicationFault1`, `5=filterClean`, `6=defrost`, `7=fanMotor`, `8=overload`, `9=lackOfRefrigerant` | `mijiaDehumidifier22lStatus.fault` |
+| Water tank status | R | derived from `siid=2`, `piid=2`; `1=waterFull`, otherwise `normal` | `mijiaDehumidifier22lStatus.tankStatus` |
+| Filter status | R | derived from `siid=2`, `piid=2`; `5=filterClean`, otherwise `normal` | `mijiaDehumidifier22lStatus.filterStatus` |
+| Mode | RW | `siid=2`, `piid=3`; `0=smart`, `1=sleep`, `2=clothesDrying` | `mijiaDehumidifier22lControls.mode` |
+| Target humidity | RW | `siid=2`, `piid=5`; 30..70 %, step 1 | `mijiaDehumidifier22lControls.targetHumidity` |
 | Relative humidity | R | `siid=3`, `piid=1`, 0..100 % | `relativeHumidityMeasurement` |
 | Temperature | R | `siid=3`, `piid=2`, C | `temperatureMeasurement` |
-| Alarm / buzzer | RW | `siid=4`, `piid=1` | `xiaomiDehumidifier13lControls.alarm` |
-| Indicator light on | RW | `siid=5`, `piid=1`; false maps to `off` | `xiaomiDehumidifier13lControls.indicatorLight` |
-| Indicator light mode | RW | `siid=5`, `piid=2`; `0=off`, `1=half`, `2=full` | `xiaomiDehumidifier13lControls.indicatorLight` |
-| Child lock | RW | `siid=6`, `piid=1` | `xiaomiDehumidifier13lControls.childLock` |
-| Dry after off | RW | `siid=7`, `piid=2` | `xiaomiDehumidifier13lControls.dryAfterOff` |
-| Reset filter | Action | `siid=7`, `aiid=3` | `xiaomiDehumidifier13lControls.resetFilter` |
+| Alarm / buzzer | RW | `siid=4`, `piid=1` | `mijiaDehumidifier22lControls.alarm` |
+| Indicator light on | RW | `siid=5`, `piid=1`; false maps to `off` | `mijiaDehumidifier22lControls.indicatorLight` |
+| Indicator light mode | RW | `siid=5`, `piid=2`; `0=off`, `1=half`, `2=full` | `mijiaDehumidifier22lControls.indicatorLight` |
+| Child lock | RW | `siid=6`, `piid=1` | `mijiaDehumidifier22lControls.childLock` |
+| Dry after off | RW | `siid=7`, `piid=2` | `mijiaDehumidifier22lControls.dryAfterOff` |
+| Reset filter | Action | `siid=7`, `aiid=3` | `mijiaDehumidifier22lControls.resetFilter` |
 
 Not exposed: off-delay time, dry-left time, warm-up state, loop-mode action, tank-full event payload, and diagnostics because they are auxiliary scheduling, internal, or event-only values rather than core SmartThings controls or sensors.

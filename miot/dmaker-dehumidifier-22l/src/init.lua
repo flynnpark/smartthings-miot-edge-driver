@@ -5,8 +5,8 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.xiaomiDehumidifier13lControls"]
-local status = capabilities["concertmirror08464.xiaomiDehumidifier13lStatus"]
+local controls = capabilities["concertmirror08464.mijiaDehumidifier22lControls"]
+local status = capabilities["concertmirror08464.mijiaDehumidifier22lStatus"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -279,8 +279,9 @@ local function set_indicator_light_handler(_, device, command)
 
     local indicator = command.args.indicatorLight
     if indicator == "off" then
-        local ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_ON_PIID, false)
-        if ok then
+        local mode_ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_MODE_PIID, 0)
+        local on_ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_ON_PIID, false)
+        if mode_ok and on_ok then
             device:emit_event(controls.indicatorLight({value = "off"}))
         end
         return
