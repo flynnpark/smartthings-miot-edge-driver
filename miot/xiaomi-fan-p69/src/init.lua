@@ -11,6 +11,7 @@ local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
+local PROFILE_NAME = "xiaomi-fan-p69"
 
 -- MIoT model: xiaomi.fan.p69
 -- Source: real device LAN response, MIoT spec xiaomi-p69 v1, and user device report.
@@ -76,6 +77,10 @@ local function get_device_config(device)
         return ip, token
     end
     return nil, nil
+end
+
+local function ensure_profile(device)
+    device:try_update_metadata({profile = PROFILE_NAME})
 end
 
 local function emit_on_off(device, capability_attr, value)
@@ -308,10 +313,12 @@ local function set_vertical_angle_handler(_, device, command)
 end
 
 local function refresh_handler(_, device, _)
+    ensure_profile(device)
     pcall(poll_device_status, device)
 end
 
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(fanSpeedPercent.percent({value = 1, unit = "%"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
@@ -326,6 +333,7 @@ end
 
 local function device_init(_, device)
     device:online()
+    ensure_profile(device)
 
     local ip = get_device_config(device)
     if ip then
@@ -339,6 +347,8 @@ local function device_removed(_, device)
 end
 
 local function device_info_changed(driver, device, _, args)
+    ensure_profile(device)
+
     if not args.old_st_store or not args.old_st_store.preferences then
         return
     end
