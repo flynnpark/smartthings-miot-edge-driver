@@ -18,11 +18,11 @@ local PROFILE_NAME = "dmaker-fan-p15"
 -- Fan service (siid=2)
 local FAN_SIID = 2
 local POWER_PIID = 1
-local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4, not exposed separately
+local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4, exposed through percent mapping
 local MODE_PIID = 3               -- RW 0=Normal, 1=Nature
 local SWING_MODE_PIID = 4         -- RW horizontal oscillation on/off
 local SWING_ANGLE_PIID = 5        -- RW 30, 60, 90, 120, 140; not exposed
-local FAN_SPEED_PIID = 6          -- R 1..100 in spec; python-miio FanMiot maps this as writable speed
+local FAN_SPEED_PIID = 6          -- R 1..100 status, read only in spec
 
 -- Off delay time service (siid=3)
 local OFF_DELAY_SIID = 3
@@ -57,10 +57,10 @@ local ST_TO_MODE = {
 
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
 
-local function speed_to_level(speed)
-    if speed <= 25 then return 1 end
-    if speed <= 50 then return 2 end
-    if speed <= 75 then return 3 end
+local function percent_to_level(percent)
+    if percent <= 25 then return 1 end
+    if percent <= 50 then return 2 end
+    if percent <= 75 then return 3 end
     return 4
 end
 
@@ -200,15 +200,9 @@ local function set_fan_speed_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local speed = math.max(1, math.min(100, command.args.percent))
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_SPEED_PIID, speed)
-    if ok then
-        device:emit_event(fanSpeedPercent.percent({value = speed, unit = "%"}))
-        return
-    end
-
-    local level = speed_to_level(speed)
-    ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_LEVEL_PIID, level)
+    local percent = math.max(1, math.min(100, command.args.percent))
+    local level = percent_to_level(percent)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, FAN_LEVEL_PIID, level)
     if ok then
         device:emit_event(fanSpeedPercent.percent({value = level_to_speed(level), unit = "%"}))
     end

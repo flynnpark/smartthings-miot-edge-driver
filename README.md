@@ -90,7 +90,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-fan-1c` | `dmaker.fan.1c` | Mi Smart Standing Fan 1C | `Xiaomi Fan 1C` |
 | `miot/dmaker-fan-p10` | `dmaker.fan.p10` | Mi Smart Standing Fan 2 | `Xiaomi Fan P10` |
 | `miot/dmaker-fan-p11` | `dmaker.fan.p11` | Xiaomi Smart Fan V2 | `Xiaomi Smart Fan V2` |
-| `miot/dmaker-fan-p15` | `dmaker.fan.p15` | Mi Smart Standing Fan Pro | `Mi Smart Standing Fan Pro` |
+| `miot/dmaker-fan-p15` | `dmaker.fan.p15` | Xiaomi Mi Smart Standing Fan Pro 4th Gen (ZLBPSP01XY) | `Mi Smart Standing Fan Pro` |
 | `miot/dmaker-fan-p9` | `dmaker.fan.p9` | Mi Smart Tower Fan | `Mi Smart Tower Fan` |
 | `miot/dmaker-fan-p39` | `dmaker.fan.p39` | Xiaomi Smart Tower Fan | `Xiaomi Smart Tower Fan` |
 | `miot/dmaker-fan-p33` | `dmaker.fan.p33` | Xiaomi Smart Standing Fan 2 Pro | `Xiaomi Smart Standing Fan 2 Pro` |
@@ -129,7 +129,7 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/zhimi-air-purifier-v2` | `zhimi.airpurifier.v2` | Xiaomi Mi Air Purifier | `Zhimi Air Purifier V2` |
 | `miIo/zhimi-air-purifier-v3` | `zhimi.airpurifier.v3` | Xiaomi Mi Air Purifier | `Zhimi Air Purifier V3` |
 | `miIo/zhimi-air-purifier-v5` | `zhimi.airpurifier.v5` | Xiaomi Mi Air Purifier Pro | `Zhimi Air Purifier V5` |
-| `miIo/zhimi-air-purifier-v6` | `zhimi.airpurifier.v6` | Xiaomi Mi Air Purifier Pro V6 | `Zhimi Air Purifier V6` |
+| `miIo/zhimi-air-purifier-v6` | `zhimi.airpurifier.v6` | Xiaomi Mi Air Purifier Pro (AC-M3-CA) | `Zhimi Air Purifier V6` |
 | `miIo/zhimi-air-purifier-v7` | `zhimi.airpurifier.v7` | Xiaomi Mi Air Purifier Pro V7 | `Zhimi Air Purifier V7` |
 | `miIo/zhimi-air-purifier-m1` | `zhimi.airpurifier.m1` | Xiaomi Mi Air Purifier 2 Mini | `Zhimi Air Purifier M1` |
 | `miIo/zhimi-air-purifier-m2` | `zhimi.airpurifier.m2` | Xiaomi Air Purifier 2 | `Zhimi Air Purifier M2` |
@@ -153,7 +153,7 @@ Supported drivers are grouped by protocol and device type.
 |---------------|--------------|--------------|-------------------------|
 | `miIo/zhimi-fan-sa1` | `zhimi.fan.sa1` | Zhimi Fan SA1 | `Zhimi Fan SA1` |
 | `miIo/zhimi-fan-za1` | `zhimi.fan.za1` | Smartmi Inverter Pedestal Fan | `Zhimi Fan ZA1` |
-| `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi DC Pedestal Fan | `Zhimi Fan V3` |
+| `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi Smart Wireless Fan 1st Gen (ZLBPLDS01ZM) | `Zhimi Fan V3` |
 | `miIo/dmaker-fan-p5` | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
 
 ### miIO Plugs and Lights

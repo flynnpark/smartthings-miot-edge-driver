@@ -1,6 +1,6 @@
-# Mi Smart Standing Fan Pro
+# Xiaomi Mi Smart Standing Fan Pro 4th Gen (ZLBPSP01XY)
 
-SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p15`.
+SmartThings Edge LAN driver for the Xiaomi Mi Smart Standing Fan Pro product code `ZLBPSP01XY`, model `dmaker.fan.p15`.
 
 ## Protocol decision
 
@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p15`.
 ## Exposed capabilities
 
 - `switch`: power
-- `fanSpeedPercent`: fan speed percent, 1-100%
+- `fanSpeedPercent`: fan speed percent, mapped to the writable 4-level MIoT fan level
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
 - `concertmirror08464.dmakerFanP15Controls`
   - `fanMode`: `normal` / `nature`
@@ -27,11 +27,11 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p15`.
 Fan service `siid=2`:
 
 - `piid=1` power, read/write
-- `piid=2` fan level bucket `1..4`, read/write, not exposed separately
+- `piid=2` fan level bucket `1..4`, read/write, mapped from `fanSpeedPercent`
 - `piid=3` mode, read/write, `0=normal`, `1=nature`
 - `piid=4` horizontal swing, read/write
 - `piid=5` `30/60/90/120/140`, read/write
-- `piid=6` status/speed `1..100`, read in spec; python-miio maps it as writable fan speed. If exact speed write is rejected, the driver falls back to `piid=2` fan level `1..4`.
+- `piid=6` status/speed `1..100`, read/notify only in the exact MIoT spec.
 
 Off delay time service `siid=3`:
 

@@ -1,4 +1,4 @@
--- Smartmi DC Pedestal Fan Driver
+-- Smartmi Smart Wireless Fan 1st Gen Driver
 
 local capabilities = require "st.capabilities"
 local Driver = require "st.driver"

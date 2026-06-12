@@ -1,11 +1,13 @@
-# Smartmi DC Pedestal Fan
+# Smartmi Smart Wireless Fan 1st Gen (ZLBPLDS01ZM)
 
-SmartThings Edge LAN driver for the Xiaomi/miIO fan model `zhimi.fan.v3`.
+SmartThings Edge LAN driver for the Smartmi Smart Wireless Fan 1st Gen product code `ZLBPLDS01ZM`, model `zhimi.fan.v3`.
 
 ## Protocol Decision
 
 - Protocol: miIO
 - Model: `zhimi.fan.v3`
+- Product code: `ZLBPLDS01ZM`
+- Mi Home app name: Zhimi Standing Fan
 - specModel: `zhimi-v3`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:zhimi-v3:3`
 - Basis: python-miio lists `zhimi.fan.v3` in the classic `Fan` miIO integration and defines the local `get_prop` and `set_*` methods used here.

@@ -17,7 +17,7 @@ components:
 preferences:
 - name: ipAddress
   title: IP Address
-  description: Mi Smart Standing Fan Pro의 IP 주소
+  description: Xiaomi Mi Smart Standing Fan Pro의 IP 주소
   required: true
   preferenceType: string
   definition:
@@ -25,7 +25,7 @@ preferences:
     default: ""
 - name: token
   title: Token
-  description: Mi Smart Standing Fan Pro의 토큰 (32자리 hex)
+  description: Xiaomi Mi Smart Standing Fan Pro의 토큰 (32자리 hex)
   required: true
   preferenceType: string
   definition:
@@ -42,7 +42,7 @@ preferences:
     default: 60
 - name: createDev
   title: 추가 기기 만들기
-  description: on off 전환시 또다른 Mi Smart Standing Fan Pro 기기를 생성합니다.
+  description: on off 전환시 또다른 Xiaomi Mi Smart Standing Fan Pro 기기를 생성합니다.
   required: false
   preferenceType: boolean
   definition:

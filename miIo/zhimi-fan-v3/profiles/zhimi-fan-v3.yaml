@@ -23,7 +23,7 @@ components:
 preferences:
 - name: ipAddress
   title: IP Address
-  description: Smartmi DC Pedestal Fan의 IP 주소
+  description: Smartmi Smart Wireless Fan 1st Gen의 IP 주소
   required: true
   preferenceType: string
   definition:
@@ -31,7 +31,7 @@ preferences:
     default: ""
 - name: token
   title: Token
-  description: Smartmi DC Pedestal Fan의 토큰 (32자리 hex)
+  description: Smartmi Smart Wireless Fan 1st Gen의 토큰 (32자리 hex)
   required: true
   preferenceType: string
   definition:
@@ -48,7 +48,7 @@ preferences:
     default: 60
 - name: createDev
   title: 추가 기기 만들기
-  description: on off 전환시 또다른 Smartmi DC Pedestal Fan 기기를 생성합니다.
+  description: on off 전환시 또다른 Smartmi Smart Wireless Fan 1st Gen 기기를 생성합니다.
   required: false
   preferenceType: boolean
   definition:

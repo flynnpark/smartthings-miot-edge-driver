@@ -8,11 +8,11 @@ function discovery.create_device(driver)
         driver:try_create_device({
             type = "LAN",
             device_network_id = "zhimi-airpurifier-v6-" .. os.time(),
-            label = "Zhimi Air Purifier V6",
+            label = "Xiaomi Mi Air Purifier Pro",
             profile = "zhimi-v6",
             manufacturer = "Zhimi",
             model = "zhimi.airpurifier.v6",
-            vendor_provided_label = "Zhimi Air Purifier V6",
+            vendor_provided_label = "Xiaomi Mi Air Purifier Pro",
         })
     end)
     

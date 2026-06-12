@@ -115,7 +115,7 @@ deviceConfig:
 preferences:
 - name: ipAddress
   title: IP Address
-  description: Zhimi Air Purifier V6의 IP 주소
+  description: Xiaomi Mi Air Purifier Pro의 IP 주소
   required: true
   preferenceType: string
   definition:
@@ -123,7 +123,7 @@ preferences:
     default: ""
 - name: token
   title: Token
-  description: Zhimi Air Purifier V6의 토큰 (32자)
+  description: Xiaomi Mi Air Purifier Pro의 토큰 (32자)
   required: true
   preferenceType: string
   definition:
