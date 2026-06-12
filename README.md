@@ -70,6 +70,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-humidifier-airmx` | `xiaomi.humidifier.airmx` | Mijia Mist-Free Humidifier 3 Pro | `Mijia Mist-Free Humidifier 3 Pro` |
 | `miot/xiaomi-humidifier-p800` | `xiaomi.humidifier.p800` | Mijia Mist-Free Humidifier 3 (800) | `Xiaomi Humidifier P800` |
 | `miot/xiaomi-humidifier-p1200` | `xiaomi.humidifier.p1200` | Mijia No-Fog Humidifier 3 1200 | `Xiaomi Humidifier P1200` |
+| `miot/dmaker-humidifier-p2` | `dmaker.humidifier.p2` | Dmaker Humidifier P2 | `Dmaker Humidifier P2` |
 | `miot/xiaomi-humidifier-3lite` | `xiaomi.humidifier.3lite` | Xiaomi Smart Humidifier 3 Lite | `Xiaomi Humidifier 3lite` |
 | `miot/xiaomi-humidifier-4lite` | `xiaomi.humidifier.4lite` | Xiaomi Humidifier 4 Lite | `Xiaomi Humidifier 4lite` |
 | `miot/xiaomi-humidifier-600` | `xiaomi.humidifier.600` | Xiaomi Humidifier 600 | `Xiaomi Humidifier 600` |
@@ -116,6 +117,7 @@ Supported drivers are grouped by protocol and device type.
 | Driver folder | Device model | Product name | SmartThings driver name |
 |---------------|--------------|--------------|-------------------------|
 | `miot/xiaomi-fish-tank-m100` | `hfjh.fishbowl.m100` | Xiaomi Smart Fish Tank MYG100 | `Xiaomi Smart Fish Tank MYG100` |
+| `miot/xiaomi-fish-tank-m200` | `xiaomi.fishbowl.m200` | Xiaomi Smart Fishbowl M200 | `Xiaomi Smart Fishbowl M200` |
 | `miot/zhimi-heater-mc2` | `zhimi.heater.mc2` | Mi Smart Space Heater S | `Mi Smart Space Heater S` |
 | `miot/qingping-air-monitor-lite` | `cgllc.airm.cgd1st` | Qingping Air Monitor Lite | `Qingping Air Monitor Lite2` |
 

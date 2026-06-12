@@ -1,0 +1,5 @@
+name: 'Dmaker Humidifier P2'
+packageKey: 'Dmaker Humidifier P2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

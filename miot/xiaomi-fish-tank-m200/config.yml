@@ -1,0 +1,5 @@
+name: 'Xiaomi Smart Fishbowl M200'
+packageKey: 'Xiaomi Smart Fishbowl M200 Driver'
+permissions:
+  lan: {}
+  discovery: {}
