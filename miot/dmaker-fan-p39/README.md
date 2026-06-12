@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p39`.
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.xiaomiTowerFan2Controls`
+- `concertmirror08464.dmakerFanP39Controls`
   - `fanMode`: `normal` / `nature` / `sleep`
   - `indicatorLight`: 표시등, `off` / `on`
   - `buzzer`: 부저음, `off` / `on`
@@ -30,13 +30,13 @@ Fan service `siid=2`:
 - `piid=2` fan level `1..4`, read/write, not exposed separately
 - `piid=4` mode, read/write, `0=normal`, `1=nature`, `2=sleep`
 - `piid=5` horizontal swing, read/write
-- `piid=6` horizontal angle `30/60/90/120/150`, read/write, not exposed
+- `piid=6` `30/60/90/120/150`, read/write
 - `piid=7` alarm/buzzer, read/write
-- `piid=8` off-delay time `0..480` minutes, read/write, not exposed
+- `piid=8` off-delay time `0..480` minutes, read/write
 - `piid=9` display/indicator brightness, read/write
-- `piid=10` motor control `0/1/2`, write only, not exposed
+- `piid=10` motor control `0/1/2`, write only
 - `piid=11` stepless fan level `1..100`, read/write
-- `aiid=1` toggle, not exposed
+- `aiid=1` toggle
 
 Physical controls locked service `siid=3`:
 
@@ -44,5 +44,7 @@ Physical controls locked service `siid=3`:
 
 Dmaker service `siid=4`:
 
-- `aiid=1` loop gear, not exposed
-- `aiid=2` loop mode, not exposed
+- `aiid=1` loop gear
+- `aiid=2` loop mode
+
+Angle control: `dmakerFanP39Controls.horizontalAngle` maps MIoT `siid=2`, `piid=6`, `30/60/90/120/150`.

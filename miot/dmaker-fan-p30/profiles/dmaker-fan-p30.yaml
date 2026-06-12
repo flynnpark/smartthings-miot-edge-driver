@@ -8,7 +8,7 @@ components:
     version: 1
   - id: fanOscillationMode
     version: 1
-  - id: concertmirror08464.xiaomiFanControls
+  - id: concertmirror08464.dmakerFanP30AngleControls
     version: 1
   - id: refresh
     version: 1

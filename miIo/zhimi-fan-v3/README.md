@@ -18,7 +18,7 @@ SmartThings Edge LAN driver for the Xiaomi/miIO fan model `zhimi.fan.v3`.
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `battery`
-- `concertmirror08464.zhimiFanV3Controls`
+- `concertmirror08464.zhimiFanV3AngleControls`
 - `refresh`
 
 ## miIO Mapping
@@ -32,8 +32,10 @@ SmartThings Edge LAN driver for the Xiaomi/miIO fan model `zhimi.fan.v3`.
 | Temperature | R | `temp_dec`, deci-Celsius | `temperatureMeasurement` |
 | Humidity | R | `humidity`, percent | `relativeHumidityMeasurement` |
 | Battery | R | `battery`, percent | `battery` |
-| Display brightness | RW | `led_b`, `set_led_b`, `0=bright`, `1=dim`, `2=off` | `zhimiFanV3Controls.ledBrightness` |
-| Buzzer | RW | `buzzer`, `set_buzzer` with `on` / `off` | `zhimiFanV3Controls.buzzer` |
-| Child lock | RW | `child_lock`, `set_child_lock` with `on` / `off` | `zhimiFanV3Controls.childLock` |
+| Display brightness | RW | `led_b`, `set_led_b`, `0=bright`, `1=dim`, `2=off` | `zhimiFanV3AngleControls.ledBrightness` |
+| Buzzer | RW | `buzzer`, `set_buzzer` with `on` / `off` | `zhimiFanV3AngleControls.buzzer` |
+| Child lock | RW | `child_lock`, `set_child_lock` with `on` / `off` | `zhimiFanV3AngleControls.childLock` |
+
+Angle control: `zhimiFanV3AngleControls.horizontalAngle` maps miIO `angle` / `set_angle`, `30..120`.
 
 Not exposed: motor RPM, AC power state, button record, delay countdown, use time, battery charging state, and manual left/right movement are auxiliary metadata or secondary controls.

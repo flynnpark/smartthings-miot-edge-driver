@@ -8,7 +8,7 @@ components:
     version: 1
   - id: fanOscillationMode
     version: 1
-  - id: concertmirror08464.xiaomiTowerFan2Controls
+  - id: concertmirror08464.dmakerFanP9Controls
     version: 1
   - id: refresh
     version: 1

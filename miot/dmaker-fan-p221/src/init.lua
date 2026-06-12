@@ -5,7 +5,7 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.dmakerFanP221Controls"]
+local fanControls = capabilities["concertmirror08464.dmakerFanP221AngleControls"]
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
@@ -105,6 +105,21 @@ local function emit_oscillation_mode(device, horizontal_swing, vertical_swing)
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(mode))
 end
 
+local ANGLE_PROPERTIES = {
+    {siid = 2, piid = 5, attr = fanControls.horizontalAngle},
+    {siid = 2, piid = 8, attr = fanControls.verticalAngle}
+}
+
+local function emit_angle_event(device, siid, piid, value)
+    if type(value) ~= "number" then return end
+    for _, property in ipairs(ANGLE_PROPERTIES) do
+        if property.siid == siid and property.piid == piid then
+            device:emit_event(property.attr({value = math.floor(value)}))
+            return
+        end
+    end
+end
+
 local function poll_device_status(device)
     local ip, token = get_device_config(device)
     if not ip then
@@ -124,7 +139,9 @@ local function poll_device_status(device)
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
         {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID},
-        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID}
+        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID},
+        {siid = 2, piid = 5},
+        {siid = 2, piid = 8}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -290,6 +307,28 @@ local function set_child_lock_handler(_, device, command)
     end
 end
 
+local function set_horizontal_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.horizontalAngle)
+    local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
+    if ok then
+        device:emit_event(fanControls.horizontalAngle({value = angle}))
+    end
+end
+
+local function set_vertical_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.verticalAngle)
+    local ok = pcall(miot.set, device, ip, token, 2, 8, angle)
+    if ok then
+        device:emit_event(fanControls.verticalAngle({value = angle}))
+    end
+end
+
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
@@ -305,6 +344,8 @@ local function device_added(_, device)
     device:emit_event(fanControls.indicatorLight({value = "on"}))
     device:emit_event(fanControls.buzzer({value = "off"}))
     device:emit_event(fanControls.childLock({value = "off"}))
+    device:emit_event(fanControls.horizontalAngle({value = 30}))
+    device:emit_event(fanControls.verticalAngle({value = 35}))
 end
 
 local function device_init(_, device)
@@ -367,7 +408,9 @@ local driver = Driver("miot-dmaker-fan-p221", {
             [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
             [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
             [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
+            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
+            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler,
+            [fanControls.commands.setVerticalAngle.NAME] = set_vertical_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

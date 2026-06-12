@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for one miIO model: `dmaker.fan.p5`.
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, 0-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.xiaomiFanControls`
+- `concertmirror08464.dmakerFanP5Controls`
   - `fanMode`: `normal` / `nature`
   - `indicatorLight`: 표시등, `off` / `on`
   - `buzzer`: 부저음, `off` / `on`
@@ -30,8 +30,8 @@ Read via `get_prop`:
 - `mode`, read, `normal` / `nature`
 - `speed`, read, `0..100`
 - `roll_enable`, read, horizontal oscillation on/off
-- `roll_angle`, read, not exposed
-- `time_off`, read, not exposed
+- `roll_angle`, read
+- `time_off`, read
 - `light`, read, indicator light on/off
 - `beep_sound`, read, buzzer on/off
 - `child_lock`, read, child lock on/off
@@ -46,3 +46,6 @@ Write methods:
 - `s_sound`, write, buzzer on/off
 - `s_lock`, write, child lock on/off
 
+Angle control: `dmakerFanP5Controls.horizontalAngle` maps miIO `roll_angle` / `s_angle`, `30/60/90/120/140`.
+
+Not exposed: `time_off` because it is an auxiliary timer value.

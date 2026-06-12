@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p11`.
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.xiaomiFanControls`
+- `concertmirror08464.dmakerFanP11Controls`
   - `fanMode`: `normal` / `nature`
   - `indicatorLight`: 표시등, `off` / `on`
   - `buzzer`: 부저음, `off` / `on`
@@ -30,12 +30,12 @@ Fan service `siid=2`:
 - `piid=2` fan level bucket `1..4`, read/write, not exposed separately
 - `piid=3` mode, read/write, `0=normal`, `1=nature`
 - `piid=4` horizontal swing, read/write
-- `piid=5` horizontal angle `30/60/90/120/140`, read/write, not exposed
+- `piid=5` `30/60/90/120/140`, read/write
 - `piid=6` status/speed `1..100`, read in spec; python-miio maps it as writable fan speed
 
 Off delay time service `siid=3`:
 
-- `piid=1` power-off countdown `0..480` minutes, read/write, not exposed
+- `piid=1` power-off countdown `0..480` minutes, read/write
 
 Indicator light service `siid=4`:
 
@@ -47,9 +47,11 @@ Alarm service `siid=5`:
 
 Motor controller service `siid=6`:
 
-- `piid=1` motor control `0=none`, `1=left`, `2=right`, write only, not exposed
-- `piid=2` fault, read only diagnostic value, not exposed
+- `piid=1` motor control `0=none`, `1=left`, `2=right`, write only
+- `piid=2` fault, read only diagnostic value
 
 Physical controls locked service `siid=7`:
 
 - `piid=1` child lock, read/write
+
+Angle control: `dmakerFanP11Controls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/140`.

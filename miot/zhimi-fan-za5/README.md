@@ -17,7 +17,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `zhimi.fan.za5`.
 - `fanOscillationMode`
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
-- `concertmirror08464.zhimiFanZa5Controls`
+- `concertmirror08464.zhimiFanZa5AngleControls`
 - `refresh`
 
 ## MIoT Mapping
@@ -27,12 +27,14 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `zhimi.fan.za5`.
 | Power | RW | `siid=2`, `piid=1` | `switch` |
 | Fan speed percent | RW | `siid=6`, `piid=8`, `1..100` | `fanSpeedPercent` |
 | Horizontal oscillation | RW | `siid=2`, `piid=3` | `fanOscillationMode` |
-| Wind mode | RW | `siid=2`, `piid=7`, `0=nature`, `1=normal` | `zhimiFanZa5Controls.fanMode` |
-| Anion | RW | `siid=2`, `piid=11` | `zhimiFanZa5Controls.anion` |
-| Display brightness | RW | `siid=4`, `piid=3`, `0..100 %` | `zhimiFanZa5Controls.displayBrightness` |
-| Buzzer | RW | `siid=5`, `piid=1` | `zhimiFanZa5Controls.buzzer` |
-| Child lock | RW | `siid=3`, `piid=1` | `zhimiFanZa5Controls.childLock` |
+| Wind mode | RW | `siid=2`, `piid=7`, `0=nature`, `1=normal` | `zhimiFanZa5AngleControls.fanMode` |
+| Anion | RW | `siid=2`, `piid=11` | `zhimiFanZa5AngleControls.anion` |
+| Display brightness | RW | `siid=4`, `piid=3`, `0..100 %` | `zhimiFanZa5AngleControls.displayBrightness` |
+| Buzzer | RW | `siid=5`, `piid=1` | `zhimiFanZa5AngleControls.buzzer` |
+| Child lock | RW | `siid=3`, `piid=1` | `zhimiFanZa5AngleControls.childLock` |
 | Humidity | R | `siid=7`, `piid=1`, `%` | `relativeHumidityMeasurement` |
 | Temperature | R | `siid=7`, `piid=7`, `C` | `temperatureMeasurement` |
 
-Not exposed: fan level bucket, horizontal angle, off-delay, button record, battery/power metadata, step movement, motor RPM, motor status, country code, and the private temperature-sensor switch because they are auxiliary, diagnostic, or not core SmartThings controls. The driver enables the private temperature-sensor switch before polling so `temperatureMeasurement` can update.
+Angle control: `zhimiFanZa5AngleControls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30..120`.
+
+Not exposed: fan level bucket, off-delay, button record, battery/power metadata, step movement, motor RPM, motor status, country code, and the private temperature-sensor switch because they are auxiliary, diagnostic, or not core SmartThings controls. The driver enables the private temperature-sensor switch before polling so `temperatureMeasurement` can update.

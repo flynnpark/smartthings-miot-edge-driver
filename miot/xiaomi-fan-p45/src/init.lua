@@ -5,7 +5,7 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.xiaomiTowerFan2Controls"]
+local fanControls = capabilities["concertmirror08464.xiaomiFanP45Controls"]
 
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
@@ -78,6 +78,20 @@ end
 
 local function emit_on_off(device, capability_attr, value)
     device:emit_event(capability_attr({value = value and "on" or "off"}))
+end
+
+local ANGLE_PROPERTIES = {
+    {siid = 2, piid = 7, attr = fanControls.horizontalAngle}
+}
+
+local function emit_angle_event(device, siid, piid, value)
+    if type(value) ~= "number" then return end
+    for _, property in ipairs(ANGLE_PROPERTIES) do
+        if property.siid == siid and property.piid == piid then
+            device:emit_event(property.attr({value = math.floor(value)}))
+            return
+        end
+    end
 end
 
 local function poll_device_status(device)
@@ -245,6 +259,17 @@ local function set_child_lock_handler(_, device, command)
     end
 end
 
+local function set_horizontal_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.horizontalAngle)
+    local ok = pcall(miot.set, device, ip, token, 2, 7, angle)
+    if ok then
+        device:emit_event(fanControls.horizontalAngle({value = angle}))
+    end
+end
+
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
@@ -320,7 +345,8 @@ local driver = Driver("miot-xiaomi-fan-p45", {
             [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
             [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
             [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
+            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
+            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

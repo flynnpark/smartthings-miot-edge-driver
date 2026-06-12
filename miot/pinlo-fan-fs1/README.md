@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `pinlo.fan.fs1`.
 - `switch`
 - `fanSpeedPercent`
 - `fanOscillationMode`
-- `concertmirror08464.xiaomiFanControls`
+- `concertmirror08464.pinloFanFs1Controls`
 - `refresh`
 
 ## MIoT Mapping
@@ -24,10 +24,12 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `pinlo.fan.fs1`.
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `switch` |
 | Fan speed level | RW | `siid=2`, `piid=4`, `0..3` mapped to `25/50/75/100%` | `fanSpeedPercent` |
-| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `xiaomiFanControls.fanMode` |
+| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `pinloFanFs1Controls.fanMode` |
 | Horizontal swing | RW | `siid=2`, `piid=6` | `fanOscillationMode`: `horizontal` |
-| Screen | RW | `siid=6`, `piid=1` | `xiaomiFanControls.indicatorLight` |
-| Child lock | RW | `siid=8`, `piid=1` | `xiaomiFanControls.childLock` |
-| Buzzer | RW | `siid=11`, `piid=1` | `xiaomiFanControls.buzzer` |
+| Screen | RW | `siid=6`, `piid=1` | `pinloFanFs1Controls.indicatorLight` |
+| Child lock | RW | `siid=8`, `piid=1` | `pinloFanFs1Controls.childLock` |
+| Buzzer | RW | `siid=11`, `piid=1` | `pinloFanFs1Controls.buzzer` |
+
+Angle control: `pinloFanFs1Controls.horizontalAngle` maps MIoT `siid=2`, `piid=14`, `60/90`.
 
 Not exposed: fault, horizontal swing angle, delay timer, and toggle action because they are diagnostic, auxiliary, or duplicated by the exposed core controls.

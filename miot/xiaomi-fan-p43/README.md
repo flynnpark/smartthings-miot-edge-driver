@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 - `switch`
 - `fanSpeedPercent`
 - `fanOscillationMode`
-- `concertmirror08464.xiaomiFanP43Controls`
+- `concertmirror08464.xiaomiFanP43AngleControls`
 - `refresh`
 
 ## MIoT Mapping
@@ -25,9 +25,11 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 | Power | RW | `siid=2`, `piid=1` | `switch` |
 | Stepless speed | RW | `siid=2`, `piid=6`, `1..100` | `fanSpeedPercent` |
 | Horizontal swing | RW | `siid=2`, `piid=4` | `fanOscillationMode` |
-| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature`, `2=smart` | `xiaomiFanP43Controls.fanMode` |
-| Indicator light | RW | `siid=4`, `piid=1` | `xiaomiFanP43Controls.indicatorLight` |
-| Buzzer | RW | `siid=5`, `piid=1` | `xiaomiFanP43Controls.buzzer` |
-| Child lock | RW | `siid=6`, `piid=1` | `xiaomiFanP43Controls.childLock` |
+| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature`, `2=smart` | `xiaomiFanP43AngleControls.fanMode` |
+| Indicator light | RW | `siid=4`, `piid=1` | `xiaomiFanP43AngleControls.indicatorLight` |
+| Buzzer | RW | `siid=5`, `piid=1` | `xiaomiFanP43AngleControls.buzzer` |
+| Child lock | RW | `siid=6`, `piid=1` | `xiaomiFanP43AngleControls.childLock` |
+
+Angle control: `xiaomiFanP43AngleControls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90`.
 
 Not exposed: level bucket, swing angle, fan status, power-off delay, and toggle actions because they are auxiliary values or physical shortcut helpers rather than core SmartThings fan controls.

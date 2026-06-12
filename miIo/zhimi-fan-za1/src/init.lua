@@ -5,7 +5,7 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miio = require "miio"
 
-local fanControls = capabilities["concertmirror08464.zhimiFanV3Controls"]
+local fanControls = capabilities["concertmirror08464.zhimiFanZa1Controls"]
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
@@ -65,6 +65,19 @@ end
 
 local function emit_on_off(device, capability_attr, value)
     device:emit_event(capability_attr({value = on_off_to_bool(value) and "on" or "off"}))
+end
+
+local ANGLE_PROPERTIES = {
+    {property = "angle", attr = fanControls.horizontalAngle}
+}
+
+local function emit_angle_values(device, values)
+    for _, property in ipairs(ANGLE_PROPERTIES) do
+        local value = values[property.property]
+        if type(value) == "number" then
+            device:emit_event(property.attr({value = math.floor(value)}))
+        end
+    end
 end
 
 local function poll_device_status(device)
@@ -242,6 +255,16 @@ local function set_child_lock_handler(_, device, command)
     end
 end
 
+local function set_horizontal_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.horizontalAngle)
+    if miio.set_prop(device, ip, token, "set_angle", {angle}) then
+        device:emit_event(fanControls.horizontalAngle({value = angle}))
+    end
+end
+
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
@@ -257,6 +280,7 @@ local function device_added(_, device)
     device:emit_event(fanControls.childLock({value = "off"}))
     device:set_field(CURRENT_FAN_MODE, "normal")
     device:set_field(CURRENT_PERCENT, 1)
+    device:emit_event(fanControls.horizontalAngle({value = 0}))
 end
 
 local function device_init(_, device)
@@ -319,7 +343,8 @@ local driver = Driver("miio-zhimi-fan-za1", {
             [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
             [fanControls.commands.setLedBrightness.NAME] = set_led_brightness_handler,
             [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
+            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
+            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

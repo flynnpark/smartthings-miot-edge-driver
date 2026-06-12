@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p45`.
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.xiaomiTowerFan2Controls`
+- `concertmirror08464.dmakerFanP45Controls`
   - `fanMode`: `normal` / `nature` / `sleep`
   - `indicatorLight`: display/indicator light, `off` / `on`
   - `buzzer`: buzzer, `off` / `on`
@@ -30,14 +30,14 @@ Fan service `siid=2`:
 - `piid=2` fan level `1..4`, read/write, not exposed separately
 - `piid=3` mode, read/write, `0=normal`, `1=nature`, `2=sleep`
 - `piid=4` horizontal swing, read/write
-- `piid=5` horizontal angle `30/60/90/120/150`, read/write, not exposed
-- `aiid=1` toggle, not exposed
-- `aiid=2` turn left, not exposed
-- `aiid=3` turn right, not exposed
+- `piid=5` `30/60/90/120/150`, read/write
+- `aiid=1` toggle
+- `aiid=2` turn left
+- `aiid=3` turn right
 
 Off delay service `siid=3`:
 
-- `piid=1` off delay time `0..480` minutes, read/write, not exposed
+- `piid=1` off delay time `0..480` minutes, read/write
 
 Indicator light service `siid=4`:
 
@@ -54,6 +54,8 @@ Physical controls locked service `siid=7`:
 Dmaker service `siid=8`:
 
 - `piid=1` stepless fan level `1..100`, read/write
-- `piid=3` start left, write only, not exposed
-- `piid=4` start right, write only, not exposed
-- `piid=5..9` natural wind customization strings, read/write, not exposed
+- `piid=3` start left, write only
+- `piid=4` start right, write only
+- `piid=5..9` natural wind customization strings, read/write
+
+Angle control: `dmakerFanP45Controls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/150`.

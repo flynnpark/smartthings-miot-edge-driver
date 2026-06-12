@@ -5,7 +5,7 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.xiaomiFanControls"]
+local fanControls = capabilities["concertmirror08464.xiaomiFanP90Controls"]
 
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
@@ -74,6 +74,23 @@ end
 
 local function emit_on_off(device, capability_attr, value)
     device:emit_event(capability_attr({value = value and "on" or "off"}))
+end
+
+local ANGLE_PROPERTIES = {
+    {siid = 11, piid = 2, attr = fanControls.leftAngle},
+    {siid = 11, piid = 3, attr = fanControls.rightAngle},
+    {siid = 11, piid = 5, attr = fanControls.upAngle},
+    {siid = 11, piid = 6, attr = fanControls.downAngle}
+}
+
+local function emit_angle_event(device, siid, piid, value)
+    if type(value) ~= "number" then return end
+    for _, property in ipairs(ANGLE_PROPERTIES) do
+        if property.siid == siid and property.piid == piid then
+            device:emit_event(property.attr({value = math.floor(value)}))
+            return
+        end
+    end
 end
 
 local function poll_device_status(device)
@@ -258,6 +275,50 @@ local function set_child_lock_handler(_, device, command)
     end
 end
 
+local function set_left_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.leftAngle)
+    local ok = pcall(miot.set, device, ip, token, 11, 2, angle)
+    if ok then
+        device:emit_event(fanControls.leftAngle({value = angle}))
+    end
+end
+
+local function set_right_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.rightAngle)
+    local ok = pcall(miot.set, device, ip, token, 11, 3, angle)
+    if ok then
+        device:emit_event(fanControls.rightAngle({value = angle}))
+    end
+end
+
+local function set_up_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.upAngle)
+    local ok = pcall(miot.set, device, ip, token, 11, 5, angle)
+    if ok then
+        device:emit_event(fanControls.upAngle({value = angle}))
+    end
+end
+
+local function set_down_angle_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local angle = math.floor(command.args.downAngle)
+    local ok = pcall(miot.set, device, ip, token, 11, 6, angle)
+    if ok then
+        device:emit_event(fanControls.downAngle({value = angle}))
+    end
+end
+
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
@@ -333,7 +394,11 @@ local driver = Driver("miot-xiaomi-fan-p90", {
             [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
             [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
             [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
+            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
+            [fanControls.commands.setLeftAngle.NAME] = set_left_angle_handler,
+            [fanControls.commands.setRightAngle.NAME] = set_right_angle_handler,
+            [fanControls.commands.setUpAngle.NAME] = set_up_angle_handler,
+            [fanControls.commands.setDownAngle.NAME] = set_down_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

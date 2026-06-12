@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p76`.
 - `switch`
 - `fanSpeedPercent`
 - `fanOscillationMode`
-- `concertmirror08464.xiaomiFanControls`
+- `concertmirror08464.xiaomiFanP76Controls`
 - `refresh`
 
 ## MIoT Mapping
@@ -24,11 +24,13 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p76`.
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `switch` |
 | Fan speed percent | RW | `siid=2`, `piid=5`, `1..100` | `fanSpeedPercent` |
-| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `xiaomiFanControls.fanMode` |
+| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `xiaomiFanP76Controls.fanMode` |
 | Horizontal swing | RW | `siid=2`, `piid=6` | `fanOscillationMode`: `horizontal` / `all` |
 | Vertical swing | RW | `siid=2`, `piid=8` | `fanOscillationMode`: `vertical` / `all` |
-| Indicator light | RW | `siid=5`, `piid=1` | `xiaomiFanControls.indicatorLight` |
-| Buzzer | RW | `siid=7`, `piid=1` | `xiaomiFanControls.buzzer` |
-| Child lock | RW | `siid=8`, `piid=1` | `xiaomiFanControls.childLock` |
+| Indicator light | RW | `siid=5`, `piid=1` | `xiaomiFanP76Controls.indicatorLight` |
+| Buzzer | RW | `siid=7`, `piid=1` | `xiaomiFanP76Controls.buzzer` |
+| Child lock | RW | `siid=8`, `piid=1` | `xiaomiFanP76Controls.childLock` |
 
-Not exposed: fault, gear fan level, horizontal/vertical angle, movement actions, delay timer, and dm-service shortcut actions because they are diagnostic, auxiliary, or duplicated by the exposed core controls.
+Angle controls: `xiaomiFanP76Controls.horizontalAngle` maps `siid=2`, `piid=7`, `30/60/90/120`; `verticalAngle` maps `siid=2`, `piid=9`, `30/60/90/100`.
+
+Not exposed: fault, gear fan level, movement actions, delay timer, and dm-service shortcut actions because they are diagnostic, auxiliary, or duplicated by the exposed core controls.
