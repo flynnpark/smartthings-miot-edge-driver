@@ -14,6 +14,71 @@ components:
     version: 1
   categories:
   - name: Fan
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: switch
+        version: 1
+        group: main
+        values:
+          - label: "{{switch.value}}"
+        composite: true
+      - component: main
+        capability: fanSpeedPercent
+        version: 1
+        group: main
+        values:
+          - label: " {{percent.value}}{{percent.unit}}"
+        composite: true
+    actions:
+      - component: main
+        capability: switch
+        version: 1
+    basicPlus: []
+  detailView:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: fanSpeedPercent
+      version: 1
+    - component: main
+      capability: fanOscillationMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.pinloFanFs1Controls
+      version: 1
+    - component: main
+      capability: refresh
+      version: 1
+  automation:
+    conditions:
+      - component: main
+        capability: switch
+        version: 1
+      - component: main
+        capability: fanSpeedPercent
+        version: 1
+      - component: main
+        capability: fanOscillationMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.pinloFanFs1Controls
+        version: 1
+    actions:
+      - component: main
+        capability: switch
+        version: 1
+      - component: main
+        capability: fanSpeedPercent
+        version: 1
+      - component: main
+        capability: fanOscillationMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.pinloFanFs1Controls
+        version: 1
 preferences:
 - name: ipAddress
   title: IP Address
