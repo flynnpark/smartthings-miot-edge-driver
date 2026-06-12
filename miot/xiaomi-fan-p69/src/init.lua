@@ -22,9 +22,9 @@ local MODE_PIID = 3               -- RW 0=Straight, 1=Natural
 local GEAR_FAN_LEVEL_PIID = 4     -- RW level bucket 0..3, not exposed separately
 local FAN_SPEED_PIID = 5          -- RW stepless fan level 1..100
 local HORIZONTAL_SWING_PIID = 6   -- RW horizontal oscillation on/off
-local HORIZONTAL_ANGLE_PIID = 7   -- RW 30, 60, 90, 120; not exposed
+local HORIZONTAL_ANGLE_PIID = 7   -- RW 30, 60, 90, 120
 local VERTICAL_SWING_PIID = 8     -- RW vertical oscillation on/off
-local VERTICAL_ANGLE_PIID = 9     -- RW 30, 60, 90, 100; not exposed
+local VERTICAL_ANGLE_PIID = 9     -- RW 30, 60, 90, 100
 
 -- Fan actions (siid=2), not exposed because switch and oscillation controls cover core use.
 local TOGGLE_ACTION_IID = 3
@@ -108,7 +108,9 @@ local function poll_device_status(device)
         {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = FAN_SPEED_PIID},
         {siid = FAN_SIID, piid = HORIZONTAL_SWING_PIID},
+        {siid = FAN_SIID, piid = HORIZONTAL_ANGLE_PIID},
         {siid = FAN_SIID, piid = VERTICAL_SWING_PIID},
+        {siid = FAN_SIID, piid = VERTICAL_ANGLE_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
@@ -140,8 +142,12 @@ local function poll_device_status(device)
                     device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 elseif piid == HORIZONTAL_SWING_PIID then
                     horizontal_swing = value
+                elseif piid == HORIZONTAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 elseif piid == VERTICAL_SWING_PIID then
                     vertical_swing = value
+                elseif piid == VERTICAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
                 emit_on_off(device, fanControls.indicatorLight, value)
@@ -314,6 +320,8 @@ local function device_added(_, device)
     device:emit_event(fanControls.indicatorLight({value = "on"}))
     device:emit_event(fanControls.buzzer({value = "off"}))
     device:emit_event(fanControls.childLock({value = "off"}))
+    device:emit_event(fanControls.horizontalAngle({value = 30}))
+    device:emit_event(fanControls.verticalAngle({value = 30}))
 end
 
 local function device_init(_, device)
