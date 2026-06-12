@@ -80,7 +80,9 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    device:try_update_metadata({profile = PROFILE_NAME})
+    if not device:supports_capability_by_id(fanControls.ID) then
+        device:try_update_metadata({profile = PROFILE_NAME})
+    end
 end
 
 local function emit_on_off(device, capability_attr, value)
@@ -313,7 +315,6 @@ local function set_vertical_angle_handler(_, device, command)
 end
 
 local function refresh_handler(_, device, _)
-    ensure_profile(device)
     pcall(poll_device_status, device)
 end
 
@@ -332,8 +333,8 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
-    device:online()
     ensure_profile(device)
+    device:online()
 
     local ip = get_device_config(device)
     if ip then

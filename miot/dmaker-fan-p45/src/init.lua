@@ -11,6 +11,7 @@ local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
+local PROFILE_NAME = "dmaker-fan-p45"
 
 -- MIoT model: dmaker.fan.p45
 -- Source: python-miio FanMiot exact model, MIoT spec dmaker-p45 v1, and model docs.
@@ -71,6 +72,12 @@ local function get_device_config(device)
         return ip, token
     end
     return nil, nil
+end
+
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(fanControls.ID) then
+        device:try_update_metadata({profile = PROFILE_NAME})
+    end
 end
 
 local function emit_on_off(device, capability_attr, value)
@@ -271,6 +278,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(fanSpeedPercent.percent({value = 1, unit = "%"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
@@ -282,6 +290,7 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
 
     local ip = get_device_config(device)
@@ -296,6 +305,7 @@ local function device_removed(_, device)
 end
 
 local function device_info_changed(driver, device, _, args)
+    ensure_profile(device)
     if not args.old_st_store or not args.old_st_store.preferences then
         return
     end
