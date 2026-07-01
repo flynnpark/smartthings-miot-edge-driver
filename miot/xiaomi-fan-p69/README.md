@@ -19,8 +19,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p69`.
 - `concertmirror08464.xiaomiFanP69IndicatorLight`
 - `concertmirror08464.xiaomiFanP69Buzzer`
 - `concertmirror08464.xiaomiFanP69ChildLock`
-- `concertmirror08464.xiaomiFanP69HorizontalAngle`
-- `concertmirror08464.xiaomiFanP69VerticalAngle`
+- `concertmirror08464.xiaomiFanP69HorizontalAngleV2`
+- `concertmirror08464.xiaomiFanP69VerticalAngleV2`
 - `refresh`
 
 ## MIoT Mapping
@@ -35,7 +35,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p69`.
 | Indicator light | RW | `siid=5`, `piid=1` | `xiaomiFanP69IndicatorLight.indicatorLight` |
 | Buzzer | RW | `siid=7`, `piid=1` | `xiaomiFanP69Buzzer.buzzer` |
 | Child lock | RW | `siid=8`, `piid=1` | `xiaomiFanP69ChildLock.childLock` |
-| Horizontal angle | RW | `siid=2`, `piid=7`, `30/60/90/120` | `xiaomiFanP69HorizontalAngle.horizontalAngle` |
-| Vertical angle | RW | `siid=2`, `piid=9`, `30/60/90/100` | `xiaomiFanP69VerticalAngle.verticalAngle` |
+| Horizontal angle | RW | `siid=2`, `piid=7`, `30/60/90/120` | `xiaomiFanP69HorizontalAngleV2.horizontalAngle` |
+| Vertical angle | RW | `siid=2`, `piid=9`, `30/60/90/100` | `xiaomiFanP69VerticalAngleV2.verticalAngle` |
 
 Not exposed: fault, gear fan level, movement actions, delay timer, and dm-service shortcut actions because they are diagnostic, auxiliary, or duplicated by the exposed core controls.

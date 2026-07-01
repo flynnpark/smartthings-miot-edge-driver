@@ -9,7 +9,7 @@ local fanModeCap = capabilities["concertmirror08464.xiaomiFanP43FanMode"]
 local indicatorLightCap = capabilities["concertmirror08464.xiaomiFanP43IndicatorLight"]
 local buzzerCap = capabilities["concertmirror08464.xiaomiFanP43Buzzer"]
 local childLockCap = capabilities["concertmirror08464.xiaomiFanP43ChildLock"]
-local horizontalAngleCap = capabilities["concertmirror08464.xiaomiFanP43HorizontalAngle"]
+local horizontalAngleCap = capabilities["concertmirror08464.xiaomiFanP43HorizontalAngleV2"]
 
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
@@ -61,7 +61,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanModeCap.ID) then
+    if not device:supports_capability_by_id(horizontalAngleCap.ID, "main") then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -78,7 +78,7 @@ local function emit_angle_event(device, siid, piid, value)
     if type(value) ~= "number" then return end
     for _, property in ipairs(ANGLE_PROPERTIES) do
         if property.siid == siid and property.piid == piid then
-            device:emit_event(property.attr({value = math.floor(value)}))
+            device:emit_event(property.attr({value = tostring(math.floor(value))}))
             return
         end
     end
@@ -253,10 +253,11 @@ local function set_horizontal_angle_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local angle = math.floor(command.args.horizontalAngle)
+    local angle = tonumber(command.args.horizontalAngle)
+    if not angle then return end
     local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
     if ok then
-        device:emit_event(horizontalAngleCap.horizontalAngle({value = angle}))
+        device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
 end
 
@@ -274,7 +275,7 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
-    device:emit_event(horizontalAngleCap.horizontalAngle({value = 30}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)

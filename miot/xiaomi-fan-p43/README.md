@@ -19,7 +19,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 - `concertmirror08464.xiaomiFanP43IndicatorLight`
 - `concertmirror08464.xiaomiFanP43Buzzer`
 - `concertmirror08464.xiaomiFanP43ChildLock`
-- `concertmirror08464.xiaomiFanP43HorizontalAngle`
+- `concertmirror08464.xiaomiFanP43HorizontalAngleV2`
 - `refresh`
 
 ## MIoT Mapping
@@ -33,6 +33,6 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 | Indicator light | RW | `siid=4`, `piid=1` | `xiaomiFanP43IndicatorLight.indicatorLight` |
 | Buzzer | RW | `siid=5`, `piid=1` | `xiaomiFanP43Buzzer.buzzer` |
 | Child lock | RW | `siid=6`, `piid=1` | `xiaomiFanP43ChildLock.childLock` |
-| Horizontal angle | RW | `siid=2`, `piid=5`, `30/60/90` | `xiaomiFanP43HorizontalAngle.horizontalAngle` |
+| Horizontal angle | RW | `siid=2`, `piid=5`, `30/60/90` | `xiaomiFanP43HorizontalAngleV2.horizontalAngle` |
 
 Not exposed: level bucket, fan status, power-off delay, and toggle actions because they are auxiliary values or physical shortcut helpers rather than core SmartThings fan controls.

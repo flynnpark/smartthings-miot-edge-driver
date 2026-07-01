@@ -16,9 +16,9 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiFanP69ChildLock
     version: 1
-  - id: concertmirror08464.xiaomiFanP69HorizontalAngle
+  - id: concertmirror08464.xiaomiFanP69HorizontalAngleV2
     version: 1
-  - id: concertmirror08464.xiaomiFanP69VerticalAngle
+  - id: concertmirror08464.xiaomiFanP69VerticalAngleV2
     version: 1
   - id: refresh
     version: 1
@@ -69,10 +69,10 @@ deviceConfig:
       capability: concertmirror08464.xiaomiFanP69ChildLock
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiFanP69HorizontalAngle
+      capability: concertmirror08464.xiaomiFanP69HorizontalAngleV2
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiFanP69VerticalAngle
+      capability: concertmirror08464.xiaomiFanP69VerticalAngleV2
       version: 1
     - component: main
       capability: refresh
@@ -101,10 +101,10 @@ deviceConfig:
         capability: concertmirror08464.xiaomiFanP69ChildLock
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFanP69HorizontalAngle
+        capability: concertmirror08464.xiaomiFanP69HorizontalAngleV2
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFanP69VerticalAngle
+        capability: concertmirror08464.xiaomiFanP69VerticalAngleV2
         version: 1
     actions:
       - component: main
@@ -129,10 +129,10 @@ deviceConfig:
         capability: concertmirror08464.xiaomiFanP69ChildLock
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFanP69HorizontalAngle
+        capability: concertmirror08464.xiaomiFanP69HorizontalAngleV2
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFanP69VerticalAngle
+        capability: concertmirror08464.xiaomiFanP69VerticalAngleV2
         version: 1
 preferences:
 - name: ipAddress
