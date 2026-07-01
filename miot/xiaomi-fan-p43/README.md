@@ -15,7 +15,11 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 - `switch`
 - `fanSpeedPercent`
 - `fanOscillationMode`
-- `concertmirror08464.xiaomiFanP43AngleControls`
+- `concertmirror08464.xiaomiFanP43FanMode`
+- `concertmirror08464.xiaomiFanP43IndicatorLight`
+- `concertmirror08464.xiaomiFanP43Buzzer`
+- `concertmirror08464.xiaomiFanP43ChildLock`
+- `concertmirror08464.xiaomiFanP43HorizontalAngle`
 - `refresh`
 
 ## MIoT Mapping
@@ -25,11 +29,10 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 | Power | RW | `siid=2`, `piid=1` | `switch` |
 | Stepless speed | RW | `siid=2`, `piid=6`, `1..100` | `fanSpeedPercent` |
 | Horizontal swing | RW | `siid=2`, `piid=4` | `fanOscillationMode` |
-| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature`, `2=smart` | `xiaomiFanP43AngleControls.fanMode` |
-| Indicator light | RW | `siid=4`, `piid=1` | `xiaomiFanP43AngleControls.indicatorLight` |
-| Buzzer | RW | `siid=5`, `piid=1` | `xiaomiFanP43AngleControls.buzzer` |
-| Child lock | RW | `siid=6`, `piid=1` | `xiaomiFanP43AngleControls.childLock` |
+| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature`, `2=smart` | `xiaomiFanP43FanMode.fanMode` |
+| Indicator light | RW | `siid=4`, `piid=1` | `xiaomiFanP43IndicatorLight.indicatorLight` |
+| Buzzer | RW | `siid=5`, `piid=1` | `xiaomiFanP43Buzzer.buzzer` |
+| Child lock | RW | `siid=6`, `piid=1` | `xiaomiFanP43ChildLock.childLock` |
+| Horizontal angle | RW | `siid=2`, `piid=5`, `30/60/90` | `xiaomiFanP43HorizontalAngle.horizontalAngle` |
 
-Angle control: `xiaomiFanP43AngleControls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90`.
-
-Not exposed: level bucket, swing angle, fan status, power-off delay, and toggle actions because they are auxiliary values or physical shortcut helpers rather than core SmartThings fan controls.
+Not exposed: level bucket, fan status, power-off delay, and toggle actions because they are auxiliary values or physical shortcut helpers rather than core SmartThings fan controls.

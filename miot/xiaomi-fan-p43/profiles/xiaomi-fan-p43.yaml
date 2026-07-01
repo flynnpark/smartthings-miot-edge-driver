@@ -8,7 +8,15 @@ components:
     version: 1
   - id: fanOscillationMode
     version: 1
-  - id: concertmirror08464.xiaomiFanP43AngleControls
+  - id: concertmirror08464.xiaomiFanP43FanMode
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43IndicatorLight
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43Buzzer
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43ChildLock
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43HorizontalAngle
     version: 1
   - id: refresh
     version: 1
@@ -47,7 +55,19 @@ deviceConfig:
       capability: fanOscillationMode
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiFanP43AngleControls
+      capability: concertmirror08464.xiaomiFanP43FanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43IndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43HorizontalAngle
       version: 1
     - component: main
       capability: refresh
@@ -64,7 +84,19 @@ deviceConfig:
         capability: fanOscillationMode
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFanP43AngleControls
+        capability: concertmirror08464.xiaomiFanP43FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43HorizontalAngle
         version: 1
     actions:
       - component: main
@@ -77,7 +109,19 @@ deviceConfig:
         capability: fanOscillationMode
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFanP43AngleControls
+        capability: concertmirror08464.xiaomiFanP43FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43HorizontalAngle
         version: 1
 preferences:
 - name: ipAddress

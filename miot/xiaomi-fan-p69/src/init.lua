@@ -5,7 +5,12 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.xiaomiFanP69Controls"]
+local fanModeCap = capabilities["concertmirror08464.xiaomiFanP69FanMode"]
+local indicatorLightCap = capabilities["concertmirror08464.xiaomiFanP69IndicatorLight"]
+local buzzerCap = capabilities["concertmirror08464.xiaomiFanP69Buzzer"]
+local childLockCap = capabilities["concertmirror08464.xiaomiFanP69ChildLock"]
+local horizontalAngleCap = capabilities["concertmirror08464.xiaomiFanP69HorizontalAngle"]
+local verticalAngleCap = capabilities["concertmirror08464.xiaomiFanP69VerticalAngle"]
 
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
@@ -80,7 +85,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanControls.ID) then
+    if not device:supports_capability_by_id(fanModeCap.ID) then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -90,8 +95,8 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 7, attr = fanControls.horizontalAngle},
-    {siid = 2, piid = 9, attr = fanControls.verticalAngle}
+    {siid = 2, piid = 7, attr = horizontalAngleCap.horizontalAngle},
+    {siid = 2, piid = 9, attr = verticalAngleCap.verticalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -143,7 +148,7 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(fanControls.fanMode({value = mode}))
+                        device:emit_event(fanModeCap.fanMode({value = mode}))
                     end
                 elseif piid == FAN_SPEED_PIID then
                     device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
@@ -157,11 +162,11 @@ local function poll_device_status(device)
                     emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
-                emit_on_off(device, fanControls.indicatorLight, value)
+                emit_on_off(device, indicatorLightCap.indicatorLight, value)
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, fanControls.buzzer, value)
+                emit_on_off(device, buzzerCap.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                emit_on_off(device, fanControls.childLock, value)
+                emit_on_off(device, childLockCap.childLock, value)
             end
         end
     end
@@ -255,7 +260,7 @@ local function set_fan_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
     if ok then
-        device:emit_event(fanControls.fanMode({value = mode}))
+        device:emit_event(fanModeCap.fanMode({value = mode}))
     end
 end
 
@@ -266,7 +271,7 @@ local function set_indicator_light_handler(_, device, command)
     local indicator_light = command.args.indicatorLight
     local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
     if ok then
-        device:emit_event(fanControls.indicatorLight({value = indicator_light}))
+        device:emit_event(indicatorLightCap.indicatorLight({value = indicator_light}))
     end
 end
 
@@ -277,7 +282,7 @@ local function set_buzzer_handler(_, device, command)
     local buzzer = command.args.buzzer
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
     if ok then
-        device:emit_event(fanControls.buzzer({value = buzzer}))
+        device:emit_event(buzzerCap.buzzer({value = buzzer}))
     end
 end
 
@@ -288,7 +293,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(fanControls.childLock({value = child_lock}))
+        device:emit_event(childLockCap.childLock({value = child_lock}))
     end
 end
 
@@ -299,7 +304,7 @@ local function set_horizontal_angle_handler(_, device, command)
     local angle = math.floor(command.args.horizontalAngle)
     local ok = pcall(miot.set, device, ip, token, 2, 7, angle)
     if ok then
-        device:emit_event(fanControls.horizontalAngle({value = angle}))
+        device:emit_event(horizontalAngleCap.horizontalAngle({value = angle}))
     end
 end
 
@@ -310,7 +315,7 @@ local function set_vertical_angle_handler(_, device, command)
     local angle = math.floor(command.args.verticalAngle)
     local ok = pcall(miot.set, device, ip, token, 2, 9, angle)
     if ok then
-        device:emit_event(fanControls.verticalAngle({value = angle}))
+        device:emit_event(verticalAngleCap.verticalAngle({value = angle}))
     end
 end
 
@@ -324,12 +329,12 @@ local function device_added(_, device)
     device:emit_event(fanSpeedPercent.percent({value = 1, unit = "%"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
-    device:emit_event(fanControls.fanMode({value = "normal"}))
-    device:emit_event(fanControls.indicatorLight({value = "on"}))
-    device:emit_event(fanControls.buzzer({value = "off"}))
-    device:emit_event(fanControls.childLock({value = "off"}))
-    device:emit_event(fanControls.horizontalAngle({value = 30}))
-    device:emit_event(fanControls.verticalAngle({value = 30}))
+    device:emit_event(fanModeCap.fanMode({value = "normal"}))
+    device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
+    device:emit_event(buzzerCap.buzzer({value = "off"}))
+    device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = 30}))
+    device:emit_event(verticalAngleCap.verticalAngle({value = 30}))
 end
 
 local function device_init(_, device)
@@ -391,13 +396,23 @@ local driver = Driver("miot-xiaomi-fan-p69", {
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
         },
-        [fanControls.ID] = {
-            [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler,
-            [fanControls.commands.setVerticalAngle.NAME] = set_vertical_angle_handler
+        [fanModeCap.ID] = {
+            [fanModeCap.commands.setFanMode.NAME] = set_fan_mode_handler
+        },
+        [indicatorLightCap.ID] = {
+            [indicatorLightCap.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [buzzerCap.ID] = {
+            [buzzerCap.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [childLockCap.ID] = {
+            [childLockCap.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [horizontalAngleCap.ID] = {
+            [horizontalAngleCap.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
+        },
+        [verticalAngleCap.ID] = {
+            [verticalAngleCap.commands.setVerticalAngle.NAME] = set_vertical_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler
