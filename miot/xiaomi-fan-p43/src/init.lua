@@ -49,7 +49,6 @@ local ST_TO_MODE = {
 }
 
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
-local SUPPORTED_HORIZONTAL_ANGLES = {30, 60, 90}
 
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
@@ -69,10 +68,6 @@ end
 
 local function emit_on_off(device, capability_attr, value)
     device:emit_event(capability_attr({value = value and "on" or "off"}))
-end
-
-local function emit_supported_angles(device)
-    device:emit_event(horizontalAngleCap.supportedHorizontalAngles({value = SUPPORTED_HORIZONTAL_ANGLES}))
 end
 
 local ANGLE_PROPERTIES = {
@@ -274,7 +269,6 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(fanSpeedPercent.percent({value = 1, unit = "%"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
-    emit_supported_angles(device)
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(fanModeCap.fanMode({value = "normal"}))
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
@@ -286,7 +280,6 @@ end
 local function device_init(_, device)
     ensure_profile(device)
     device:online()
-    emit_supported_angles(device)
 
     local ip = get_device_config(device)
     if ip then
