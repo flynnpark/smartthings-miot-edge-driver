@@ -25,7 +25,7 @@ local POWER_PIID = 1
 local FAN_LEVEL_PIID = 2          -- level bucket, not exposed
 local MODE_PIID = 3               -- 0=Normal, 1=Nature, 2=Smart
 local SWING_MODE_PIID = 4         -- horizontal oscillation on/off
-local SWING_ANGLE_PIID = 5        -- 30, 60, 90; not exposed
+local SWING_ANGLE_PIID = 5        -- 30, 60, 90
 local FAN_SPEED_PIID = 6          -- 1..100
 
 -- Auxiliary services
@@ -255,7 +255,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end

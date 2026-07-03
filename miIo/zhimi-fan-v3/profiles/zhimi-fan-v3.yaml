@@ -14,7 +14,15 @@ components:
     version: 1
   - id: battery
     version: 1
-  - id: concertmirror08464.zhimiFanV3AngleControls
+  - id: concertmirror08464.zhimiFanV3FanMode
+    version: 1
+  - id: concertmirror08464.zhimiFanV3LedBrightness
+    version: 1
+  - id: concertmirror08464.zhimiFanV3Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiFanV3ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiFanV3HorizontalAngleV2
     version: 1
   - id: refresh
     version: 1
@@ -62,7 +70,19 @@ deviceConfig:
       capability: battery
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiFanV3AngleControls
+      capability: concertmirror08464.zhimiFanV3FanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanV3LedBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanV3Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanV3ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanV3HorizontalAngleV2
       version: 1
     - component: main
       capability: refresh
@@ -88,7 +108,19 @@ deviceConfig:
         capability: battery
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiFanV3AngleControls
+        capability: concertmirror08464.zhimiFanV3FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3LedBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3HorizontalAngleV2
         version: 1
     actions:
       - component: main
@@ -110,7 +142,19 @@ deviceConfig:
         capability: battery
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiFanV3AngleControls
+        capability: concertmirror08464.zhimiFanV3FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3LedBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanV3HorizontalAngleV2
         version: 1
 preferences:
 - name: ipAddress

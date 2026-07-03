@@ -8,7 +8,15 @@ components:
     version: 1
   - id: fanOscillationMode
     version: 1
-  - id: concertmirror08464.dmakerFanP45Controls
+  - id: concertmirror08464.dmakerFanP45FanMode
+    version: 1
+  - id: concertmirror08464.dmakerFanP45IndicatorLight
+    version: 1
+  - id: concertmirror08464.dmakerFanP45Buzzer
+    version: 1
+  - id: concertmirror08464.dmakerFanP45ChildLock
+    version: 1
+  - id: concertmirror08464.dmakerFanP45HorizontalAngleV2
     version: 1
   - id: refresh
     version: 1
@@ -47,7 +55,19 @@ deviceConfig:
       capability: fanOscillationMode
       version: 1
     - component: main
-      capability: concertmirror08464.dmakerFanP45Controls
+      capability: concertmirror08464.dmakerFanP45FanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP45IndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP45Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP45ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP45HorizontalAngleV2
       version: 1
     - component: main
       capability: refresh
@@ -64,7 +84,19 @@ deviceConfig:
         capability: fanOscillationMode
         version: 1
       - component: main
-        capability: concertmirror08464.dmakerFanP45Controls
+        capability: concertmirror08464.dmakerFanP45FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45HorizontalAngleV2
         version: 1
     actions:
       - component: main
@@ -77,7 +109,19 @@ deviceConfig:
         capability: fanOscillationMode
         version: 1
       - component: main
-        capability: concertmirror08464.dmakerFanP45Controls
+        capability: concertmirror08464.dmakerFanP45FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP45HorizontalAngleV2
         version: 1
 preferences:
 - name: ipAddress

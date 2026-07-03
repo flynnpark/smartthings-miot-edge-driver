@@ -15,11 +15,11 @@ SmartThings Edge LAN driver for the Xiaomi Mi Smart Standing Fan Pro product cod
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, mapped to the writable 4-level MIoT fan level
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.dmakerFanP15Controls`
-  - `fanMode`: `normal` / `nature`
-  - `indicatorLight`: 표시등, `off` / `on`
-  - `buzzer`: 부저음, `off` / `on`
-  - `childLock`: 차일드락, `off` / `on`
+- `concertmirror08464.dmakerFanP15FanMode`
+- `concertmirror08464.dmakerFanP15IndicatorLight`
+- `concertmirror08464.dmakerFanP15Buzzer`
+- `concertmirror08464.dmakerFanP15ChildLock`
+- `concertmirror08464.dmakerFanP15HorizontalAngleV2`
 - `refresh`
 
 ## MIoT mapping
@@ -54,4 +54,4 @@ Physical controls locked service `siid=7`:
 
 - `piid=1` child lock, read/write
 
-Angle control: `dmakerFanP15Controls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/140`.
+Angle control: `dmakerFanP15HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/140`.

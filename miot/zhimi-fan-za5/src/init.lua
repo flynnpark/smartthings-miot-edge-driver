@@ -5,7 +5,12 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.zhimiFanZa5AngleControls"]
+local fanModeCap = capabilities["concertmirror08464.zhimiFanZa5FanMode"]
+local displayBrightnessCap = capabilities["concertmirror08464.zhimiFanZa5DisplayBrightness"]
+local anionCap = capabilities["concertmirror08464.zhimiFanZa5Anion"]
+local buzzerCap = capabilities["concertmirror08464.zhimiFanZa5Buzzer"]
+local childLockCap = capabilities["concertmirror08464.zhimiFanZa5ChildLock"]
+local horizontalAngleCap = capabilities["concertmirror08464.zhimiFanZa5HorizontalAngleV2"]
 
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
@@ -75,7 +80,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanControls.ID) then
+    if not device:supports_capability_by_id(horizontalAngleCap.ID, "main") then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -89,14 +94,14 @@ local function ensure_temperature_sensor(device, ip, token)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 5, attr = fanControls.horizontalAngle}
+    {siid = 2, piid = 5, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
     if type(value) ~= "number" then return end
     for _, property in ipairs(ANGLE_PROPERTIES) do
         if property.siid == siid and property.piid == piid then
-            device:emit_event(property.attr({value = math.floor(value)}))
+            device:emit_event(property.attr({value = tostring(math.floor(value))}))
             return
         end
     end
@@ -139,21 +144,21 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(fanControls.fanMode({value = mode}))
+                        device:emit_event(fanModeCap.fanMode({value = mode}))
                     end
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
                 elseif piid == ANION_PIID then
-                    emit_on_off(device, fanControls.anion, value)
+                    emit_on_off(device, anionCap.anion, value)
                 end
             elseif siid == CUSTOM_SERVICE_SIID and piid == FAN_SPEED_PIID then
                 device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
             elseif siid == INDICATOR_LIGHT_SIID and piid == DISPLAY_BRIGHTNESS_PIID then
-                device:emit_event(fanControls.displayBrightness({value = value, unit = "%"}))
+                device:emit_event(displayBrightnessCap.displayBrightness({value = value, unit = "%"}))
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, fanControls.buzzer, value)
+                emit_on_off(device, buzzerCap.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                emit_on_off(device, fanControls.childLock, value)
+                emit_on_off(device, childLockCap.childLock, value)
             elseif siid == ENVIRONMENT_SIID then
                 if piid == HUMIDITY_PIID then
                     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(value))
@@ -238,7 +243,7 @@ local function set_fan_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
     if ok then
-        device:emit_event(fanControls.fanMode({value = mode}))
+        device:emit_event(fanModeCap.fanMode({value = mode}))
     end
 end
 
@@ -249,7 +254,7 @@ local function set_anion_handler(_, device, command)
     local anion = command.args.anion
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, ANION_PIID, anion == "on")
     if ok then
-        device:emit_event(fanControls.anion({value = anion}))
+        device:emit_event(anionCap.anion({value = anion}))
     end
 end
 
@@ -260,7 +265,7 @@ local function set_display_brightness_handler(_, device, command)
     local brightness = math.max(0, math.min(100, command.args.displayBrightness))
     local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, DISPLAY_BRIGHTNESS_PIID, brightness)
     if ok then
-        device:emit_event(fanControls.displayBrightness({value = brightness, unit = "%"}))
+        device:emit_event(displayBrightnessCap.displayBrightness({value = brightness, unit = "%"}))
     end
 end
 
@@ -271,7 +276,7 @@ local function set_buzzer_handler(_, device, command)
     local buzzer = command.args.buzzer
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
     if ok then
-        device:emit_event(fanControls.buzzer({value = buzzer}))
+        device:emit_event(buzzerCap.buzzer({value = buzzer}))
     end
 end
 
@@ -282,7 +287,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(fanControls.childLock({value = child_lock}))
+        device:emit_event(childLockCap.childLock({value = child_lock}))
     end
 end
 
@@ -290,10 +295,11 @@ local function set_horizontal_angle_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local angle = math.floor(command.args.horizontalAngle)
+    local angle = tonumber(command.args.horizontalAngle)
+    if not angle then return end
     local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
     if ok then
-        device:emit_event(fanControls.horizontalAngle({value = angle}))
+        device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
 end
 
@@ -309,12 +315,12 @@ local function device_added(_, device)
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(fanControls.fanMode({value = "normal"}))
-    device:emit_event(fanControls.anion({value = "off"}))
-    device:emit_event(fanControls.displayBrightness({value = 100, unit = "%"}))
-    device:emit_event(fanControls.buzzer({value = "off"}))
-    device:emit_event(fanControls.childLock({value = "off"}))
-    device:emit_event(fanControls.horizontalAngle({value = 30}))
+    device:emit_event(fanModeCap.fanMode({value = "normal"}))
+    device:emit_event(anionCap.anion({value = "off"}))
+    device:emit_event(displayBrightnessCap.displayBrightness({value = 100, unit = "%"}))
+    device:emit_event(buzzerCap.buzzer({value = "off"}))
+    device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)
@@ -379,13 +385,23 @@ local driver = Driver("miot-zhimi-fan-za5", {
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
         },
-        [fanControls.ID] = {
-            [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setAnion.NAME] = set_anion_handler,
-            [fanControls.commands.setDisplayBrightness.NAME] = set_display_brightness_handler,
-            [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
+        [fanModeCap.ID] = {
+            [fanModeCap.commands.setFanMode.NAME] = set_fan_mode_handler
+        },
+        [anionCap.ID] = {
+            [anionCap.commands.setAnion.NAME] = set_anion_handler
+        },
+        [displayBrightnessCap.ID] = {
+            [displayBrightnessCap.commands.setDisplayBrightness.NAME] = set_display_brightness_handler
+        },
+        [buzzerCap.ID] = {
+            [buzzerCap.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [childLockCap.ID] = {
+            [childLockCap.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [horizontalAngleCap.ID] = {
+            [horizontalAngleCap.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

@@ -5,7 +5,12 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.dmakerFanP221AngleControls"]
+local fanModeCap = capabilities["concertmirror08464.dmakerFanP221FanMode"]
+local indicatorLightCap = capabilities["concertmirror08464.dmakerFanP221IndicatorLight"]
+local buzzerCap = capabilities["concertmirror08464.dmakerFanP221Buzzer"]
+local childLockCap = capabilities["concertmirror08464.dmakerFanP221ChildLock"]
+local horizontalAngleCap = capabilities["concertmirror08464.dmakerFanP221HorizontalAngleV2"]
+local verticalAngleCap = capabilities["concertmirror08464.dmakerFanP221VerticalAngleV2"]
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
@@ -21,9 +26,9 @@ local PROFILE_NAME = "dmaker-fan-p221"
 --   piid=2 fan-level bucket, uint8, RW: 1..4, not exposed separately
 --   piid=3 mode, uint8, RW: 0=straight, 1=natural, 2=smart, 3=sleep
 --   piid=4 horizontal swing, bool, RW
---   piid=5 horizontal angle, uint16, RW: 30/60/90/120/140, not exposed
+--   piid=5 horizontal angle, uint16, RW: 30/60/90/120/140
 --   piid=7 vertical swing, bool, RW
---   piid=8 vertical angle, uint8, RW: 35/65/95, not exposed
+--   piid=8 vertical angle, uint8, RW: 35/65/95
 -- Indicator light service (siid=4)
 --   piid=1 indicator light, bool, RW
 -- Alarm service (siid=5)
@@ -91,7 +96,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanControls.ID) then
+    if not device:supports_capability_by_id(horizontalAngleCap.ID, "main") then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -113,15 +118,15 @@ local function emit_oscillation_mode(device, horizontal_swing, vertical_swing)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 5, attr = fanControls.horizontalAngle},
-    {siid = 2, piid = 8, attr = fanControls.verticalAngle}
+    {siid = 2, piid = 5, attr = horizontalAngleCap.horizontalAngle},
+    {siid = 2, piid = 8, attr = verticalAngleCap.verticalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
     if type(value) ~= "number" then return end
     for _, property in ipairs(ANGLE_PROPERTIES) do
         if property.siid == siid and property.piid == piid then
-            device:emit_event(property.attr({value = math.floor(value)}))
+            device:emit_event(property.attr({value = tostring(math.floor(value))}))
             return
         end
     end
@@ -146,9 +151,7 @@ local function poll_device_status(device)
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
         {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID},
-        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID},
-        {siid = 2, piid = 5},
-        {siid = 2, piid = 8}
+        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -171,21 +174,25 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(fanControls.fanMode({value = mode}))
+                        device:emit_event(fanModeCap.fanMode({value = mode}))
                     end
                 elseif piid == HORIZONTAL_SWING_PIID then
                     horizontal_swing = value
+                elseif piid == HORIZONTAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 elseif piid == VERTICAL_SWING_PIID then
                     vertical_swing = value
+                elseif piid == VERTICAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == DM_SERVICE_SIID and piid == FAN_SPEED_PIID then
                 device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
-                emit_on_off(device, fanControls.indicatorLight, value)
+                emit_on_off(device, indicatorLightCap.indicatorLight, value)
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, fanControls.buzzer, value)
+                emit_on_off(device, buzzerCap.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                emit_on_off(device, fanControls.childLock, value)
+                emit_on_off(device, childLockCap.childLock, value)
             elseif siid == ENVIRONMENT_SIID then
                 if piid == TEMPERATURE_PIID then
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
@@ -277,7 +284,7 @@ local function set_fan_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
     if ok then
-        device:emit_event(fanControls.fanMode({value = mode}))
+        device:emit_event(fanModeCap.fanMode({value = mode}))
     end
 end
 
@@ -288,7 +295,7 @@ local function set_indicator_light_handler(_, device, command)
     local indicator_light = command.args.indicatorLight
     local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
     if ok then
-        device:emit_event(fanControls.indicatorLight({value = indicator_light}))
+        device:emit_event(indicatorLightCap.indicatorLight({value = indicator_light}))
     end
 end
 
@@ -299,7 +306,7 @@ local function set_buzzer_handler(_, device, command)
     local buzzer = command.args.buzzer
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
     if ok then
-        device:emit_event(fanControls.buzzer({value = buzzer}))
+        device:emit_event(buzzerCap.buzzer({value = buzzer}))
     end
 end
 
@@ -310,7 +317,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(fanControls.childLock({value = child_lock}))
+        device:emit_event(childLockCap.childLock({value = child_lock}))
     end
 end
 
@@ -318,10 +325,11 @@ local function set_horizontal_angle_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local angle = math.floor(command.args.horizontalAngle)
-    local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
+    local angle = tonumber(command.args.horizontalAngle)
+    if not angle then return end
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, HORIZONTAL_ANGLE_PIID, angle)
     if ok then
-        device:emit_event(fanControls.horizontalAngle({value = angle}))
+        device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
 end
 
@@ -329,10 +337,11 @@ local function set_vertical_angle_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local angle = math.floor(command.args.verticalAngle)
-    local ok = pcall(miot.set, device, ip, token, 2, 8, angle)
+    local angle = tonumber(command.args.verticalAngle)
+    if not angle then return end
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, VERTICAL_ANGLE_PIID, angle)
     if ok then
-        device:emit_event(fanControls.verticalAngle({value = angle}))
+        device:emit_event(verticalAngleCap.verticalAngle({value = tostring(angle)}))
     end
 end
 
@@ -348,12 +357,12 @@ local function device_added(_, device)
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(fanControls.fanMode({value = "normal"}))
-    device:emit_event(fanControls.indicatorLight({value = "on"}))
-    device:emit_event(fanControls.buzzer({value = "off"}))
-    device:emit_event(fanControls.childLock({value = "off"}))
-    device:emit_event(fanControls.horizontalAngle({value = 30}))
-    device:emit_event(fanControls.verticalAngle({value = 35}))
+    device:emit_event(fanModeCap.fanMode({value = "normal"}))
+    device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
+    device:emit_event(buzzerCap.buzzer({value = "off"}))
+    device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
+    device:emit_event(verticalAngleCap.verticalAngle({value = "35"}))
 end
 
 local function device_init(_, device)
@@ -414,13 +423,23 @@ local driver = Driver("miot-dmaker-fan-p221", {
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
         },
-        [fanControls.ID] = {
-            [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler,
-            [fanControls.commands.setVerticalAngle.NAME] = set_vertical_angle_handler
+        [fanModeCap.ID] = {
+            [fanModeCap.commands.setFanMode.NAME] = set_fan_mode_handler
+        },
+        [indicatorLightCap.ID] = {
+            [indicatorLightCap.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [buzzerCap.ID] = {
+            [buzzerCap.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [childLockCap.ID] = {
+            [childLockCap.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [horizontalAngleCap.ID] = {
+            [horizontalAngleCap.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
+        },
+        [verticalAngleCap.ID] = {
+            [verticalAngleCap.commands.setVerticalAngle.NAME] = set_vertical_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

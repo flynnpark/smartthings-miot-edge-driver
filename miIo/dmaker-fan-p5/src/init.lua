@@ -5,7 +5,11 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miio = require "miio"
 
-local fanControls = capabilities["concertmirror08464.dmakerFanP5Controls"]
+local fanModeCap = capabilities["concertmirror08464.dmakerFanP5FanMode"]
+local indicatorLightCap = capabilities["concertmirror08464.dmakerFanP5IndicatorLight"]
+local buzzerCap = capabilities["concertmirror08464.dmakerFanP5Buzzer"]
+local childLockCap = capabilities["concertmirror08464.dmakerFanP5ChildLock"]
+local horizontalAngleCap = capabilities["concertmirror08464.dmakerFanP5HorizontalAngleV2"]
 
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
@@ -67,7 +71,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanControls.ID) then
+    if not device:supports_capability_by_id(horizontalAngleCap.ID, "main") then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -77,14 +81,14 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {property = "roll_angle", attr = fanControls.horizontalAngle}
+    {property = "roll_angle", attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_values(device, values)
     for _, property in ipairs(ANGLE_PROPERTIES) do
         local value = values[property.property]
         if type(value) == "number" then
-            device:emit_event(property.attr({value = math.floor(value)}))
+            device:emit_event(property.attr({value = tostring(math.floor(value))}))
         end
     end
 end
@@ -110,7 +114,7 @@ local function poll_device_status(device)
     end
 
     if values.mode == "normal" or values.mode == "nature" then
-        device:emit_event(fanControls.fanMode({value = values.mode}))
+        device:emit_event(fanModeCap.fanMode({value = values.mode}))
     end
 
     if type(values.speed) == "number" then
@@ -122,15 +126,15 @@ local function poll_device_status(device)
     end
 
     if values.light ~= nil then
-        emit_on_off(device, fanControls.indicatorLight, values.light)
+        emit_on_off(device, indicatorLightCap.indicatorLight, values.light)
     end
 
     if values.beep_sound ~= nil then
-        emit_on_off(device, fanControls.buzzer, values.beep_sound)
+        emit_on_off(device, buzzerCap.buzzer, values.beep_sound)
     end
 
     if values.child_lock ~= nil then
-        emit_on_off(device, fanControls.childLock, values.child_lock)
+        emit_on_off(device, childLockCap.childLock, values.child_lock)
     end
 end
 
@@ -197,7 +201,7 @@ local function set_fan_mode_handler(_, device, command)
     if not mode then return end
 
     if miio.set_prop(device, ip, token, "s_mode", {mode}) then
-        device:emit_event(fanControls.fanMode({value = mode}))
+        device:emit_event(fanModeCap.fanMode({value = mode}))
     end
 end
 
@@ -207,7 +211,7 @@ local function set_indicator_light_handler(_, device, command)
 
     local indicator_light = command.args.indicatorLight
     if miio.set_prop(device, ip, token, "s_light", {indicator_light == "on"}) then
-        device:emit_event(fanControls.indicatorLight({value = indicator_light}))
+        device:emit_event(indicatorLightCap.indicatorLight({value = indicator_light}))
     end
 end
 
@@ -217,7 +221,7 @@ local function set_buzzer_handler(_, device, command)
 
     local buzzer = command.args.buzzer
     if miio.set_prop(device, ip, token, "s_sound", {buzzer == "on"}) then
-        device:emit_event(fanControls.buzzer({value = buzzer}))
+        device:emit_event(buzzerCap.buzzer({value = buzzer}))
     end
 end
 
@@ -227,7 +231,7 @@ local function set_child_lock_handler(_, device, command)
 
     local child_lock = command.args.childLock
     if miio.set_prop(device, ip, token, "s_lock", {child_lock == "on"}) then
-        device:emit_event(fanControls.childLock({value = child_lock}))
+        device:emit_event(childLockCap.childLock({value = child_lock}))
     end
 end
 
@@ -235,9 +239,10 @@ local function set_horizontal_angle_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local angle = math.floor(command.args.horizontalAngle)
+    local angle = tonumber(command.args.horizontalAngle)
+    if not angle then return end
     if miio.set_prop(device, ip, token, "s_angle", {angle}) then
-        device:emit_event(fanControls.horizontalAngle({value = angle}))
+        device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
 end
 
@@ -251,11 +256,11 @@ local function device_added(_, device)
     device:emit_event(fanSpeedPercent.percent({value = 0, unit = "%"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
-    device:emit_event(fanControls.fanMode({value = "normal"}))
-    device:emit_event(fanControls.indicatorLight({value = "on"}))
-    device:emit_event(fanControls.buzzer({value = "off"}))
-    device:emit_event(fanControls.childLock({value = "off"}))
-    device:emit_event(fanControls.horizontalAngle({value = 30}))
+    device:emit_event(fanModeCap.fanMode({value = "normal"}))
+    device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
+    device:emit_event(buzzerCap.buzzer({value = "off"}))
+    device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)
@@ -316,12 +321,20 @@ local driver = Driver("miio-dmaker-fan-p5", {
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
         },
-        [fanControls.ID] = {
-            [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [fanControls.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
+        [fanModeCap.ID] = {
+            [fanModeCap.commands.setFanMode.NAME] = set_fan_mode_handler
+        },
+        [indicatorLightCap.ID] = {
+            [indicatorLightCap.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [buzzerCap.ID] = {
+            [buzzerCap.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [childLockCap.ID] = {
+            [childLockCap.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [horizontalAngleCap.ID] = {
+            [horizontalAngleCap.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

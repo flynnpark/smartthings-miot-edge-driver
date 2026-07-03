@@ -303,7 +303,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 7, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, HORIZONTAL_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
@@ -315,7 +315,7 @@ local function set_vertical_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.verticalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 9, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, VERTICAL_ANGLE_PIID, angle)
     if ok then
         device:emit_event(verticalAngleCap.verticalAngle({value = tostring(angle)}))
     end

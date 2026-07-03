@@ -15,11 +15,11 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p45`.
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.dmakerFanP45Controls`
-  - `fanMode`: `normal` / `nature` / `sleep`
-  - `indicatorLight`: display/indicator light, `off` / `on`
-  - `buzzer`: buzzer, `off` / `on`
-  - `childLock`: child lock, `off` / `on`
+- `concertmirror08464.dmakerFanP45FanMode`
+- `concertmirror08464.dmakerFanP45IndicatorLight`
+- `concertmirror08464.dmakerFanP45Buzzer`
+- `concertmirror08464.dmakerFanP45ChildLock`
+- `concertmirror08464.dmakerFanP45HorizontalAngleV2`
 - `refresh`
 
 ## MIoT mapping
@@ -58,4 +58,4 @@ Dmaker service `siid=8`:
 - `piid=4` start right, write only
 - `piid=5..9` natural wind customization strings, read/write
 
-Angle control: `dmakerFanP45Controls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/150`.
+Angle control: `dmakerFanP45HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/150`.

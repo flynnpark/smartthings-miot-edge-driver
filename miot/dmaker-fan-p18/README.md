@@ -15,11 +15,11 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p18`.
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.dmakerFanP18Controls`
-  - `fanMode`: `normal` / `nature`
-  - `indicatorLight`: 표시등, `off` / `on`
-  - `buzzer`: 부저음, `off` / `on`
-  - `childLock`: 차일드락, `off` / `on`
+- `concertmirror08464.dmakerFanP18FanMode`
+- `concertmirror08464.dmakerFanP18IndicatorLight`
+- `concertmirror08464.dmakerFanP18Buzzer`
+- `concertmirror08464.dmakerFanP18ChildLock`
+- `concertmirror08464.dmakerFanP18HorizontalAngleV2`
 - `refresh`
 
 ## MIoT mapping
@@ -41,6 +41,6 @@ Physical controls locked service `siid=3`:
 
 - `piid=1` child lock, read/write
 
-Angle control: `dmakerFanP18Controls.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/140`.
+Angle control: `dmakerFanP18HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/140`.
 
 Not exposed: fan level bucket, power-off countdown, and set-move action because they are duplicated, auxiliary, or action-only values.

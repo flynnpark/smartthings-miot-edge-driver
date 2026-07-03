@@ -12,7 +12,17 @@ components:
     version: 1
   - id: relativeHumidityMeasurement
     version: 1
-  - id: concertmirror08464.zhimiFanZa5AngleControls
+  - id: concertmirror08464.zhimiFanZa5FanMode
+    version: 1
+  - id: concertmirror08464.zhimiFanZa5DisplayBrightness
+    version: 1
+  - id: concertmirror08464.zhimiFanZa5Anion
+    version: 1
+  - id: concertmirror08464.zhimiFanZa5Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiFanZa5ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiFanZa5HorizontalAngleV2
     version: 1
   - id: refresh
     version: 1
@@ -57,7 +67,22 @@ deviceConfig:
       capability: relativeHumidityMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiFanZa5AngleControls
+      capability: concertmirror08464.zhimiFanZa5FanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanZa5DisplayBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanZa5Anion
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanZa5Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanZa5ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiFanZa5HorizontalAngleV2
       version: 1
     - component: main
       capability: refresh
@@ -80,7 +105,22 @@ deviceConfig:
         capability: relativeHumidityMeasurement
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiFanZa5AngleControls
+        capability: concertmirror08464.zhimiFanZa5FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5DisplayBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5Anion
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5HorizontalAngleV2
         version: 1
     actions:
       - component: main
@@ -99,7 +139,22 @@ deviceConfig:
         capability: relativeHumidityMeasurement
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiFanZa5AngleControls
+        capability: concertmirror08464.zhimiFanZa5FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5DisplayBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5Anion
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiFanZa5HorizontalAngleV2
         version: 1
 preferences:
 - name: ipAddress

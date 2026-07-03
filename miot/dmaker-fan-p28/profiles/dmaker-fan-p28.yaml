@@ -12,7 +12,17 @@ components:
     version: 1
   - id: relativeHumidityMeasurement
     version: 1
-  - id: concertmirror08464.dmakerFanP28Controls
+  - id: concertmirror08464.dmakerFanP28FanMode
+    version: 1
+  - id: concertmirror08464.dmakerFanP28IndicatorLight
+    version: 1
+  - id: concertmirror08464.dmakerFanP28Buzzer
+    version: 1
+  - id: concertmirror08464.dmakerFanP28ChildLock
+    version: 1
+  - id: concertmirror08464.dmakerFanP28HorizontalAngleV2
+    version: 1
+  - id: concertmirror08464.dmakerFanP28VerticalAngleV2
     version: 1
   - id: refresh
     version: 1
@@ -57,7 +67,22 @@ deviceConfig:
       capability: relativeHumidityMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.dmakerFanP28Controls
+      capability: concertmirror08464.dmakerFanP28FanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP28IndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP28Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP28ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP28HorizontalAngleV2
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFanP28VerticalAngleV2
       version: 1
     - component: main
       capability: refresh
@@ -80,7 +105,22 @@ deviceConfig:
         capability: relativeHumidityMeasurement
         version: 1
       - component: main
-        capability: concertmirror08464.dmakerFanP28Controls
+        capability: concertmirror08464.dmakerFanP28FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28HorizontalAngleV2
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28VerticalAngleV2
         version: 1
     actions:
       - component: main
@@ -99,7 +139,22 @@ deviceConfig:
         capability: relativeHumidityMeasurement
         version: 1
       - component: main
-        capability: concertmirror08464.dmakerFanP28Controls
+        capability: concertmirror08464.dmakerFanP28FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28HorizontalAngleV2
+        version: 1
+      - component: main
+        capability: concertmirror08464.dmakerFanP28VerticalAngleV2
         version: 1
 preferences:
 - name: ipAddress

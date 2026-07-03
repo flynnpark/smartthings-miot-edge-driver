@@ -15,11 +15,11 @@ SmartThings Edge LAN driver for one MIoT model: `xiaomi.fan.p45`.
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.xiaomiFanP45Controls`
-  - `fanMode`: `normal` / `nature` / `sleep`
-  - `indicatorLight`: 표시등, `off` / `on`
-  - `buzzer`: 부저음, `off` / `on`
-  - `childLock`: 차일드락, `off` / `on`
+- `concertmirror08464.xiaomiFanP45FanMode`
+- `concertmirror08464.xiaomiFanP45IndicatorLight`
+- `concertmirror08464.xiaomiFanP45Buzzer`
+- `concertmirror08464.xiaomiFanP45ChildLock`
+- `concertmirror08464.xiaomiFanP45HorizontalAngleV2`
 - `refresh`
 
 ## MIoT mapping
@@ -61,4 +61,4 @@ Xiaomi dm-service `siid=13`:
 - `piid=2` start right, write only
 - `piid=3..7` natural wind customization strings, read/write
 
-Angle control: `xiaomiFanP45Controls.horizontalAngle` maps MIoT `siid=2`, `piid=7`, `30/60/90/120/150`.
+Angle control: `xiaomiFanP45HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=7`, `30/60/90/120/150`.

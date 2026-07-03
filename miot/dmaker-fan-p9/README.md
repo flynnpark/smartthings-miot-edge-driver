@@ -15,11 +15,11 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p9`.
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.dmakerFanP9Controls`
-  - `fanMode`: `normal` / `nature` / `sleep`
-  - `indicatorLight`: 표시등, `off` / `on`
-  - `buzzer`: 부저음, `off` / `on`
-  - `childLock`: 차일드락, `off` / `on`
+- `concertmirror08464.dmakerFanP9FanMode`
+- `concertmirror08464.dmakerFanP9IndicatorLight`
+- `concertmirror08464.dmakerFanP9Buzzer`
+- `concertmirror08464.dmakerFanP9ChildLock`
+- `concertmirror08464.dmakerFanP9HorizontalAngleV2`
 - `refresh`
 
 ## MIoT mapping
@@ -50,4 +50,4 @@ Indicator light service `siid=5`:
 
 - `piid=1` indicator light, read/write, not used because python-miio maps light to fan service `siid=2/piid=9`
 
-Angle control: `dmakerFanP9Controls.horizontalAngle` maps MIoT `siid=2`, `piid=6`, `30/60/90/120/150`.
+Angle control: `dmakerFanP9HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=6`, `30/60/90/120/150`.
