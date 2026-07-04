@@ -1,0 +1,5 @@
+name: 'Zhimi Fan ZA3'
+packageKey: 'Zhimi Fan ZA3 Driver'
+permissions:
+  lan: {}
+  discovery: {}

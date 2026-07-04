@@ -100,6 +100,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-fan-p221` | `dmaker.fan.p221` | Mijia Smart DC Inverter Circulating Standing Fan Battery Edition | `Mijia Fan P221` |
 | `miot/dmaker-fan-p28` | `dmaker.fan.p28` | Mijia Smart DC Inverter Circulating Fan Floor Type | `Mijia Fan P28` |
 | `miot/dmaker-fan-p30` | `dmaker.fan.p30` | Xiaomi Smart Standing Fan 2 P30 | `Xiaomi Fan P30` |
+| `miot/dmaker-fan-p5c` | `dmaker.fan.p5c` | Mijia Smart DC Standing Fan 1X | `Mijia Fan P5C` |
 | `miot/xiaomi-fan-2lite` | `xiaomi.fan.2lite` | Mi Smart Standing Fan 2 Lite | `Xiaomi Fan 2 Lite` |
 | `miot/xiaomi-fan-p45` | `xiaomi.fan.p45` | Xiaomi Smart Tower Fan 2 | `Xiaomi Smart Tower Fan 2` |
 | `miot/xiaomi-fan-p69` | `xiaomi.fan.p69` | Mijia Smart Desktop Air Circulation Fan | `Mijia Desktop Circulation Fan` |
@@ -155,6 +156,7 @@ Supported drivers are grouped by protocol and device type.
 |---------------|--------------|--------------|-------------------------|
 | `miIo/zhimi-fan-sa1` | `zhimi.fan.sa1` | Zhimi Fan SA1 | `Zhimi Fan SA1` |
 | `miIo/zhimi-fan-za1` | `zhimi.fan.za1` | Smartmi Inverter Pedestal Fan | `Zhimi Fan ZA1` |
+| `miIo/zhimi-fan-za3` | `zhimi.fan.za3` | Smartmi Pedestal Fan ZA3 | `Zhimi Fan ZA3` |
 | `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi Smart Wireless Fan 1st Gen (ZLBPLDS01ZM) | `Zhimi Fan V3` |
 | `miIo/dmaker-fan-p5` | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
 

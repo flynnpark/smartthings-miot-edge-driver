@@ -1,0 +1,5 @@
+name: 'Mijia Fan P5C'
+packageKey: 'Mijia Fan P5C Driver'
+permissions:
+  lan: {}
+  discovery: {}
