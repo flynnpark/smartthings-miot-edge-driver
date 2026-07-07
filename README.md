@@ -102,6 +102,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-fan-p30` | `dmaker.fan.p30` | Xiaomi Smart Standing Fan 2 P30 | `Xiaomi Fan P30` |
 | `miot/dmaker-fan-p5c` | `dmaker.fan.p5c` | Mijia Smart DC Standing Fan 1X | `Mijia Fan P5C` |
 | `miot/xiaomi-fan-2lite` | `xiaomi.fan.2lite` | Mi Smart Standing Fan 2 Lite | `Xiaomi Fan 2 Lite` |
+| `miot/xiaomi-fan-p30` | `xiaomi.fan.p30` | Mi Smart Standing Fan 2 | `Xiaomi Fan P30` |
 | `miot/xiaomi-fan-p45` | `xiaomi.fan.p45` | Xiaomi Smart Tower Fan 2 | `Xiaomi Smart Tower Fan 2` |
 | `miot/xiaomi-fan-p69` | `xiaomi.fan.p69` | Mijia Smart Desktop Air Circulation Fan | `Mijia Desktop Circulation Fan` |
 | `miot/xiaomi-fan-p70` | `xiaomi.fan.p70` | Xiaomi BPLDS10DM Smart Desktop Air Circulation Fan | `Xiaomi Fan P70` |
