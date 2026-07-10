@@ -89,6 +89,7 @@ Supported drivers are grouped by protocol and device type.
 | Driver folder | Device model | Product name | SmartThings driver name |
 |---------------|--------------|--------------|-------------------------|
 | `miot/dmaker-fan-1c` | `dmaker.fan.1c` | Mi Smart Standing Fan 1C | `Xiaomi Fan 1C` |
+| `miot/dmaker-fan-1e` | `dmaker.fan.1e` | Mijia DC Inverter Standing Fan E | `Mijia Fan 1E` |
 | `miot/dmaker-fan-p10` | `dmaker.fan.p10` | Mi Smart Standing Fan 2 | `Xiaomi Fan P10` |
 | `miot/dmaker-fan-p11` | `dmaker.fan.p11` | Xiaomi Smart Fan V2 | `Xiaomi Smart Fan V2` |
 | `miot/dmaker-fan-p15` | `dmaker.fan.p15` | Xiaomi Mi Smart Standing Fan Pro 4th Gen (ZLBPSP01XY) | `Mi Smart Standing Fan Pro` |

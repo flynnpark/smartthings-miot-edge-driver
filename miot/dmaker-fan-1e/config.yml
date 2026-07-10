@@ -1,0 +1,5 @@
+name: 'Mijia Fan 1E'
+packageKey: 'Mijia Fan 1E Driver'
+permissions:
+  lan: {}
+  discovery: {}
