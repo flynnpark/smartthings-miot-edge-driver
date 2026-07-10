@@ -1,0 +1,5 @@
+name: 'Xiaomi Fan P42'
+packageKey: 'Xiaomi Fan P42 Driver'
+permissions:
+  lan: {}
+  discovery: {}
