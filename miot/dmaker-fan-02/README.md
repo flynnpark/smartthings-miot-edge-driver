@@ -13,11 +13,11 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.02`.
 ## Exposed Capabilities
 
 - `switch`
-- `fanSpeedPercent`
 - `fanOscillationMode`
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `concertmirror08464.dmakerFan02FanMode`
+- `concertmirror08464.dmakerFan02FanLevel`
 - `concertmirror08464.dmakerFan02IndicatorLight`
 - `concertmirror08464.dmakerFan02Buzzer`
 - `concertmirror08464.dmakerFan02ChildLock`
@@ -29,8 +29,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.02`.
 | Feature | Access | MIoT Key | SmartThings |
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `switch` |
-| Fan level | RW | `siid=2`, `piid=2`, `1..4` | `fanSpeedPercent.setPercent` mapped to 25/50/75/100 |
-| Speed status | R | `siid=2`, `piid=6`, `1..100` | `fanSpeedPercent.percent` |
+| Fan level | RW | `siid=2`, `piid=2`, `1..4` | `dmakerFan02FanLevel.fanLevel` |
 | Horizontal swing | RW | `siid=2`, `piid=4` | `fanOscillationMode` |
 | Horizontal angle | RW | `siid=2`, `piid=5`, `30/60/90/120/140` | `dmakerFan02HorizontalAngleV2.horizontalAngle` |
 | Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature`, `2=ai` | `dmakerFan02FanMode.fanMode` |
@@ -40,4 +39,4 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.02`.
 | Temperature | R | `siid=8`, `piid=1` | `temperatureMeasurement` |
 | Relative humidity | R | `siid=8`, `piid=2` | `relativeHumidityMeasurement` |
 
-Not exposed: motor-control action, motor fault, toggle action, and off-delay because they are auxiliary or not core SmartThings fan controls.
+Not exposed: read-only 1..100 speed status, motor-control action, motor fault, toggle action, and off-delay because they are auxiliary or not writable core SmartThings fan controls.

@@ -6,12 +6,11 @@ local discovery = require "discovery"
 local miot = require "miot"
 
 local fanModeCap = capabilities["concertmirror08464.dmakerFan02FanMode"]
+local fanLevelCap = capabilities["concertmirror08464.dmakerFan02FanLevel"]
 local indicatorLightCap = capabilities["concertmirror08464.dmakerFan02IndicatorLight"]
 local buzzerCap = capabilities["concertmirror08464.dmakerFan02Buzzer"]
 local childLockCap = capabilities["concertmirror08464.dmakerFan02ChildLock"]
 local horizontalAngleCap = capabilities["concertmirror08464.dmakerFan02HorizontalAngleV2"]
-
-local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -26,7 +25,6 @@ local GEAR_FAN_LEVEL_PIID = 2     -- RW level bucket 1..4
 local MODE_PIID = 3               -- 0=Straight Wind, 1=Natural Wind, 2=AI Wind
 local SWING_MODE_PIID = 4         -- horizontal oscillation on/off
 local SWING_ANGLE_PIID = 5        -- 30, 60, 90, 120, 140
-local FAN_SPEED_STATUS_PIID = 6   -- read-only 1..100
 
 -- Auxiliary services
 local INDICATOR_LIGHT_SIID = 4
@@ -53,17 +51,6 @@ local ST_TO_MODE = {
 
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
 
-local function percent_to_level(percent)
-    if percent <= 25 then return 1 end
-    if percent <= 50 then return 2 end
-    if percent <= 75 then return 3 end
-    return 4
-end
-
-local function level_to_percent(level)
-    return math.max(1, math.min(4, level)) * 25
-end
-
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
     local token = device.preferences.token
@@ -75,7 +62,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(horizontalAngleCap.ID, "main") then
+    if not device:supports_capability_by_id(fanLevelCap.ID, "main") then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -96,7 +83,6 @@ local function poll_device_status(device)
         {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = SWING_MODE_PIID},
         {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
-        {siid = FAN_SIID, piid = FAN_SPEED_STATUS_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
@@ -119,7 +105,7 @@ local function poll_device_status(device)
                 if piid == POWER_PIID then
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
                 elseif piid == GEAR_FAN_LEVEL_PIID then
-                    device:emit_event(fanSpeedPercent.percent({value = level_to_percent(value), unit = "%"}))
+                    device:emit_event(fanLevelCap.fanLevel({value = tostring(value)}))
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
@@ -129,8 +115,6 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
                 elseif piid == SWING_ANGLE_PIID and type(value) == "number" then
                     device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(math.floor(value))}))
-                elseif piid == FAN_SPEED_STATUS_PIID then
-                    device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
                 emit_on_off(device, indicatorLightCap.indicatorLight, value)
@@ -186,15 +170,15 @@ local function switch_off_handler(_, device, _)
     end
 end
 
-local function set_fan_speed_handler(_, device, command)
+local function set_fan_level_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local speed = math.max(1, math.min(100, command.args.percent))
-    local level = percent_to_level(speed)
+    local level = tonumber(command.args.fanLevel)
+    if not level then return end
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, GEAR_FAN_LEVEL_PIID, level)
     if ok then
-        device:emit_event(fanSpeedPercent.percent({value = level_to_percent(level), unit = "%"}))
+        device:emit_event(fanLevelCap.fanLevel({value = tostring(level)}))
     end
 end
 
@@ -277,7 +261,7 @@ end
 local function device_added(_, device)
     ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(fanSpeedPercent.percent({value = 1, unit = "%"}))
+    device:emit_event(fanLevelCap.fanLevel({value = "1"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
     device:emit_event(fanModeCap.fanMode({value = "normal"}))
@@ -339,8 +323,8 @@ local driver = Driver("miot-dmaker-fan-02", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [fanSpeedPercent.ID] = {
-            [fanSpeedPercent.commands.setPercent.NAME] = set_fan_speed_handler
+        [fanLevelCap.ID] = {
+            [fanLevelCap.commands.setFanLevel.NAME] = set_fan_level_handler
         },
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
