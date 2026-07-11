@@ -97,6 +97,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-fan-p9` | `dmaker.fan.p9` | Mi Smart Tower Fan | `Mi Smart Tower Fan` |
 | `miot/dmaker-fan-p39` | `dmaker.fan.p39` | Xiaomi Smart Tower Fan | `Xiaomi Smart Tower Fan` |
 | `miot/dmaker-fan-p42` | `dmaker.fan.p42` | Xiaomi Smart Standing Fan 2 | `Xiaomi Fan P42` |
+| `miot/dmaker-fan-p44` | `dmaker.fan.p44` | Mijia Smart Evaporative Cooling Fan | `Mijia Fan P44` |
 | `miot/dmaker-fan-p33` | `dmaker.fan.p33` | Xiaomi Smart Standing Fan 2 Pro | `Xiaomi Smart Standing Fan 2 Pro` |
 | `miot/dmaker-fan-p18` | `dmaker.fan.p18` | Mi Smart Fan 2 | `Xiaomi Smart Standing Fan 2` |
 | `miot/dmaker-fan-p220` | `dmaker.fan.p220` | Mijia Smart DC Inverter Circulating Standing Fan | `Mijia Fan P220` |
