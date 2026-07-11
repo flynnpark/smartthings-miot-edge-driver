@@ -90,7 +90,6 @@ Supported drivers are grouped by protocol and device type.
 |---------------|--------------|--------------|-------------------------|
 | `miot/dmaker-fan-1c` | `dmaker.fan.1c` | Mi Smart Standing Fan 1C | `Xiaomi Fan 1C` |
 | `miot/dmaker-fan-1e` | `dmaker.fan.1e` | Mijia DC Inverter Standing Fan E | `Mijia Fan 1E` |
-| `miot/dmaker-fan-02` | `dmaker.fan.02` | Dream Maker Feel Fan Plus | `Dream Maker Feel Fan Plus` |
 | `miot/dmaker-fan-p10` | `dmaker.fan.p10` | Mi Smart Standing Fan 2 | `Xiaomi Fan P10` |
 | `miot/dmaker-fan-p11` | `dmaker.fan.p11` | Xiaomi Smart Fan V2 | `Xiaomi Smart Fan V2` |
 | `miot/dmaker-fan-p15` | `dmaker.fan.p15` | Xiaomi Mi Smart Standing Fan Pro 4th Gen (ZLBPSP01XY) | `Mi Smart Standing Fan Pro` |
@@ -98,6 +97,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-fan-p39` | `dmaker.fan.p39` | Xiaomi Smart Tower Fan | `Xiaomi Smart Tower Fan` |
 | `miot/dmaker-fan-p42` | `dmaker.fan.p42` | Xiaomi Smart Standing Fan 2 | `Xiaomi Fan P42` |
 | `miot/dmaker-fan-p44` | `dmaker.fan.p44` | Mijia Smart Evaporative Cooling Fan | `Mijia Fan P44` |
+| `miot/dmaker-fan-p8` | `dmaker.fan.p8` | Mijia Standing Fan P8 | `Mijia Fan P8` |
 | `miot/dmaker-fan-p33` | `dmaker.fan.p33` | Xiaomi Smart Standing Fan 2 Pro | `Xiaomi Smart Standing Fan 2 Pro` |
 | `miot/dmaker-fan-p18` | `dmaker.fan.p18` | Mi Smart Fan 2 | `Xiaomi Smart Standing Fan 2` |
 | `miot/dmaker-fan-p220` | `dmaker.fan.p220` | Mijia Smart DC Inverter Circulating Standing Fan | `Mijia Fan P220` |

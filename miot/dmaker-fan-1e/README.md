@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.1e`.
 - Model: `dmaker.fan.1e`
 - specModel: `dmaker-1e`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-1e:1`
-- Basis: Exact MIoT spec defines fan read/write properties for power, mode, swing, angle, indicator light, buzzer, child lock, and 1..100 stepless speed for `dmaker.fan.1e`; product metadata identifies it as a 2.4G Wi-Fi Xiaomi Home fan.
+- Basis: `hass-xiaomi-miot` commit `0e8644f` lists exact model `dmaker.fan.1e` in `MIOT_LOCAL_MODELS`, disables cloud in auto mode, and uses local `get_properties` / `set_properties`; the exact MIoT spec supplies the `siid` / `piid` mapping.
 
 ## Exposed Capabilities
 

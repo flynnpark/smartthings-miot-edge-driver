@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.p44`.
 - Model: `dmaker.fan.p44`
 - specModel: `dmaker-p44`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p44:1`
-- Basis: Exact MIoT spec defines local read/write fan, cooling, indicator, alarm, child-lock, and water/fault properties for `dmaker.fan.p44`.
+- Basis: `hass-xiaomi-miot` commit `0e8644f` lists exact model `dmaker.fan.p44` in `MIOT_LOCAL_MODELS`, disables cloud in auto mode, and uses local `get_properties` / `set_properties`; the exact MIoT spec supplies the `siid` / `piid` mapping.
 
 ## Exposed Capabilities
 

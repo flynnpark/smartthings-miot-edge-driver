@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.p42`.
 - Model: `dmaker.fan.p42`
 - specModel: `dmaker-p42`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p42:1`
-- Basis: Exact MIoT spec defines fan `siid=2` read/write properties for power, mode, swing, angle, 1..100 speed level, brightness, alarm, and child lock for `dmaker.fan.p42`; hass-xiaomi-miot issue #1368 confirms the exact model uses MIoT type `dmaker-p42`.
+- Basis: `hass-xiaomi-miot` commit `0e8644f` lists exact model `dmaker.fan.p42` in `MIOT_LOCAL_MODELS`, disables cloud in auto mode, and uses local `get_properties` / `set_properties`; the exact MIoT spec supplies the `siid` / `piid` mapping.
 
 ## Exposed Capabilities
 

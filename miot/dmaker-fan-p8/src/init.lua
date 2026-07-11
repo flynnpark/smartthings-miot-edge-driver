@@ -1,52 +1,43 @@
--- Dream Maker Feel Fan Plus Driver
+-- Mijia Fan P8 Driver
 
 local capabilities = require "st.capabilities"
 local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanModeCap = capabilities["concertmirror08464.dmakerFan02FanMode"]
-local fanLevelCap = capabilities["concertmirror08464.dmakerFan02FanLevel"]
-local indicatorLightCap = capabilities["concertmirror08464.dmakerFan02IndicatorLight"]
-local buzzerCap = capabilities["concertmirror08464.dmakerFan02Buzzer"]
-local childLockCap = capabilities["concertmirror08464.dmakerFan02ChildLock"]
-local horizontalAngleCap = capabilities["concertmirror08464.dmakerFan02HorizontalAngleV2"]
+local fanLevelCap = capabilities["concertmirror08464.dmakerFanP8FanLevel"]
+local fanModeCap = capabilities["concertmirror08464.dmakerFanP8FanMode"]
+local indicatorLightCap = capabilities["concertmirror08464.dmakerFanP8IndicatorLight"]
+local buzzerCap = capabilities["concertmirror08464.dmakerFanP8Buzzer"]
+local childLockCap = capabilities["concertmirror08464.dmakerFanP8ChildLock"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
-local PROFILE_NAME = "dmaker-fan-02"
+local PROFILE_NAME = "dmaker-fan-p8"
 
--- MIoT model: dmaker.fan.02
--- Source: exact MIoT spec urn:miot-spec-v2:device:fan:0000A005:dmaker-02:1.
+-- MIoT model: dmaker.fan.p8
+-- Protocol proof: hass-xiaomi-miot MIOT_LOCAL_MODELS and homebridge-xiaomi-fan MiotDmakerAcFan.
 -- Fan service (siid=2)
 local FAN_SIID = 2
-local POWER_PIID = 1
-local GEAR_FAN_LEVEL_PIID = 2     -- RW level bucket 1..4
-local MODE_PIID = 3               -- 0=Straight Wind, 1=Natural Wind, 2=AI Wind
-local SWING_MODE_PIID = 4         -- horizontal oscillation on/off
-local SWING_ANGLE_PIID = 5        -- 30, 60, 90, 120, 140
+local POWER_PIID = 1                 -- RW bool
+local FAN_LEVEL_PIID = 2             -- RW 1..3
+local SWING_MODE_PIID = 3            -- RW bool
+local MODE_PIID = 7                  -- RW 0=normal, 1=sleep
+local BUZZER_PIID = 11               -- RW bool
+local INDICATOR_LIGHT_PIID = 12      -- RW bool
 
--- Auxiliary services
-local INDICATOR_LIGHT_SIID = 4
-local INDICATOR_LIGHT_PIID = 1
-local BUZZER_SIID = 5
-local BUZZER_PIID = 1
-local CHILD_LOCK_SIID = 7
-local CHILD_LOCK_PIID = 1
-local ENVIRONMENT_SIID = 8
-local TEMPERATURE_PIID = 1
-local HUMIDITY_PIID = 2
+-- Physical controls locked service (siid=3)
+local CHILD_LOCK_SIID = 3
+local CHILD_LOCK_PIID = 1            -- RW bool
 
 local MODE_TO_ST = {
     [0] = "normal",
-    [1] = "nature",
-    [2] = "ai"
+    [1] = "sleep"
 }
 
 local ST_TO_MODE = {
     normal = 0,
-    nature = 1,
-    ai = 2
+    sleep = 1
 }
 
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal"}
@@ -73,27 +64,20 @@ end
 
 local function poll_device_status(device)
     local ip, token = get_device_config(device)
-    if not ip then
-        return
-    end
+    if not ip then return end
 
     local properties = {
         {siid = FAN_SIID, piid = POWER_PIID},
-        {siid = FAN_SIID, piid = GEAR_FAN_LEVEL_PIID},
-        {siid = FAN_SIID, piid = MODE_PIID},
+        {siid = FAN_SIID, piid = FAN_LEVEL_PIID},
         {siid = FAN_SIID, piid = SWING_MODE_PIID},
-        {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
-        {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
-        {siid = BUZZER_SIID, piid = BUZZER_PIID},
-        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
-        {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID},
-        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID}
+        {siid = FAN_SIID, piid = MODE_PIID},
+        {siid = FAN_SIID, piid = BUZZER_PIID},
+        {siid = FAN_SIID, piid = INDICATOR_LIGHT_PIID},
+        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
-    if not ok or not response or not response.result then
-        return
-    end
+    if not ok or not response or not response.result then return end
 
     for _, result in ipairs(response.result) do
         if result.code == 0 then
@@ -104,28 +88,20 @@ local function poll_device_status(device)
             if siid == FAN_SIID then
                 if piid == POWER_PIID then
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
-                elseif piid == GEAR_FAN_LEVEL_PIID then
+                elseif piid == FAN_LEVEL_PIID and type(value) == "number" then
                     device:emit_event(fanLevelCap.fanLevel({value = tostring(value)}))
-                elseif piid == MODE_PIID then
-                    local mode = MODE_TO_ST[value]
-                    if mode then
-                        device:emit_event(fanModeCap.fanMode({value = mode}))
-                    end
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
-                elseif piid == SWING_ANGLE_PIID and type(value) == "number" then
-                    device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(math.floor(value))}))
+                elseif piid == MODE_PIID then
+                    local mode = MODE_TO_ST[value]
+                    if mode then device:emit_event(fanModeCap.fanMode({value = mode})) end
+                elseif piid == BUZZER_PIID then
+                    emit_on_off(device, buzzerCap.buzzer, value)
+                elseif piid == INDICATOR_LIGHT_PIID then
+                    emit_on_off(device, indicatorLightCap.indicatorLight, value)
                 end
-            elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
-                emit_on_off(device, indicatorLightCap.indicatorLight, value)
-            elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, buzzerCap.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
                 emit_on_off(device, childLockCap.childLock, value)
-            elseif siid == ENVIRONMENT_SIID and piid == TEMPERATURE_PIID then
-                device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
-            elseif siid == ENVIRONMENT_SIID and piid == HUMIDITY_PIID then
-                device:emit_event(capabilities.relativeHumidityMeasurement.humidity({value = value, unit = "%"}))
             end
         end
     end
@@ -147,111 +123,63 @@ local function stop_polling_timer(device)
     end
 end
 
-local function switch_on_handler(_, device, _)
+local function set_property(device, siid, piid, value, event)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, true)
-    if ok then
-        device:emit_event(capabilities.switch.switch.on())
-        device.thread:call_with_delay(1, function()
-            pcall(poll_device_status, device)
-        end)
+    local ok = pcall(miot.set, device, ip, token, siid, piid, value)
+    if ok and event then device:emit_event(event) end
+    return ok
+end
+
+local function switch_on_handler(_, device, _)
+    if set_property(device, FAN_SIID, POWER_PIID, true, capabilities.switch.switch.on()) then
+        device.thread:call_with_delay(1, function() pcall(poll_device_status, device) end)
     end
 end
 
 local function switch_off_handler(_, device, _)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, false)
-    if ok then
-        device:emit_event(capabilities.switch.switch.off())
-    end
+    set_property(device, FAN_SIID, POWER_PIID, false, capabilities.switch.switch.off())
 end
 
 local function set_fan_level_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
     local level = tonumber(command.args.fanLevel)
-    if not level then return end
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, GEAR_FAN_LEVEL_PIID, level)
-    if ok then
-        device:emit_event(fanLevelCap.fanLevel({value = tostring(level)}))
-    end
+    if not level or level < 1 or level > 3 then return end
+    set_property(device, FAN_SIID, FAN_LEVEL_PIID, level, fanLevelCap.fanLevel({value = tostring(level)}))
 end
 
 local function set_fan_oscillation_mode_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
     local mode = command.args.fanOscillationMode
     if mode ~= "off" and mode ~= "horizontal" then return end
-
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_MODE_PIID, mode == "horizontal")
-    if ok then
-        device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(mode))
-    end
+    set_property(device, FAN_SIID, SWING_MODE_PIID, mode == "horizontal",
+        capabilities.fanOscillationMode.fanOscillationMode(mode))
 end
 
 local function set_fan_mode_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
     local mode = command.args.mode
     local value = ST_TO_MODE[mode]
     if value == nil then return end
-
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
-    if ok then
-        device:emit_event(fanModeCap.fanMode({value = mode}))
-    end
+    set_property(device, FAN_SIID, MODE_PIID, value, fanModeCap.fanMode({value = mode}))
 end
 
 local function set_indicator_light_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local indicator_light = command.args.indicatorLight
-    local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
-    if ok then
-        device:emit_event(indicatorLightCap.indicatorLight({value = indicator_light}))
-    end
+    local value = command.args.indicatorLight
+    if value ~= "off" and value ~= "on" then return end
+    set_property(device, FAN_SIID, INDICATOR_LIGHT_PIID, value == "on",
+        indicatorLightCap.indicatorLight({value = value}))
 end
 
 local function set_buzzer_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local buzzer = command.args.buzzer
-    local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
-    if ok then
-        device:emit_event(buzzerCap.buzzer({value = buzzer}))
-    end
+    local value = command.args.buzzer
+    if value ~= "off" and value ~= "on" then return end
+    set_property(device, FAN_SIID, BUZZER_PIID, value == "on", buzzerCap.buzzer({value = value}))
 end
 
 local function set_child_lock_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local child_lock = command.args.childLock
-    local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
-    if ok then
-        device:emit_event(childLockCap.childLock({value = child_lock}))
-    end
-end
-
-local function set_horizontal_angle_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local angle = tonumber(command.args.horizontalAngle)
-    if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_ANGLE_PIID, angle)
-    if ok then
-        device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
-    end
+    local value = command.args.childLock
+    if value ~= "off" and value ~= "on" then return end
+    set_property(device, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value == "on",
+        childLockCap.childLock({value = value}))
 end
 
 local function refresh_handler(_, device, _)
@@ -268,7 +196,6 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
-    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)
@@ -288,9 +215,7 @@ end
 
 local function device_info_changed(driver, device, _, args)
     ensure_profile(device)
-    if not args.old_st_store or not args.old_st_store.preferences then
-        return
-    end
+    if not args.old_st_store or not args.old_st_store.preferences then return end
 
     local old = args.old_st_store.preferences
     local new = device.preferences
@@ -301,7 +226,6 @@ local function device_info_changed(driver, device, _, args)
 
     if old.ipAddress ~= new.ipAddress or old.token ~= new.token or old.pollingInterval ~= new.pollingInterval then
         stop_polling_timer(device)
-
         local ip = get_device_config(device)
         if ip then
             start_polling_timer(device)
@@ -310,7 +234,7 @@ local function device_info_changed(driver, device, _, args)
     end
 end
 
-local driver = Driver("miot-dmaker-fan-02", {
+local driver = Driver("miot-dmaker-fan-p8", {
     discovery = discovery.handle_discovery,
     lifecycle_handlers = {
         added = device_added,
@@ -323,11 +247,11 @@ local driver = Driver("miot-dmaker-fan-02", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [fanLevelCap.ID] = {
-            [fanLevelCap.commands.setFanLevel.NAME] = set_fan_level_handler
-        },
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
+        },
+        [fanLevelCap.ID] = {
+            [fanLevelCap.commands.setFanLevel.NAME] = set_fan_level_handler
         },
         [fanModeCap.ID] = {
             [fanModeCap.commands.setFanMode.NAME] = set_fan_mode_handler
@@ -340,9 +264,6 @@ local driver = Driver("miot-dmaker-fan-02", {
         },
         [childLockCap.ID] = {
             [childLockCap.commands.setChildLock.NAME] = set_child_lock_handler
-        },
-        [horizontalAngleCap.ID] = {
-            [horizontalAngleCap.commands.setHorizontalAngle.NAME] = set_horizontal_angle_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler
