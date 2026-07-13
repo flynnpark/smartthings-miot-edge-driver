@@ -19,7 +19,7 @@ SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.mb5`.
 - `temperatureMeasurement`: temperature
 - `relativeHumidityMeasurement`: humidity
 - `filterState`: filter life remaining
-- `concertmirror08464.zhimiAirAirpMb5Buzzer`, `concertmirror08464.zhimiAirAirpMb5ChildLock`, `concertmirror08464.zhimiAirAirpMb5LedBrightness`
+- `concertmirror08464.zhimiAirAirpMb5Buzzer`, `concertmirror08464.zhimiAirAirpMb5ChildLock`, `concertmirror08464.zhimiAirMb5LedLevel`
   - `ledBrightness`: display brightness, `off` / `dim` / `bright`
   - `buzzer`: 부저음, `off` / `on`
   - `childLock`: 차일드락, `off` / `on`

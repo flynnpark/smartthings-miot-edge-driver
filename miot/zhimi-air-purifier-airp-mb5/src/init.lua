@@ -11,7 +11,7 @@ local fanModeFanMode = capabilities["concertmirror08464.zhimiAirAirpMb5FanMode"]
 local fanSpeedFanSpeed = capabilities["concertmirror08464.zhimiAirAirpMb5FanSpeed"]
 local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiAirAirpMb5Buzzer"]
 local deviceControlsChildLock = capabilities["concertmirror08464.zhimiAirAirpMb5ChildLock"]
-local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirAirpMb5LedBrightness"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirMb5LedLevel"]
 
 -- 상수 정의
 
