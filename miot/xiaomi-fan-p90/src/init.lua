@@ -46,8 +46,13 @@ local DELAY_ENABLED_PIID = 1      -- RW delay on/off, not exposed
 local DELAY_TIME_PIID = 2         -- RW countdown minutes, not exposed
 local DELAY_REMAIN_TIME_PIID = 3  -- RW countdown minutes, not exposed
 
--- Xiaomi dm-service (siid=11), shortcut actions are not exposed.
+-- Xiaomi dm-service (siid=11)
 local DM_SERVICE_SIID = 11
+local LEFT_ANGLE_PIID = 2         -- RW 10..120, step 10
+local RIGHT_ANGLE_PIID = 3        -- RW 0..110, step 10
+local UP_ANGLE_PIID = 5           -- RW 10..100, step 10
+local DOWN_ANGLE_PIID = 6         -- RW 0..90, step 10
+-- Shortcut actions are not exposed.
 local TOGGLE_MODE_ACTION_IID = 1
 local LOOP_GEAR_ACTION_IID = 2
 
@@ -84,10 +89,10 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 11, piid = 2, attr = fanControls.leftAngle},
-    {siid = 11, piid = 3, attr = fanControls.rightAngle},
-    {siid = 11, piid = 5, attr = fanControls.upAngle},
-    {siid = 11, piid = 6, attr = fanControls.downAngle}
+    {siid = DM_SERVICE_SIID, piid = LEFT_ANGLE_PIID, attr = fanControls.leftAngle},
+    {siid = DM_SERVICE_SIID, piid = RIGHT_ANGLE_PIID, attr = fanControls.rightAngle},
+    {siid = DM_SERVICE_SIID, piid = UP_ANGLE_PIID, attr = fanControls.upAngle},
+    {siid = DM_SERVICE_SIID, piid = DOWN_ANGLE_PIID, attr = fanControls.downAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -114,7 +119,11 @@ local function poll_device_status(device)
         {siid = FAN_SIID, piid = VERTICAL_SWING_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
-        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
+        {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
+        {siid = DM_SERVICE_SIID, piid = LEFT_ANGLE_PIID},
+        {siid = DM_SERVICE_SIID, piid = RIGHT_ANGLE_PIID},
+        {siid = DM_SERVICE_SIID, piid = UP_ANGLE_PIID},
+        {siid = DM_SERVICE_SIID, piid = DOWN_ANGLE_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -152,6 +161,8 @@ local function poll_device_status(device)
                 emit_on_off(device, fanControls.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
                 emit_on_off(device, fanControls.childLock, value)
+            elseif siid == DM_SERVICE_SIID then
+                emit_angle_event(device, siid, piid, value)
             end
         end
     end
@@ -287,7 +298,7 @@ local function set_left_angle_handler(_, device, command)
     if not ip then return end
 
     local angle = math.floor(command.args.leftAngle)
-    local ok = pcall(miot.set, device, ip, token, 11, 2, angle)
+    local ok = pcall(miot.set, device, ip, token, DM_SERVICE_SIID, LEFT_ANGLE_PIID, angle)
     if ok then
         device:emit_event(fanControls.leftAngle({value = angle}))
     end
@@ -298,7 +309,7 @@ local function set_right_angle_handler(_, device, command)
     if not ip then return end
 
     local angle = math.floor(command.args.rightAngle)
-    local ok = pcall(miot.set, device, ip, token, 11, 3, angle)
+    local ok = pcall(miot.set, device, ip, token, DM_SERVICE_SIID, RIGHT_ANGLE_PIID, angle)
     if ok then
         device:emit_event(fanControls.rightAngle({value = angle}))
     end
@@ -309,7 +320,7 @@ local function set_up_angle_handler(_, device, command)
     if not ip then return end
 
     local angle = math.floor(command.args.upAngle)
-    local ok = pcall(miot.set, device, ip, token, 11, 5, angle)
+    local ok = pcall(miot.set, device, ip, token, DM_SERVICE_SIID, UP_ANGLE_PIID, angle)
     if ok then
         device:emit_event(fanControls.upAngle({value = angle}))
     end
@@ -320,7 +331,7 @@ local function set_down_angle_handler(_, device, command)
     if not ip then return end
 
     local angle = math.floor(command.args.downAngle)
-    local ok = pcall(miot.set, device, ip, token, 11, 6, angle)
+    local ok = pcall(miot.set, device, ip, token, DM_SERVICE_SIID, DOWN_ANGLE_PIID, angle)
     if ok then
         device:emit_event(fanControls.downAngle({value = angle}))
     end
@@ -340,6 +351,10 @@ local function device_added(_, device)
     device:emit_event(fanControls.indicatorLight({value = "on"}))
     device:emit_event(fanControls.buzzer({value = "off"}))
     device:emit_event(fanControls.childLock({value = "off"}))
+    device:emit_event(fanControls.leftAngle({value = 10}))
+    device:emit_event(fanControls.rightAngle({value = 0}))
+    device:emit_event(fanControls.upAngle({value = 10}))
+    device:emit_event(fanControls.downAngle({value = 0}))
 end
 
 local function device_init(_, device)

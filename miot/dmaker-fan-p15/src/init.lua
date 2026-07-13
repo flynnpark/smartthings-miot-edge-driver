@@ -300,6 +300,7 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)

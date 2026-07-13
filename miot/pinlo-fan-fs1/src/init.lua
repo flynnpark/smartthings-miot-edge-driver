@@ -26,7 +26,7 @@ local FAULT_PIID = 2              -- R 0=No fault, diagnostic only
 local MODE_PIID = 3               -- RW 0=Straight, 1=Natural
 local FAN_LEVEL_PIID = 4          -- RW gear fan level 0..3
 local HORIZONTAL_SWING_PIID = 6   -- RW horizontal oscillation on/off
-local HORIZONTAL_ANGLE_PIID = 14  -- RW 60, 90; not exposed
+local HORIZONTAL_ANGLE_PIID = 14  -- RW 60, 90
 
 -- Fan actions (siid=2), not exposed because switch and oscillation controls cover core use.
 local TOGGLE_ACTION_IID = 3
@@ -100,7 +100,7 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 14, attr = horizontalAngleCap.horizontalAngle}
+    {siid = FAN_SIID, piid = HORIZONTAL_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -124,6 +124,7 @@ local function poll_device_status(device)
         {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = FAN_LEVEL_PIID},
         {siid = FAN_SIID, piid = HORIZONTAL_SWING_PIID},
+        {siid = FAN_SIID, piid = HORIZONTAL_ANGLE_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
@@ -152,6 +153,8 @@ local function poll_device_status(device)
                     device:emit_event(fanSpeedPercent.percent({value = level_to_percent(value), unit = "%"}))
                 elseif piid == HORIZONTAL_SWING_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == HORIZONTAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
                 emit_on_off(device, indicatorLightCap.indicatorLight, value)
@@ -283,7 +286,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 14, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, HORIZONTAL_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
@@ -303,6 +306,7 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "60"}))
 end
 
 local function device_init(_, device)

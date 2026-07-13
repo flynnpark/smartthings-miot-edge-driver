@@ -26,7 +26,7 @@ local PROFILE_NAME = "dmaker-fan-p5"
 --     "mode", R: "normal" / "nature"
 --     "speed", R: fan speed, 0..100
 --     "roll_enable", R: horizontal oscillation on/off
---     "roll_angle", R: 30/60/90/120/140, not exposed
+--     "roll_angle", R: 30/60/90/120/140
 --     "time_off", R: delayed off, not exposed
 --     "light", R: indicator light on/off
 --     "beep_sound", R: buzzer on/off
@@ -36,7 +36,7 @@ local PROFILE_NAME = "dmaker-fan-p5"
 --     "s_mode", W: "normal" / "nature"
 --     "s_speed", W: 0..100
 --     "s_roll", W: boolean
---     "s_angle", W: 30/60/90/120/140, not exposed
+--     "s_angle", W: 30/60/90/120/140
 --     "s_light", W: boolean
 --     "s_sound", W: boolean
 --     "s_lock", W: boolean
@@ -124,6 +124,8 @@ local function poll_device_status(device)
     if values.roll_enable ~= nil then
         device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(values.roll_enable and "horizontal" or "off"))
     end
+
+    emit_angle_values(device, values)
 
     if values.light ~= nil then
         emit_on_off(device, indicatorLightCap.indicatorLight, values.light)

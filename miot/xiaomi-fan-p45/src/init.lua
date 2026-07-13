@@ -27,7 +27,7 @@ local MODE_PIID = 3               -- RW 0=Straight, 1=Natural, 2=Sleep
 local GEAR_FAN_LEVEL_PIID = 4     -- RW level bucket 1..4, not exposed separately
 local FAN_SPEED_PIID = 5          -- RW stepless fan level 1..100
 local SWING_MODE_PIID = 6         -- RW horizontal oscillation on/off
-local SWING_ANGLE_PIID = 7        -- RW 30, 60, 90, 120, 150; not exposed
+local SWING_ANGLE_PIID = 7        -- RW 30, 60, 90, 120, 150
 
 -- Fan actions (siid=2), not exposed because switch and oscillation controls cover core use.
 local TOGGLE_ACTION_IID = 3
@@ -92,7 +92,7 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 7, attr = horizontalAngleCap.horizontalAngle}
+    {siid = FAN_SIID, piid = SWING_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -148,6 +148,8 @@ local function poll_device_status(device)
                     device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == SWING_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
                 emit_on_off(device, indicatorLightCap.indicatorLight, value)
@@ -276,7 +278,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 7, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
@@ -296,6 +298,7 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)

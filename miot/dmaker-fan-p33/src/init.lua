@@ -25,7 +25,7 @@ local POWER_PIID = 1
 local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4, not exposed separately
 local MODE_PIID = 3               -- RW 0=Normal, 1=Nature
 local SWING_MODE_PIID = 4         -- RW horizontal oscillation on/off
-local SWING_ANGLE_PIID = 5        -- RW 30, 60, 90, 120, 140; not exposed
+local SWING_ANGLE_PIID = 5        -- RW 30, 60, 90, 120, 140
 local FAN_SPEED_PIID = 6          -- R 1..100 in spec; python-miio FanMiot maps this as writable speed
 
 -- Off delay time service (siid=3)
@@ -82,7 +82,7 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 5, attr = horizontalAngleCap.horizontalAngle}
+    {siid = FAN_SIID, piid = SWING_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -136,6 +136,8 @@ local function poll_device_status(device)
                     end
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == SWING_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 elseif piid == FAN_SPEED_PIID then
                     device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 end
@@ -266,7 +268,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
@@ -286,6 +288,7 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)

@@ -71,7 +71,7 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 5, attr = horizontalAngleCap.horizontalAngle}
+    {siid = FAN_SIID, piid = SWING_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -124,6 +124,8 @@ local function poll_device_status(device)
                     end
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == SWING_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == DM_SERVICE_SIID and piid == FAN_SPEED_PIID then
                 device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
@@ -274,6 +276,7 @@ local function device_added(_, device)
     device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
     device:emit_event(buzzerCap.buzzer({value = "off"}))
     device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(horizontalAngleCap.horizontalAngle({value = "30"}))
 end
 
 local function device_init(_, device)

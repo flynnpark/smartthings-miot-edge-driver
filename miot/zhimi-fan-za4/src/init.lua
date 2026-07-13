@@ -24,7 +24,7 @@ local PROFILE_NAME = "zhimi-fan-za4"
 --   piid=1 power, bool, RW
 --   piid=2 fan-level bucket, uint8, RW: 1..4, not exposed separately
 --   piid=3 horizontal-swing, bool, RW
---   piid=4 horizontal-swing-included-angle, uint16, RW, 0..120, not exposed
+--   piid=4 horizontal-swing-included-angle, uint16, RW, 0..120
 --   piid=5 mode, uint8, RW: 0=normal, 1=nature
 --   piid=6 stepless fan level, uint8, RW, 1..100
 -- Physical controls locked service (siid=3)
@@ -98,7 +98,7 @@ local function emit_on_off(device, capability_attr, value)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 4, attr = horizontalAngleCap.horizontalAngle}
+    {siid = FAN_SIID, piid = SWING_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -126,8 +126,7 @@ local function poll_device_status(device)
         {siid = FAN_SIID, piid = FAN_SPEED_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
-        {siid = INDICATOR_LIGHT_SIID, piid = DISPLAY_BRIGHTNESS_PIID},
-        {siid = 2, piid = 4}
+        {siid = INDICATOR_LIGHT_SIID, piid = DISPLAY_BRIGHTNESS_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -151,6 +150,8 @@ local function poll_device_status(device)
                     end
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == SWING_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 elseif piid == FAN_SPEED_PIID then
                     device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
                 end

@@ -26,9 +26,9 @@ local PROFILE_NAME = "dmaker-fan-p28"
 --   piid=2 fan-level bucket, uint8, RW: 1..4, not exposed separately
 --   piid=3 mode, uint8, RW: 0=straight, 1=natural, 2=smart, 3=sleep
 --   piid=4 horizontal swing, bool, RW
---   piid=5 horizontal angle, uint16, RW: 30/60/90/120/150, not exposed
+--   piid=5 horizontal angle, uint16, RW: 30/60/90/120/150
 --   piid=7 vertical swing, bool, RW
---   piid=8 vertical angle, uint8, RW: 30/60/90, not exposed
+--   piid=8 vertical angle, uint8, RW: 30/60/90
 -- Indicator light service (siid=4)
 --   piid=1 indicator light, bool, RW
 -- Alarm service (siid=5)
@@ -119,8 +119,8 @@ local function emit_oscillation_mode(device, horizontal_swing, vertical_swing)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 5, attr = horizontalAngleCap.horizontalAngle},
-    {siid = 2, piid = 8, attr = verticalAngleCap.verticalAngle}
+    {siid = FAN_SIID, piid = HORIZONTAL_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle},
+    {siid = FAN_SIID, piid = VERTICAL_ANGLE_PIID, attr = verticalAngleCap.verticalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -152,9 +152,7 @@ local function poll_device_status(device)
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
         {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID},
-        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID},
-        {siid = 2, piid = 5},
-        {siid = 2, piid = 8}
+        {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -181,8 +179,12 @@ local function poll_device_status(device)
                     end
                 elseif piid == HORIZONTAL_SWING_PIID then
                     horizontal_swing = value
+                elseif piid == HORIZONTAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 elseif piid == VERTICAL_SWING_PIID then
                     vertical_swing = value
+                elseif piid == VERTICAL_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 end
             elseif siid == DM_SERVICE_SIID and piid == FAN_SPEED_PIID then
                 device:emit_event(fanSpeedPercent.percent({value = value, unit = "%"}))
@@ -326,7 +328,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, HORIZONTAL_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
@@ -338,7 +340,7 @@ local function set_vertical_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.verticalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 8, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, VERTICAL_ANGLE_PIID, angle)
     if ok then
         device:emit_event(verticalAngleCap.verticalAngle({value = tostring(angle)}))
     end

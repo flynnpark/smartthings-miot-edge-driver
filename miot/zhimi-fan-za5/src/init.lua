@@ -25,7 +25,7 @@ local FAN_SIID = 2
 local POWER_PIID = 1
 local FAN_LEVEL_PIID = 2          -- RW level bucket 1..4, not exposed separately
 local SWING_MODE_PIID = 3         -- RW horizontal oscillation on/off
-local SWING_ANGLE_PIID = 5        -- RW 30..120; not exposed
+local SWING_ANGLE_PIID = 5        -- RW 30..120
 local MODE_PIID = 7               -- RW 0=Nature, 1=Normal
 local POWER_OFF_TIME_PIID = 10    -- RW off-delay seconds, not exposed
 local ANION_PIID = 11             -- RW anion on/off
@@ -94,7 +94,7 @@ local function ensure_temperature_sensor(device, ip, token)
 end
 
 local ANGLE_PROPERTIES = {
-    {siid = 2, piid = 5, attr = horizontalAngleCap.horizontalAngle}
+    {siid = FAN_SIID, piid = SWING_ANGLE_PIID, attr = horizontalAngleCap.horizontalAngle}
 }
 
 local function emit_angle_event(device, siid, piid, value)
@@ -116,6 +116,7 @@ local function poll_device_status(device)
     local properties = {
         {siid = FAN_SIID, piid = POWER_PIID},
         {siid = FAN_SIID, piid = SWING_MODE_PIID},
+        {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
         {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = ANION_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID},
@@ -123,8 +124,7 @@ local function poll_device_status(device)
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
         {siid = CUSTOM_SERVICE_SIID, piid = FAN_SPEED_PIID},
         {siid = ENVIRONMENT_SIID, piid = HUMIDITY_PIID},
-        {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID},
-        {siid = 2, piid = 5}
+        {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -148,6 +148,8 @@ local function poll_device_status(device)
                     end
                 elseif piid == SWING_MODE_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
+                elseif piid == SWING_ANGLE_PIID then
+                    emit_angle_event(device, siid, piid, value)
                 elseif piid == ANION_PIID then
                     emit_on_off(device, anionCap.anion, value)
                 end
@@ -297,7 +299,7 @@ local function set_horizontal_angle_handler(_, device, command)
 
     local angle = tonumber(command.args.horizontalAngle)
     if not angle then return end
-    local ok = pcall(miot.set, device, ip, token, 2, 5, angle)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, SWING_ANGLE_PIID, angle)
     if ok then
         device:emit_event(horizontalAngleCap.horizontalAngle({value = tostring(angle)}))
     end
