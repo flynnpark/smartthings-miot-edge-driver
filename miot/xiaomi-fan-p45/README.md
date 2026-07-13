@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one MIoT model: `xiaomi.fan.p45`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `xiaomi.fan.p45`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one MIoT model: `xiaomi.fan.p45`.
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p45:1:0000D062`
 - Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.fan.p45` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fan contract.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for one MIoT model: `xiaomi.fan.p45`.
 - `concertmirror08464.xiaomiFanP45HorizontalAngleV2`
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Fan service `siid=2`:
 

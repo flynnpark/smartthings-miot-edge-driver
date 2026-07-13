@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.meb1`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `zhimi.airp.meb1`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.meb1`.
 - URN: `urn:miot-spec-v2:device:air-purifier:0000A007:zhimi-meb1:1`
 - Basis: current `hass-xiaomi-miot` lists exact model `zhimi.airp.meb1` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `concertmirror08464.zhimiAirMeb1Uv`, `concertmirror08464.zhimiAirMeb1AirPurifierMode`, `concertmirror08464.zhimiAirMeb1Buzzer`, `concertmirror08464.zhimiAirMeb1ChildLock`, `concertmirror08464.zhimiAirMeb1FanLevel`, `concertmirror08464.zhimiAirMeb1DisplayLevel`, `concertmirror08464.zhimiAirMeb1Plasma`
@@ -27,7 +27,7 @@ SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.meb1`.
 - `filterState`: filter life remaining
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Air purifier service `siid=2`:
 

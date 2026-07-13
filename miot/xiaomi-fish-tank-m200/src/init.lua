@@ -86,7 +86,6 @@ local FEED_PROTECT_STATUS_PIID = 9
 
 local FILTER_SIID = 6
 local FILTER_LIFE_LEVEL_PIID = 1
-local FILTER_LEFT_TIME_PIID = 2
 local RESET_FILTER_LIFE_AIID = 1
 
 local ALARM_SIID = 7
@@ -281,7 +280,6 @@ local function poll_device_status(device)
         {siid = FISH_TANK_SIID, piid = TEMPERATURE_PIID},
         {siid = FISH_TANK_SIID, piid = WATER_PUMP_STATUS_PIID},
         {siid = FILTER_SIID, piid = FILTER_LIFE_LEVEL_PIID},
-        {siid = FILTER_SIID, piid = FILTER_LEFT_TIME_PIID},
         {siid = ALARM_SIID, piid = ALARM_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = LIGHT_SIID, piid = LIGHT_SWITCH_PIID},

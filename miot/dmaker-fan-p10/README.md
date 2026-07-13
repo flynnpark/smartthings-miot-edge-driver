@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p10`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `dmaker.fan.p10`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p10`.
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p10:2`
 - Basis: python-miio `FanMiot` lists `dmaker.fan.p10` with this MIoT property layout; MIoT spec v2 confirms the same core siid/piid mapping.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, 1-100%
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p10`.
 - `concertmirror08464.dmakerFanP10HorizontalAngleV2`
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Fan service `siid=2`:
 

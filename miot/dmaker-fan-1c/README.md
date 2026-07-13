@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.1c`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `dmaker.fan.1c`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.1c`.
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-1c:1`
 - Basis: python-miio `FanMiot` includes a Fan1C mapping; MIoT spec v1 confirms the same core siid/piid mapping.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.1c`.
   - `childLock`: 차일드락, `off` / `on`
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Fan service `siid=2`:
 

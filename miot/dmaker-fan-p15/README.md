@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for the Xiaomi Mi Smart Standing Fan Pro product code `ZLBPSP01XY`, model `dmaker.fan.p15`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `dmaker.fan.p15`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for the Xiaomi Mi Smart Standing Fan Pro product cod
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p15:1`
 - Basis: python-miio `FanMiot` supports exact model `dmaker.fan.p15` with the P11 MIoT layout; openHAB documents it as Mi Smart Standing Fan Pro; MIoT spec v1 confirms the core siid/piid layout.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, mapped to the writable 4-level MIoT fan level
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for the Xiaomi Mi Smart Standing Fan Pro product cod
 - `concertmirror08464.dmakerFanP15HorizontalAngleV2`
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Fan service `siid=2`:
 

@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p33`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `dmaker.fan.p33`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p33`.
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p33:1`
 - Basis: python-miio `FanMiot` lists exact model `dmaker.fan.p33`; a user report identifies Xiaomi Smart Standing Fan 2 Pro as `dmaker.fan.p33`; MIoT spec v1 confirms the core siid/piid layout.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, 1-100%
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p33`.
 - `concertmirror08464.dmakerFanP33HorizontalAngleV2`
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Fan service `siid=2`:
 

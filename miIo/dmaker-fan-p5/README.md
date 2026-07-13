@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one miIO model: `dmaker.fan.p5`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: miIO
 - Model: `dmaker.fan.p5`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one miIO model: `dmaker.fan.p5`.
 - URN: none recorded for this classic miIO mapping
 - Basis: python-miio `FanP5` lists the exact model with classic `get_prop` and `s_*` commands. openHAB documents `dmaker.fan.p5` as Mi Smart Standing Fan 1X.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanSpeedPercent`: fan speed percent, 0-100%
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for one miIO model: `dmaker.fan.p5`.
 - `concertmirror08464.dmakerFanP5HorizontalAngleV2`
 - `refresh`
 
-## miIO mapping
+## miIO Mapping
 
 Read via `get_prop`:
 
@@ -31,7 +31,6 @@ Read via `get_prop`:
 - `speed`, read, `0..100`
 - `roll_enable`, read, horizontal oscillation on/off
 - `roll_angle`, read
-- `time_off`, read
 - `light`, read, indicator light on/off
 - `beep_sound`, read, buzzer on/off
 - `child_lock`, read, child lock on/off

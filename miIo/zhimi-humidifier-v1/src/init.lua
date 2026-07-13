@@ -15,7 +15,7 @@ local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
 -- miIO model: zhimi.humidifier.v1
--- Core read properties: power, mode, humidity, buzzer, led_b, child_lock, limit_hum, temp_dec, trans_level
+-- Core read properties: power, mode, humidity, buzzer, led_b, child_lock, limit_hum, temp_dec
 -- Core write methods: set_power, set_mode, set_limit_hum, set_led_b, set_buzzer, set_child_lock
 local STATUS_PROPERTIES = {
     "power",
@@ -25,8 +25,7 @@ local STATUS_PROPERTIES = {
     "led_b",
     "child_lock",
     "limit_hum",
-    "temp_dec",
-    "trans_level"
+    "temp_dec"
 }
 
 local SUPPORTED_MODES = {"silent", "medium", "high", "auto", "strong"}

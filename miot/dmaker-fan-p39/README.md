@@ -2,7 +2,7 @@
 
 SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p39`.
 
-## Protocol decision
+## Protocol Decision
 
 - Protocol: MIoT
 - Model: `dmaker.fan.p39`
@@ -10,7 +10,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p39`.
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p39:1`
 - Basis: python-miio lists exact model `dmaker.fan.p39` in `FanMiot` with MIoT siid/piid mapping; model docs identify it as Xiaomi Smart Tower Fan BPTS01DM; MIoT spec v1 confirms the core siid/piid layout.
 
-## Exposed capabilities
+## Exposed Capabilities
 
 - `switch`: power
 - `fanSpeedPercent`: stepless fan speed percent, 1-100%
@@ -22,7 +22,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.p39`.
 - `concertmirror08464.dmakerFanP39HorizontalAngleV2`
 - `refresh`
 
-## MIoT mapping
+## MIoT Mapping
 
 Fan service `siid=2`:
 

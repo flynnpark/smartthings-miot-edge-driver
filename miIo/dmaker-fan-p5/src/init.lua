@@ -47,7 +47,6 @@ local PROPERTIES = {
     "speed",
     "roll_enable",
     "roll_angle",
-    "time_off",
     "light",
     "beep_sound",
     "child_lock"

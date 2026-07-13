@@ -17,7 +17,7 @@ local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
 -- miIO model: zhimi.humidifier.cb2
--- Core read properties: power, mode, humidity, buzzer, led_b, child_lock, limit_hum, temperature, speed, depth, dry
+-- Core read properties: power, mode, humidity, buzzer, led_b, child_lock, limit_hum, temperature, depth, dry
 -- Core write methods: set_power, set_mode, set_limit_hum, set_dry, set_led_b, set_buzzer, set_child_lock
 -- python-miio notes CB2 is limited to one get_prop item per request.
 local STATUS_PROPERTIES = {
@@ -29,7 +29,6 @@ local STATUS_PROPERTIES = {
     "child_lock",
     "limit_hum",
     "temperature",
-    "speed",
     "depth",
     "dry"
 }
