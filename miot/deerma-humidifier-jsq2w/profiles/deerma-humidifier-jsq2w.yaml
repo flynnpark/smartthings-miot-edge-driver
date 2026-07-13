@@ -24,7 +24,7 @@ components:
     version: 1
   - id: concertmirror08464.deermaHumJsq2wFault
     version: 1
-  - id: concertmirror08464.deermaHumJsq2wWaterShortageFault
+  - id: concertmirror08464.deermaHumJsq2wWaterShortage
     version: 1
   - id: concertmirror08464.deermaHumJsq2wStatus
     version: 1
@@ -89,7 +89,7 @@ deviceConfig:
     capability: concertmirror08464.deermaHumJsq2wFault
     version: 1
   - component: main
-    capability: concertmirror08464.deermaHumJsq2wWaterShortageFault
+    capability: concertmirror08464.deermaHumJsq2wWaterShortage
     version: 1
   - component: main
     capability: concertmirror08464.deermaHumJsq2wStatus
@@ -133,7 +133,7 @@ deviceConfig:
       capability: concertmirror08464.deermaHumJsq2wFault
       version: 1
     - component: main
-      capability: concertmirror08464.deermaHumJsq2wWaterShortageFault
+      capability: concertmirror08464.deermaHumJsq2wWaterShortage
       version: 1
     - component: main
       capability: concertmirror08464.deermaHumJsq2wStatus

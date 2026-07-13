@@ -20,7 +20,7 @@ This LAN driver needs the device Xiaomi token and local IP address. Use [Xiaomi 
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.xiaomiHumAirmxMode`, `concertmirror08464.xiaomiHumAirmxTargetHumidity`, `concertmirror08464.xiaomiHumAirmxAutomaticAirDrying`, `concertmirror08464.xiaomiHumAirmxIndicatorBrightness`, `concertmirror08464.xiaomiHumAirmxChildLock`, `concertmirror08464.xiaomiHumAirmxAlarm`, `concertmirror08464.xiaomiHumAirmxIndicatorLight`, `concertmirror08464.xiaomiHumAirmxIndicatorMode`, `concertmirror08464.xiaomiHumAirmxOverwetProtect`
+- `concertmirror08464.xiaomiHumAirmxMode`, `concertmirror08464.xiaomiHumAirmxTargetHumidity`, `concertmirror08464.xiaomiHumAirmxAutoAirDrying`, `concertmirror08464.xiaomiHumAirmxIndicatorLevel`, `concertmirror08464.xiaomiHumAirmxChildLock`, `concertmirror08464.xiaomiHumAirmxAlarm`, `concertmirror08464.xiaomiHumAirmxIndicatorLight`, `concertmirror08464.xiaomiHumAirmxIndicatorMode`, `concertmirror08464.xiaomiHumAirmxOverwetProtect`
 - `concertmirror08464.xiaomiHumAirmxFault`, `concertmirror08464.xiaomiHumAirmxWaterLevel`, `concertmirror08464.xiaomiHumAirmxWaterStatus`
 - `refresh`
 

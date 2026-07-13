@@ -7,7 +7,7 @@ local miot = require "miot"
 
 local controlsMode = capabilities["concertmirror08464.xiaomiHum3liteMode"]
 local controlsTargetHumidity = capabilities["concertmirror08464.xiaomiHum3liteTargetHumidity"]
-local controlsAutomaticAirDrying = capabilities["concertmirror08464.xiaomiHum3liteAutomaticAirDrying"]
+local controlsAutomaticAirDrying = capabilities["concertmirror08464.xiaomiHum3liteAutoAirDrying"]
 local controlsChildLock = capabilities["concertmirror08464.xiaomiHum3liteChildLock"]
 local controlsAlarm = capabilities["concertmirror08464.xiaomiHum3liteAlarm"]
 local controlsScreenBrightness = capabilities["concertmirror08464.xiaomiHum3liteScreenBrightness"]

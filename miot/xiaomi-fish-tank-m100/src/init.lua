@@ -5,7 +5,7 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controlsIndicatorBrightness = capabilities["concertmirror08464.xiaomiTankM100IndicatorBrightness"]
+local controlsIndicatorBrightness = capabilities["concertmirror08464.xiaomiTankM100IndicatorLevel"]
 local controlsWaterPump = capabilities["concertmirror08464.xiaomiTankM100WaterPump"]
 local controlsChildLock = capabilities["concertmirror08464.xiaomiTankM100ChildLock"]
 local controlsAlarm = capabilities["concertmirror08464.xiaomiTankM100Alarm"]

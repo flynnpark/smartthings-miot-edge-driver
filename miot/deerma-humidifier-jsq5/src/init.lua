@@ -11,7 +11,7 @@ local controlsIndicatorLight = capabilities["concertmirror08464.deermaHumJsq5Ind
 local controlsFanLevel = capabilities["concertmirror08464.deermaHumJsq5FanLevel"]
 local statsTankFilled = capabilities["concertmirror08464.deermaHumJsq5TankFilled"]
 local statsFault = capabilities["concertmirror08464.deermaHumJsq5Fault"]
-local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq5WaterShortageFault"]
+local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq5WaterShortage"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60

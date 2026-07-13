@@ -10,7 +10,7 @@ components:
     version: 1
   - id: colorControl
     version: 1
-  - id: concertmirror08464.xiaomiTankM100IndicatorBrightness
+  - id: concertmirror08464.xiaomiTankM100IndicatorLevel
     version: 1
   - id: concertmirror08464.xiaomiTankM100WaterPump
     version: 1
@@ -76,7 +76,7 @@ deviceConfig:
       capability: colorControl
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiTankM100IndicatorBrightness
+      capability: concertmirror08464.xiaomiTankM100IndicatorLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiTankM100WaterPump
@@ -142,7 +142,7 @@ deviceConfig:
         capability: colorControl
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiTankM100IndicatorBrightness
+        capability: concertmirror08464.xiaomiTankM100IndicatorLevel
         version: 1
       - component: main
         capability: concertmirror08464.xiaomiTankM100WaterPump

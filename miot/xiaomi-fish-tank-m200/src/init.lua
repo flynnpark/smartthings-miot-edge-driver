@@ -6,7 +6,7 @@ local discovery = require "discovery"
 local miot = require "miot"
 
 local controlsWaterPump = capabilities["concertmirror08464.xiaomiTankM200WaterPump"]
-local controlsFeedProtectStatus = capabilities["concertmirror08464.xiaomiTankM200FeedProtectStatus"]
+local controlsFeedProtectStatus = capabilities["concertmirror08464.xiaomiTankM200FeedProtection"]
 local controlsChildLock = capabilities["concertmirror08464.xiaomiTankM200ChildLock"]
 local controlsNoDisturb = capabilities["concertmirror08464.xiaomiTankM200NoDisturb"]
 local controlsAlarm = capabilities["concertmirror08464.xiaomiTankM200Alarm"]

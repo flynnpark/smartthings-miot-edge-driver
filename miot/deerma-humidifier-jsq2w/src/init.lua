@@ -13,7 +13,7 @@ local controlsFanLevel = capabilities["concertmirror08464.deermaHumJsq2wFanLevel
 local controlsOverwetProtect = capabilities["concertmirror08464.deermaHumJsq2wOverwetProtect"]
 local statsTankFilled = capabilities["concertmirror08464.deermaHumJsq2wTankFilled"]
 local statsFault = capabilities["concertmirror08464.deermaHumJsq2wFault"]
-local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq2wWaterShortageFault"]
+local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq2wWaterShortage"]
 local statsStatus = capabilities["concertmirror08464.deermaHumJsq2wStatus"]
 
 local POLLING_TIMER = "polling_timer"

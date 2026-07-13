@@ -14,9 +14,9 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiHumAirmxTargetHumidity
     version: 1
-  - id: concertmirror08464.xiaomiHumAirmxAutomaticAirDrying
+  - id: concertmirror08464.xiaomiHumAirmxAutoAirDrying
     version: 1
-  - id: concertmirror08464.xiaomiHumAirmxIndicatorBrightness
+  - id: concertmirror08464.xiaomiHumAirmxIndicatorLevel
     version: 1
   - id: concertmirror08464.xiaomiHumAirmxChildLock
     version: 1
@@ -80,10 +80,10 @@ deviceConfig:
     capability: concertmirror08464.xiaomiHumAirmxTargetHumidity
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumAirmxAutomaticAirDrying
+    capability: concertmirror08464.xiaomiHumAirmxAutoAirDrying
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumAirmxIndicatorBrightness
+    capability: concertmirror08464.xiaomiHumAirmxIndicatorLevel
     version: 1
   - component: main
     capability: concertmirror08464.xiaomiHumAirmxChildLock
@@ -133,10 +133,10 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHumAirmxTargetHumidity
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumAirmxAutomaticAirDrying
+      capability: concertmirror08464.xiaomiHumAirmxAutoAirDrying
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumAirmxIndicatorBrightness
+      capability: concertmirror08464.xiaomiHumAirmxIndicatorLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHumAirmxChildLock
@@ -173,10 +173,10 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHumAirmxTargetHumidity
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumAirmxAutomaticAirDrying
+      capability: concertmirror08464.xiaomiHumAirmxAutoAirDrying
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumAirmxIndicatorBrightness
+      capability: concertmirror08464.xiaomiHumAirmxIndicatorLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHumAirmxChildLock

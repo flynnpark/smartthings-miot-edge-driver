@@ -16,7 +16,7 @@ SmartThings Edge LAN driver for the Xiaomi/Deerma MIoT humidifier model `deerma.
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `concertmirror08464.deermaHumJsq5TargetHumidity`, `concertmirror08464.deermaHumJsq5Alarm`, `concertmirror08464.deermaHumJsq5IndicatorLight`, `concertmirror08464.deermaHumJsq5FanLevel`
-- `concertmirror08464.deermaHumJsq5TankFilled`, `concertmirror08464.deermaHumJsq5Fault`, `concertmirror08464.deermaHumJsq5WaterShortageFault`
+- `concertmirror08464.deermaHumJsq5TankFilled`, `concertmirror08464.deermaHumJsq5Fault`, `concertmirror08464.deermaHumJsq5WaterShortage`
 - `refresh`
 
 ## MIoT Mapping
