@@ -1,5 +1,5 @@
-name: 'Xiaomi Fan P30'
-packageKey: 'Xiaomi Fan P30 Driver'
+name: 'Dmaker Fan P30'
+packageKey: 'Dmaker Fan P30 Driver'
 permissions:
   lan: {}
   discovery: {}

@@ -1,5 +1,3 @@
-local capabilities = require "st.capabilities"
-
 local discovery = {}
 
 function discovery.create_device(driver)
@@ -16,9 +14,9 @@ function discovery.create_device(driver)
     driver:try_create_device(metadata)
 end
 
-function discovery.handle_discovery(_, _, should_continue)
-    while should_continue() do
-        break
+function discovery.handle_discovery(driver, _, _)
+    if #driver:get_devices() == 0 then
+        discovery.create_device(driver)
     end
 end
 

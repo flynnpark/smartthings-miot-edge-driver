@@ -103,15 +103,12 @@ local function poll_device_status(device)
 
     local properties = {
         {siid = FAN_SIID, piid = POWER_PIID},
-        {siid = FAN_SIID, piid = FAN_LEVEL_PIID},
         {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = SWING_MODE_PIID},
         {siid = FAN_SIID, piid = SWING_ANGLE_PIID},
         {siid = FAN_SIID, piid = FAN_SPEED_PIID},
-        {siid = OFF_DELAY_SIID, piid = POWER_OFF_TIME_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = BUZZER_SIID, piid = BUZZER_PIID},
-        {siid = MOTOR_CONTROLLER_SIID, piid = FAULT_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
     }
 

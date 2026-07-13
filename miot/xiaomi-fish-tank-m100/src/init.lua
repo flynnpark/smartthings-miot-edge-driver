@@ -61,7 +61,6 @@ local FEEDER_STATUS_PIID = 1
 
 local FILTER_SIID = 10
 local FILTER_LIFE_LEVEL_PIID = 1
-local FILTER_LEFT_TIME_PIID = 2
 local RESET_FILTER_LIFE_AIID = 1
 
 local ALARM_SIID = 13
@@ -252,7 +251,6 @@ local function poll_device_status(device)
         {siid = FISH_TANK_SIID, piid = TEMPERATURE_PIID},
         {siid = FISH_TANK_SIID, piid = WATER_PUMP_STATUS_PIID},
         {siid = FILTER_SIID, piid = FILTER_LIFE_LEVEL_PIID},
-        {siid = FILTER_SIID, piid = FILTER_LEFT_TIME_PIID},
         {siid = ALARM_SIID, piid = ALARM_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_LIGHT_PIID},
         {siid = INDICATOR_LIGHT_SIID, piid = INDICATOR_BRIGHTNESS_PIID},
@@ -561,7 +559,14 @@ local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
 
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(controls.ID, "main") then
+        device:try_update_metadata({profile = "xiaomi-fish-tank-m100"})
+    end
+end
+
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperatureRange({
         value = {minimum = 0, maximum = 99, step = 1},
@@ -588,6 +593,7 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
 
     local ip = get_device_config(device)

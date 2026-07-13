@@ -593,7 +593,14 @@ local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
 
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(controls.ID, "main") then
+        device:try_update_metadata({profile = "xiaomi-fish-tank-m200"})
+    end
+end
+
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperatureRange({
         value = {minimum = 0, maximum = 99, step = 1},
@@ -622,6 +629,7 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
 
     local ip = get_device_config(device)

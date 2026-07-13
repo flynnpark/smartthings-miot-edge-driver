@@ -11,7 +11,7 @@ function discovery.create_device(driver)
             label = "Qingping Air Monitor Lite",
             profile = "cgllc-airm-cgd1st",
             manufacturer = "Qingping",
-            model = "cgllc-airm-cgd1st",
+            model = "cgllc.airm.cgd1st",
             vendor_provided_label = "Qingping Air Monitor Lite",
         })
     end)

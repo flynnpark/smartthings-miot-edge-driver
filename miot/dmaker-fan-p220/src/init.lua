@@ -140,7 +140,6 @@ local function poll_device_status(device)
 
     local properties = {
         {siid = FAN_SIID, piid = POWER_PIID},
-        {siid = FAN_SIID, piid = GEAR_FAN_LEVEL_PIID},
         {siid = FAN_SIID, piid = MODE_PIID},
         {siid = FAN_SIID, piid = HORIZONTAL_SWING_PIID},
         {siid = FAN_SIID, piid = HORIZONTAL_ANGLE_PIID},

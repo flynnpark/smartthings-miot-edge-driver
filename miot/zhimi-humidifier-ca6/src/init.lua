@@ -347,7 +347,14 @@ end
 -- 라이프사이클 핸들러
 
 -- 장치 추가됨
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(cap_fanmode.ID, "main") then
+        device:try_update_metadata({profile = "zhimi-humidifier-ca6"})
+    end
+end
+
 local function device_added(_, device)
+    ensure_profile(device)
     -- 초기값 설정
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
@@ -363,6 +370,7 @@ end
 
 -- 장치 초기화
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
     
     local ip, token = get_device_config(device)

@@ -212,14 +212,17 @@ local function handle_set_led_brightness(_, device, command)
     local led_b = ST_TO_LED_BRIGHTNESS[brightness]
     if led_b == nil then return end
 
+    local led_ok
     if brightness == "off" then
-        miio.set_prop(device, ip, token, "set_led", {"off"})
+       led_ok = miio.set_prop(device, ip, token, "set_led", {"off"})
     else
-        miio.set_prop(device, ip, token, "set_led", {"on"})
+       led_ok = miio.set_prop(device, ip, token, "set_led", {"on"})
     end
 
-    miio.set_prop(device, ip, token, "set_led_b", {led_b})
-    device:emit_event(deviceControls.ledBrightness({value = brightness}))
+    local brightness_ok = miio.set_prop(device, ip, token, "set_led_b", {led_b})
+    if led_ok and brightness_ok then
+        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+    end
 end
 
 local function handle_set_buzzer(_, device, command)
@@ -246,7 +249,14 @@ local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
 
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(airMode.ID, "main") then
+        device:try_update_metadata({profile = "zhimi-v3"})
+    end
+end
+
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(airMode.airPurifierMode({value = "auto"}))
     device:emit_event(airMode.supportedAirPurifierModes({value = SUPPORTED_MODES}))
@@ -261,6 +271,7 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
 
     local ip = get_device_config(device)

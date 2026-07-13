@@ -8,6 +8,7 @@ local miot = {}
 
 local PORT = 54321
 local HEADER_SIZE = 32
+local MAX_PROPERTIES_PER_REQUEST = 15
 local DEV_ID = "dev_id"
 local TIME_OFFSET = "time_offset"
 local MESSAGE_ID = "message_id"
@@ -164,7 +165,30 @@ end
 
 -- 다중 속성 조회: miot.gets(device, ip, token, properties)
 function miot.gets(device, ip, token, properties)
-    return send_with_retry(device, ip, token, "get_properties", properties)
+    local combined_response = nil
+    local combined_result = {}
+
+    for first = 1, #properties, MAX_PROPERTIES_PER_REQUEST do
+        local batch = {}
+        local last = math.min(first + MAX_PROPERTIES_PER_REQUEST - 1, #properties)
+        for index = first, last do
+            table.insert(batch, properties[index])
+        end
+
+        local response = send_with_retry(device, ip, token, "get_properties", batch)
+        if not response or not response.result then
+            return response
+        end
+
+        combined_response = combined_response or response
+        for _, result in ipairs(response.result) do
+            table.insert(combined_result, result)
+        end
+    end
+
+    combined_response = combined_response or { result = {} }
+    combined_response.result = combined_result
+    return combined_response
 end
 
 -- 액션 호출: miot.action(device, ip, token, siid, aiid, params)

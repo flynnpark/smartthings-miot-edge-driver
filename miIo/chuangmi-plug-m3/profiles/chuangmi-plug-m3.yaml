@@ -10,6 +10,51 @@ components:
     version: 1
   categories:
   - name: SmartPlug
+deviceConfig:
+  dashboard:
+    states:
+    - component: main
+      capability: switch
+      version: 1
+      group: main
+      values:
+      - label: "{{switch.value}}"
+      composite: true
+    - component: main
+      capability: temperatureMeasurement
+      version: 1
+      group: main
+      values:
+      - label: " {{temperature.value}}{{temperature.unit}}"
+      composite: true
+    actions:
+    - component: main
+      capability: switch
+      version: 1
+    basicPlus: []
+  detailView:
+  - component: main
+    capability: switch
+    version: 1
+  - component: main
+    capability: temperatureMeasurement
+    version: 1
+  - component: main
+    capability: refresh
+    version: 1
+  automation:
+    conditions:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: temperatureMeasurement
+      version: 1
+    actions:
+    - component: main
+      capability: switch
+      version: 1
+
 preferences:
 - name: ipAddress
   title: IP Address

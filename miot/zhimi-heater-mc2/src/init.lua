@@ -274,7 +274,14 @@ local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
 
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(controls.ID, "main") then
+        device:try_update_metadata({profile = "zhimi-heater-mc2"})
+    end
+end
+
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.thermostatHeatingSetpoint.heatingSetpoint({value = TARGET_TEMPERATURE_MIN, unit = "C"}))
@@ -288,6 +295,7 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
     emit_heating_range(device)
     emit_countdown_range(device)
@@ -355,4 +363,3 @@ local driver = Driver("miot-zhimi-heater-mc2", {
 })
 
 driver:run()
-

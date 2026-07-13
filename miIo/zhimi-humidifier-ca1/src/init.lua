@@ -246,7 +246,14 @@ local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
 
+local function ensure_profile(device)
+    if not device:supports_capability_by_id(humidifierCore.ID, "main") then
+        device:try_update_metadata({profile = "zhimi-humidifier-ca1"})
+    end
+end
+
 local function device_added(_, device)
+    ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(humidifierCore.fanMode({value = "auto"}))
     device:emit_event(humidifierCore.targetHumidity({value = 40, unit = "%"}))
@@ -260,6 +267,7 @@ local function device_added(_, device)
 end
 
 local function device_init(_, device)
+    ensure_profile(device)
     device:online()
 
     local ip = get_device_config(device)
