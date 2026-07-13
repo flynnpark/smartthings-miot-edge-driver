@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p76`.
 - Model: `xiaomi.fan.p76`
 - specModel: `xiaomi-p76`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p76:1:0000D062`
-- Basis: Exact MIoT spec defines the local fan service mapping, and the Xiaomi 131001-0418 manual links Xiaomi Home setup with `model=xiaomi.fan.p76`.
+- Basis: `syssi/xiaomi_fan` commit `b994a09` implements the exact `xiaomi.fan.p76` model as `FanP76(MiotDevice)` using local host/token access, `get_properties`, `set_property`, and the same siid/piid mapping used by this driver. The exact MIoT spec is the equivalent capability contract, and the Xiaomi 131001-0418 manual confirms the product model and user-facing functions.
 
 ## Exposed Capabilities
 
