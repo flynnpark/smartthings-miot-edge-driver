@@ -6,12 +6,113 @@ components:
     version: 1
   - id: fanOscillationMode
     version: 1
-  - id: concertmirror08464.xiaomiFan1cControls
+  - id: concertmirror08464.dmakerFan1cFanMode
+    version: 1
+  - id: concertmirror08464.dmakerFan1cBuzzer
+    version: 1
+  - id: concertmirror08464.dmakerFan1cChildLock
+    version: 1
+  - id: concertmirror08464.dmakerFan1cIndicatorLight
+    version: 1
+  - id: concertmirror08464.dmakerFan1cFanLevel
     version: 1
   - id: refresh
     version: 1
   categories:
   - name: Fan
+deviceConfig:
+  dashboard:
+    states:
+    - component: main
+      capability: switch
+      version: 1
+      group: main
+      values:
+      - label: "{{switch.value}}"
+      composite: true
+    - component: main
+      capability: concertmirror08464.dmakerFan1cFanLevel
+      version: 1
+      group: main
+      values:
+      - label: " {{fanLevel.value}}"
+      composite: true
+    actions:
+    - component: main
+      capability: switch
+      version: 1
+    basicPlus: []
+  detailView:
+  - component: main
+    capability: switch
+    version: 1
+  - component: main
+    capability: fanOscillationMode
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerFan1cFanMode
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerFan1cBuzzer
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerFan1cChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerFan1cIndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerFan1cFanLevel
+    version: 1
+  - component: main
+    capability: refresh
+    version: 1
+  automation:
+    conditions:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: fanOscillationMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cFanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cBuzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cFanLevel
+      version: 1
+    actions:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: fanOscillationMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cFanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cBuzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerFan1cFanLevel
+      version: 1
+
 preferences:
 - name: ipAddress
   title: IP Address

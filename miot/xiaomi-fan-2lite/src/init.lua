@@ -5,7 +5,11 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local fanControls = capabilities["concertmirror08464.xiaomiFan2LiteControls"]
+local fanControlsFanMode = capabilities["concertmirror08464.xiaomiFan2liteFanMode"]
+local fanControlsBuzzer = capabilities["concertmirror08464.xiaomiFan2liteBuzzer"]
+local fanControlsChildLock = capabilities["concertmirror08464.xiaomiFan2liteChildLock"]
+local fanControlsIndicatorLight = capabilities["concertmirror08464.xiaomiFan2liteIndicatorLight"]
+local fanControlsFanLevel = capabilities["concertmirror08464.xiaomiFan2liteFanLevel"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -80,7 +84,7 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanControls.ID) then
+    if not device:supports_capability_by_id(fanControlsFanMode.ID) then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
@@ -122,22 +126,22 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(fanControls.fanMode({value = mode}))
+                        device:emit_event(fanControlsFanMode.fanMode({value = mode}))
                     end
                 elseif piid == GEAR_FAN_LEVEL_PIID then
                     local level = LEVEL_TO_ST[value]
                     if level then
-                        device:emit_event(fanControls.fanLevel({value = level}))
+                        device:emit_event(fanControlsFanLevel.fanLevel({value = level}))
                     end
                 elseif piid == HORIZONTAL_SWING_PIID then
                     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode(value and "horizontal" or "off"))
                 end
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
-                emit_on_off(device, fanControls.indicatorLight, value)
+                emit_on_off(device, fanControlsIndicatorLight.indicatorLight, value)
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                emit_on_off(device, fanControls.buzzer, value)
+                emit_on_off(device, fanControlsBuzzer.buzzer, value)
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                emit_on_off(device, fanControls.childLock, value)
+                emit_on_off(device, fanControlsChildLock.childLock, value)
             end
         end
     end
@@ -206,7 +210,7 @@ local function set_fan_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
     if ok then
-        device:emit_event(fanControls.fanMode({value = mode}))
+        device:emit_event(fanControlsFanMode.fanMode({value = mode}))
     end
 end
 
@@ -220,7 +224,7 @@ local function set_fan_level_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, FAN_SIID, GEAR_FAN_LEVEL_PIID, value)
     if ok then
-        device:emit_event(fanControls.fanLevel({value = fan_level}))
+        device:emit_event(fanControlsFanLevel.fanLevel({value = fan_level}))
     end
 end
 
@@ -231,7 +235,7 @@ local function set_indicator_light_handler(_, device, command)
     local indicator_light = command.args.indicatorLight
     local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator_light == "on")
     if ok then
-        device:emit_event(fanControls.indicatorLight({value = indicator_light}))
+        device:emit_event(fanControlsIndicatorLight.indicatorLight({value = indicator_light}))
     end
 end
 
@@ -242,7 +246,7 @@ local function set_buzzer_handler(_, device, command)
     local buzzer = command.args.buzzer
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, buzzer == "on")
     if ok then
-        device:emit_event(fanControls.buzzer({value = buzzer}))
+        device:emit_event(fanControlsBuzzer.buzzer({value = buzzer}))
     end
 end
 
@@ -253,7 +257,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(fanControls.childLock({value = child_lock}))
+        device:emit_event(fanControlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -266,11 +270,11 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     device:emit_event(capabilities.fanOscillationMode.fanOscillationMode("off"))
-    device:emit_event(fanControls.fanMode({value = "straight"}))
-    device:emit_event(fanControls.fanLevel({value = "level1"}))
-    device:emit_event(fanControls.indicatorLight({value = "on"}))
-    device:emit_event(fanControls.buzzer({value = "off"}))
-    device:emit_event(fanControls.childLock({value = "off"}))
+    device:emit_event(fanControlsFanMode.fanMode({value = "straight"}))
+    device:emit_event(fanControlsFanLevel.fanLevel({value = "level1"}))
+    device:emit_event(fanControlsIndicatorLight.indicatorLight({value = "on"}))
+    device:emit_event(fanControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(fanControlsChildLock.childLock({value = "off"}))
 end
 
 local function device_init(_, device)
@@ -328,12 +332,20 @@ local driver = Driver("miot-xiaomi-fan-2lite", {
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
         },
-        [fanControls.ID] = {
-            [fanControls.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [fanControls.commands.setFanLevel.NAME] = set_fan_level_handler,
-            [fanControls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [fanControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [fanControls.commands.setChildLock.NAME] = set_child_lock_handler
+        [fanControlsFanMode.ID] = {
+            [fanControlsFanMode.commands.setFanMode.NAME] = set_fan_mode_handler
+        },
+        [fanControlsFanLevel.ID] = {
+            [fanControlsFanLevel.commands.setFanLevel.NAME] = set_fan_level_handler
+        },
+        [fanControlsIndicatorLight.ID] = {
+            [fanControlsIndicatorLight.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [fanControlsBuzzer.ID] = {
+            [fanControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [fanControlsChildLock.ID] = {
+            [fanControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

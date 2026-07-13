@@ -1,5 +1,0 @@
-name: 'Xiaomi Humidifier 600'
-packageKey: 'Xiaomi Humidifier 600 Driver'
-permissions:
-  lan: {}
-  discovery: {}

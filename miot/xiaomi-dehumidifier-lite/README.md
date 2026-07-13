@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `xiaomi.derh.
 - Model: `xiaomi.derh.lite`
 - specModel: `xiaomi-lite`
 - URN: `urn:miot-spec-v2:device:dehumidifier:0000A02D:xiaomi-lite:1`
-- Basis: hass-xiaomi-miot documents MIoT local host/token support for devices using miot-spec, XiaomiHumidifier issue #4 reports `xiaomi.derh.lite` working when added to a MIoT model list, and Xiaomi product documentation confirms Mi Home control, smart/sleep/clothes drying modes, display brightness, child lock, notification sound, water-full/tank behavior, temperature, and humidity. The exact MIoT spec confirms the mapped properties below.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.derh.lite` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 `xiaomi.derh.13l` / specModel `xiaomi-13l` is a separate model/spec and is not included in this one-model driver.
 
@@ -17,8 +17,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `xiaomi.derh.
 - `switch`
 - `relativeHumidityMeasurement`
 - `temperatureMeasurement`
-- `concertmirror08464.xiaomiDehumidifierLiteControls`
-- `concertmirror08464.xiaomiDehumidifierLiteStatus`
+- `concertmirror08464.xiaomiDehumLiteMode`, `concertmirror08464.xiaomiDehumLiteTargetHumidity`, `concertmirror08464.xiaomiDehumLiteChildLock`, `concertmirror08464.xiaomiDehumLiteIndicatorLight`, `concertmirror08464.xiaomiDehumLiteAlarm`, `concertmirror08464.xiaomiDehumLiteDryAfterOff`, `concertmirror08464.xiaomiDehumLiteResetFilter`
+- `concertmirror08464.xiaomiDehumLiteTankStatus`, `concertmirror08464.xiaomiDehumLiteFilterStatus`, `concertmirror08464.xiaomiDehumLiteFault`
 - `refresh`
 
 ## MIoT Mapping

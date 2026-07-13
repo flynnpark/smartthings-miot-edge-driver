@@ -8,15 +8,15 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `xiaomi.humidif
 - Model: `xiaomi.humidifier.3lite`
 - specModel: `xiaomi-3lite`
 - URN: `urn:miot-spec-v2:device:humidifier:0000A00E:xiaomi-3lite:1:0000D061`
-- Basis: hass-xiaomi-miot documents MIoT local host/token support for devices using miot-spec, Home Assistant users report this exact model working through Xiaomi Miot Auto, and Smartmi product documents identify 3lite as a Mi Home controlled evaporative humidifier with child lock, brightness adjustment, water-low shutdown, and tank-removal shutdown. The exact MIoT spec confirms the mapped properties below.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.humidifier.3lite` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 ## Exposed Capabilities
 
 - `switch`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.xiaomiHumidifier3liteControls`
-- `concertmirror08464.xiaomiHumidifier3liteStats`
+- `concertmirror08464.xiaomiHum3liteMode`, `concertmirror08464.xiaomiHum3liteTargetHumidity`, `concertmirror08464.xiaomiHum3liteAutomaticAirDrying`, `concertmirror08464.xiaomiHum3liteChildLock`, `concertmirror08464.xiaomiHum3liteAlarm`, `concertmirror08464.xiaomiHum3liteScreenBrightness`, `concertmirror08464.xiaomiHum3liteOverwetProtect`
+- `concertmirror08464.xiaomiHum3liteFault`, `concertmirror08464.xiaomiHum3liteWaterStatus`
 - `refresh`
 
 ## MIoT Mapping

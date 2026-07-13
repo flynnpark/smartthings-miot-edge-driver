@@ -8,9 +8,25 @@ components:
     version: 1
   - id: relativeHumidityMeasurement
     version: 1
-  - id: concertmirror08464.deermaHumidifierJsq2wControls
+  - id: concertmirror08464.deermaHumJsq2wMode
     version: 1
-  - id: concertmirror08464.deermaHumidifierJsq2wStats
+  - id: concertmirror08464.deermaHumJsq2wTargetHumidity
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wAlarm
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wIndicatorLight
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wFanLevel
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wOverwetProtect
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wTankFilled
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wFault
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wWaterShortageFault
+    version: 1
+  - id: concertmirror08464.deermaHumJsq2wStatus
     version: 1
   - id: refresh
     version: 1
@@ -49,10 +65,34 @@ deviceConfig:
     capability: relativeHumidityMeasurement
     version: 1
   - component: main
-    capability: concertmirror08464.deermaHumidifierJsq2wControls
+    capability: concertmirror08464.deermaHumJsq2wMode
     version: 1
   - component: main
-    capability: concertmirror08464.deermaHumidifierJsq2wStats
+    capability: concertmirror08464.deermaHumJsq2wTargetHumidity
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wAlarm
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wIndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wFanLevel
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wOverwetProtect
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wTankFilled
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wFault
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wWaterShortageFault
+    version: 1
+  - component: main
+    capability: concertmirror08464.deermaHumJsq2wStatus
     version: 1
   - component: main
     capability: refresh
@@ -69,17 +109,56 @@ deviceConfig:
       capability: relativeHumidityMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.deermaHumidifierJsq2wControls
+      capability: concertmirror08464.deermaHumJsq2wMode
       version: 1
     - component: main
-      capability: concertmirror08464.deermaHumidifierJsq2wStats
+      capability: concertmirror08464.deermaHumJsq2wTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wFanLevel
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wOverwetProtect
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wTankFilled
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wFault
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wWaterShortageFault
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wStatus
       version: 1
     actions:
     - component: main
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.deermaHumidifierJsq2wControls
+      capability: concertmirror08464.deermaHumJsq2wMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wFanLevel
+      version: 1
+    - component: main
+      capability: concertmirror08464.deermaHumJsq2wOverwetProtect
       version: 1
 
 preferences:

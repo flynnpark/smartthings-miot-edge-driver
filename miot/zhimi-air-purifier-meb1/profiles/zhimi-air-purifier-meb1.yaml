@@ -4,7 +4,19 @@ components:
   capabilities:
   - id: switch
     version: 1
-  - id: concertmirror08464.airPurifierEliteControls
+  - id: concertmirror08464.zhimiAirMeb1Uv
+    version: 1
+  - id: concertmirror08464.zhimiAirMeb1AirPurifierMode
+    version: 1
+  - id: concertmirror08464.zhimiAirMeb1Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiAirMeb1ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiAirMeb1FanLevel
+    version: 1
+  - id: concertmirror08464.zhimiAirMeb1DisplayBrightness
+    version: 1
+  - id: concertmirror08464.zhimiAirMeb1Plasma
     version: 1
   - id: dustSensor
     version: 1
@@ -36,14 +48,50 @@ deviceConfig:
           - label: " PM2.5: {{fineDustLevel.value}}"
         composite: true
       - component: main
-        capability: concertmirror08464.airPurifierEliteControls
+        capability: concertmirror08464.zhimiAirMeb1Uv
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1AirPurifierMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1FanLevel
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1DisplayBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1Plasma
         version: 1
     actions:
       - component: main
         capability: switch
         version: 1
       - component: main
-        capability: concertmirror08464.airPurifierEliteControls
+        capability: concertmirror08464.zhimiAirMeb1Uv
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1AirPurifierMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1FanLevel
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1DisplayBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMeb1Plasma
         version: 1
     basicPlus: []
   detailView:
@@ -51,7 +99,25 @@ deviceConfig:
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.airPurifierEliteControls
+      capability: concertmirror08464.zhimiAirMeb1Uv
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMeb1AirPurifierMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMeb1Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMeb1ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMeb1FanLevel
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMeb1DisplayBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMeb1Plasma
       version: 1
     - component: main
       capability: dustSensor

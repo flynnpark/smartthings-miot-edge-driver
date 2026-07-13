@@ -8,9 +8,11 @@ local miot = require "miot"
 
 -- 커스텀 Capability 참조
 
-local fanMode = capabilities["connectamber53538.zhimiairpurifierfanmode"]
-local fanSpeed = capabilities["connectamber53538.zhimiairpurifierfanspeed"]
-local deviceControls = capabilities["concertmirror08464.xiaomiDeviceControls"]
+local fanModeFanMode = capabilities["concertmirror08464.zhimiAirVb2FanMode"]
+local fanSpeedFanSpeed = capabilities["concertmirror08464.zhimiAirVb2FanSpeed"]
+local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiAirVb2Buzzer"]
+local deviceControlsChildLock = capabilities["concertmirror08464.zhimiAirVb2ChildLock"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirVb2LedBrightness"]
 
 -- 상수 정의
 
@@ -129,9 +131,9 @@ local function poll_device_status(device)
                     end
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value] or "auto"
-                    device:emit_event(fanMode.fanMode(mode))
+                    device:emit_event(fanModeFanMode.fanMode(mode))
                 elseif piid == FAN_LEVEL_PIID then
-                    device:emit_event(fanSpeed.fanSpeed(value))
+                    device:emit_event(fanSpeedFanSpeed.fanSpeed(value))
                 end
             -- 환경 센서 데이터
             elseif siid == ENVIRONMENT_SIID then
@@ -148,14 +150,14 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
                 end
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                device:emit_event(deviceControls.buzzer({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsBuzzer.buzzer({value = value and "on" or "off"}))
             elseif siid == LED_BRIGHTNESS_SIID and piid == LED_BRIGHTNESS_PIID then
                 local brightness = LED_BRIGHTNESS_TO_ST[value]
                 if brightness then
-                    device:emit_event(deviceControls.ledBrightness({value = brightness}))
+                    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
                 end
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(deviceControls.childLock({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsChildLock.childLock({value = value and "on" or "off"}))
             end
         end
     end
@@ -222,7 +224,7 @@ local function handle_set_fan_mode(_, device, command)
         local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, MODE_PIID, mode_value)
         if ok then
             device:emit_event(capabilities.switch.switch.on())
-            device:emit_event(fanMode.fanMode(mode))
+            device:emit_event(fanModeFanMode.fanMode(mode))
         end
     end
 end
@@ -246,8 +248,8 @@ local function handle_set_fan_speed(_, device, command)
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, FAN_LEVEL_PIID, level)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(fanSpeed.fanSpeed(level))
-        device:emit_event(fanMode.fanMode("manual"))
+        device:emit_event(fanSpeedFanSpeed.fanSpeed(level))
+        device:emit_event(fanModeFanMode.fanMode("manual"))
     end
 end
 
@@ -261,7 +263,7 @@ local function handle_set_led_brightness(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, LED_BRIGHTNESS_SIID, LED_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
     end
 end
 
@@ -272,7 +274,7 @@ local function handle_set_buzzer(_, device, command)
     local value = command.args.buzzer == "on"
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, value)
     if ok then
-        device:emit_event(deviceControls.buzzer({value = command.args.buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = command.args.buzzer}))
     end
 end
 
@@ -283,7 +285,7 @@ local function handle_set_child_lock(_, device, command)
     local value = command.args.childLock == "on"
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value)
     if ok then
-        device:emit_event(deviceControls.childLock({value = command.args.childLock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = command.args.childLock}))
     end
 end
 
@@ -296,7 +298,7 @@ end
 
 -- 장치 추가됨
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanMode.ID, "main") then
+    if not device:supports_capability_by_id(fanModeFanMode.ID, "main") then
         device:try_update_metadata({profile = "zhimi-vb2"})
     end
 end
@@ -305,16 +307,16 @@ local function device_added(_, device)
     ensure_profile(device)
     -- 초기값 설정
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(fanMode.fanMode("auto"))
-    device:emit_event(fanSpeed.fanSpeed(1))
+    device:emit_event(fanModeFanMode.fanMode("auto"))
+    device:emit_event(fanSpeedFanSpeed.fanSpeed(1))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.fineDustSensor.fineDustLevel(0))
     device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
-    device:emit_event(deviceControls.ledBrightness({value = "bright"}))
-    device:emit_event(deviceControls.buzzer({value = "off"}))
-    device:emit_event(deviceControls.childLock({value = "off"}))
+    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
+    device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(deviceControlsChildLock.childLock({value = "off"}))
 end
 
 -- 장치 초기화
@@ -375,16 +377,20 @@ local driver = Driver("miot-air-purifier-vb2", {
             [capabilities.switch.commands.on.NAME] = handle_on,
             [capabilities.switch.commands.off.NAME] = handle_off
         },
-        [fanMode.ID] = {
-            [fanMode.commands.setFanMode.NAME] = handle_set_fan_mode
+        [fanModeFanMode.ID] = {
+            [fanModeFanMode.commands.setFanMode.NAME] = handle_set_fan_mode
         },
-        [fanSpeed.ID] = {
-            [fanSpeed.commands.setFanSpeed.NAME] = handle_set_fan_speed
+        [fanSpeedFanSpeed.ID] = {
+            [fanSpeedFanSpeed.commands.setFanSpeed.NAME] = handle_set_fan_speed
         },
-        [deviceControls.ID] = {
-            [deviceControls.commands.setLedBrightness.NAME] = handle_set_led_brightness,
-            [deviceControls.commands.setBuzzer.NAME] = handle_set_buzzer,
-            [deviceControls.commands.setChildLock.NAME] = handle_set_child_lock
+        [deviceControlsLedBrightness.ID] = {
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = handle_set_led_brightness
+        },
+        [deviceControlsBuzzer.ID] = {
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+        },
+        [deviceControlsChildLock.ID] = {
+            [deviceControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler
@@ -393,4 +399,3 @@ local driver = Driver("miot-air-purifier-vb2", {
 })
 
 driver:run()
-

@@ -8,9 +8,11 @@ local miot = require "miot"
 
 -- 커스텀 Capability 참조
 
-local cap_fanmode = capabilities["connectamber53538.xiaomip800mode"]
-local cap_targethumidity = capabilities["connectamber53538.xiaomip800targethumidity"]
-local deviceControls = capabilities["concertmirror08464.xiaomiDeviceControls"]
+local capFanmodeFanMode = capabilities["concertmirror08464.xiaomiHumP800FanMode"]
+local capTargethumidityTargetHumidity = capabilities["concertmirror08464.xiaomiHumP800TargetHumidity"]
+local deviceControlsBuzzer = capabilities["concertmirror08464.xiaomiHumP800Buzzer"]
+local deviceControlsChildLock = capabilities["concertmirror08464.xiaomiHumP800ChildLock"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.xiaomiHumP800LedBrightness"]
 
 -- 상수 정의
 
@@ -123,24 +125,24 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value] or "constant"
-                    device:emit_event(cap_fanmode.fanMode({value = mode}))
+                    device:emit_event(capFanmodeFanMode.fanMode({value = mode}))
                 elseif piid == TARGET_HUMIDITY_PIID then
-                    device:emit_event(cap_targethumidity.targetHumidity({value = value, unit = "%"}))
+                    device:emit_event(capTargethumidityTargetHumidity.targetHumidity({value = value, unit = "%"}))
                 end
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                device:emit_event(deviceControls.buzzer({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsBuzzer.buzzer({value = value and "on" or "off"}))
             elseif siid == SCREEN_SIID and piid == SCREEN_SWITCH_PIID then
                 screen_on = value
                 if not value then
-                    device:emit_event(deviceControls.ledBrightness({value = "off"}))
+                    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "off"}))
                 end
             elseif siid == SCREEN_SIID and piid == SCREEN_BRIGHTNESS_PIID then
                 local brightness = LED_BRIGHTNESS_TO_ST[value]
                 if brightness and screen_on ~= false then
-                    device:emit_event(deviceControls.ledBrightness({value = brightness}))
+                    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
                 end
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(deviceControls.childLock({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsChildLock.childLock({value = value and "on" or "off"}))
             -- 환경 센서 데이터
             elseif siid == ENVIRONMENT_SIID then
                 if piid == HUMIDITY_PIID then
@@ -214,7 +216,7 @@ local function set_mode_handler(_, device, command)
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, mode_value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(cap_fanmode.fanMode({value = mode}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = mode}))
     end
 end
 
@@ -227,7 +229,7 @@ local function set_constant_handler(_, device, _)
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, 0)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(cap_fanmode.fanMode({value = "constant"}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = "constant"}))
     end
 end
 
@@ -239,7 +241,7 @@ local function set_sleep_handler(_, device, _)
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, 1)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(cap_fanmode.fanMode({value = "sleep"}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = "sleep"}))
     end
 end
 
@@ -251,7 +253,7 @@ local function set_strong_handler(_, device, _)
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, 2)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(cap_fanmode.fanMode({value = "strong"}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = "strong"}))
     end
 end
 
@@ -266,7 +268,7 @@ local function set_target_humidity_handler(_, device, command)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, humidity)
     if ok then
-        device:emit_event(cap_targethumidity.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(capTargethumidityTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -278,7 +280,7 @@ local function set_led_brightness_handler(_, device, command)
     if brightness == "off" then
         local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_SWITCH_PIID, false)
         if ok then
-            device:emit_event(deviceControls.ledBrightness({value = "off"}))
+            device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "off"}))
         end
         return
     end
@@ -289,7 +291,7 @@ local function set_led_brightness_handler(_, device, command)
     pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_SWITCH_PIID, true)
     local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
     end
 end
 
@@ -300,7 +302,7 @@ local function set_buzzer_handler(_, device, command)
     local value = command.args.buzzer == "on"
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, value)
     if ok then
-        device:emit_event(deviceControls.buzzer({value = command.args.buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = command.args.buzzer}))
     end
 end
 
@@ -311,7 +313,7 @@ local function set_child_lock_handler(_, device, command)
     local value = command.args.childLock == "on"
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value)
     if ok then
-        device:emit_event(deviceControls.childLock({value = command.args.childLock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = command.args.childLock}))
     end
 end
 
@@ -324,7 +326,7 @@ end
 
 -- 장치 추가됨
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(cap_fanmode.ID, "main") then
+    if not device:supports_capability_by_id(capFanmodeFanMode.ID, "main") then
         device:try_update_metadata({profile = "xiaomi-humidifier-p800"})
     end
 end
@@ -335,11 +337,11 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(cap_fanmode.fanMode({value = "constant"}))
-    device:emit_event(cap_targethumidity.targetHumidity({value = 50, unit = "%"}))
-    device:emit_event(deviceControls.ledBrightness({value = "bright"}))
-    device:emit_event(deviceControls.buzzer({value = "off"}))
-    device:emit_event(deviceControls.childLock({value = "off"}))
+    device:emit_event(capFanmodeFanMode.fanMode({value = "constant"}))
+    device:emit_event(capTargethumidityTargetHumidity.targetHumidity({value = 50, unit = "%"}))
+    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
+    device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(deviceControlsChildLock.childLock({value = "off"}))
 end
 
 -- 장치 초기화
@@ -400,19 +402,23 @@ local driver = Driver("miot-humidifier-p800", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [cap_fanmode.ID] = {
-            [cap_fanmode.commands.setFanMode.NAME] = set_mode_handler,
-            [cap_fanmode.commands.setConstant.NAME] = set_constant_handler,
-            [cap_fanmode.commands.setSleep.NAME] = set_sleep_handler,
-            [cap_fanmode.commands.setStrong.NAME] = set_strong_handler
+        [capFanmodeFanMode.ID] = {
+            [capFanmodeFanMode.commands.setFanMode.NAME] = set_mode_handler,
+            [capFanmodeFanMode.commands.setConstant.NAME] = set_constant_handler,
+            [capFanmodeFanMode.commands.setSleep.NAME] = set_sleep_handler,
+            [capFanmodeFanMode.commands.setStrong.NAME] = set_strong_handler
         },
-        [cap_targethumidity.ID] = {
-            [cap_targethumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        [capTargethumidityTargetHumidity.ID] = {
+            [capTargethumidityTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
         },
-        [deviceControls.ID] = {
-            [deviceControls.commands.setLedBrightness.NAME] = set_led_brightness_handler,
-            [deviceControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [deviceControls.commands.setChildLock.NAME] = set_child_lock_handler
+        [deviceControlsLedBrightness.ID] = {
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = set_led_brightness_handler
+        },
+        [deviceControlsBuzzer.ID] = {
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [deviceControlsChildLock.ID] = {
+            [deviceControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

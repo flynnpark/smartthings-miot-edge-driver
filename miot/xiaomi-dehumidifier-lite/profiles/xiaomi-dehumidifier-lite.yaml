@@ -8,9 +8,25 @@ components:
     version: 1
   - id: temperatureMeasurement
     version: 1
-  - id: concertmirror08464.xiaomiDehumidifierLiteControls
+  - id: concertmirror08464.xiaomiDehumLiteMode
     version: 1
-  - id: concertmirror08464.xiaomiDehumidifierLiteStatus
+  - id: concertmirror08464.xiaomiDehumLiteTargetHumidity
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteChildLock
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteIndicatorLight
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteAlarm
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteDryAfterOff
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteResetFilter
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteTankStatus
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteFilterStatus
+    version: 1
+  - id: concertmirror08464.xiaomiDehumLiteFault
     version: 1
   - id: refresh
     version: 1
@@ -49,10 +65,34 @@ deviceConfig:
     capability: temperatureMeasurement
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiDehumidifierLiteControls
+    capability: concertmirror08464.xiaomiDehumLiteMode
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiDehumidifierLiteStatus
+    capability: concertmirror08464.xiaomiDehumLiteTargetHumidity
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteIndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteAlarm
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteDryAfterOff
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteResetFilter
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteTankStatus
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteFilterStatus
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiDehumLiteFault
     version: 1
   - component: main
     capability: refresh
@@ -69,17 +109,59 @@ deviceConfig:
       capability: temperatureMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumidifierLiteControls
+      capability: concertmirror08464.xiaomiDehumLiteMode
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumidifierLiteStatus
+      capability: concertmirror08464.xiaomiDehumLiteTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteDryAfterOff
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteResetFilter
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteTankStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteFilterStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteFault
       version: 1
     actions:
     - component: main
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumidifierLiteControls
+      capability: concertmirror08464.xiaomiDehumLiteMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteDryAfterOff
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiDehumLiteResetFilter
       version: 1
 
 preferences:

@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p30`.
 - Model: `xiaomi.fan.p30`
 - specModel: `xiaomi-p30`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p30:1:0000D062`
-- Basis: Exact MIoT spec defines read/write fan, indicator, alarm, child-lock, and delay properties for `xiaomi.fan.p30`; the product page identifies it as a 2.4G Wi-Fi Xiaomi fan with no gateway.
+- Basis: current `syssi/xiaomi_fan` implements exact model `xiaomi.fan.p30` as `FanXiaomiP30(MiotDevice)`, with explicit `siid`/`piid` mapping, `get_properties` polling, and `set_property` writes. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 

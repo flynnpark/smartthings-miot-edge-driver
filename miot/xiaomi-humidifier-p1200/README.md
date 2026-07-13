@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `xiaomi.humidif
 - Model: `xiaomi.humidifier.p1200`
 - specModel: `xiaomi-p1200`
 - URN: `urn:miot-spec-v2:device:humidifier:0000A00E:xiaomi-p1200:3`
-- Basis: hass-xiaomi-miot documents MIoT local host/token support for devices using miot-spec, its v1.0.15 release explicitly improved `xiaomi.humidifier.p1200`, and the model catalog identifies this exact Mi Home Wi-Fi model. The exact MIoT spec confirms the mapped properties below.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.humidifier.p1200` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 ## Exposed Capabilities
 
@@ -16,8 +16,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `xiaomi.humidif
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.xiaomiHumidifierP1200Controls`
-- `concertmirror08464.xiaomiHumidifierP1200Stats`
+- `concertmirror08464.xiaomiHumP1200Mode`, `concertmirror08464.xiaomiHumP1200TargetHumidity`, `concertmirror08464.xiaomiHumP1200ChildLock`, `concertmirror08464.xiaomiHumP1200Alarm`, `concertmirror08464.xiaomiHumP1200ScreenBrightness`, `concertmirror08464.xiaomiHumP1200OverwetProtect`, `concertmirror08464.xiaomiHumP1200DrySwitch`
+- `concertmirror08464.xiaomiHumP1200FilterClean`, `concertmirror08464.xiaomiHumP1200Fault`, `concertmirror08464.xiaomiHumP1200WaterLevel`, `concertmirror08464.xiaomiHumP1200WaterStatus`
 - `refresh`
 
 ## MIoT Mapping
@@ -41,3 +41,6 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `xiaomi.humidif
 | Screen brightness | RW | `siid=7`, `piid=2`; `0=dim`, `1=normal` | `xiaomiHumidifierP1200Controls.screenBrightness` |
 | Filter life | R | `siid=8`, `piid=1`; 0..100 % | `filterState.filterLifeRemaining` |
 | Reset filter life | Action | `siid=8`, `aiid=1` | `filterState.resetFilter` |
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

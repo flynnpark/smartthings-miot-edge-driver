@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `xiaomi.derh.
 - Model: `xiaomi.derh.13l`
 - specModel: `xiaomi-13l`
 - URN: `urn:miot-spec-v2:device:dehumidifier:0000A02D:xiaomi-13l:2`
-- Basis: hass-xiaomi-miot documents MIoT local host/token support for devices using miot-spec, Home Assistant users report it as the better local integration for `xiaomi.derh.13l`, and a model catalog identifies `xiaomi.derh.13l` as a Mi Home Xiaomi Smart Dehumidifier 13L with a linked MIoT spec. The exact MIoT spec confirms the mapped properties below.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.derh.13l` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 `xiaomi.derh.lite` / specModel `xiaomi-lite` is a separate model/spec and is not included in this one-model driver.
 
@@ -17,8 +17,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `xiaomi.derh.
 - `switch`
 - `relativeHumidityMeasurement`
 - `temperatureMeasurement`
-- `concertmirror08464.xiaomiDehumidifier13lControls`
-- `concertmirror08464.xiaomiDehumidifier13lStatus`
+- `concertmirror08464.xiaomiDehum13lMode`, `concertmirror08464.xiaomiDehum13lTargetHumidity`, `concertmirror08464.xiaomiDehum13lChildLock`, `concertmirror08464.xiaomiDehum13lIndicatorLight`, `concertmirror08464.xiaomiDehum13lAlarm`, `concertmirror08464.xiaomiDehum13lDryAfterOff`, `concertmirror08464.xiaomiDehum13lResetFilter`
+- `concertmirror08464.xiaomiDehum13lTankStatus`, `concertmirror08464.xiaomiDehum13lFilterStatus`, `concertmirror08464.xiaomiDehum13lFault`
 - `refresh`
 
 ## MIoT Mapping

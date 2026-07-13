@@ -1,5 +1,0 @@
-name: 'Mijia Circulation Fan Pro'
-packageKey: 'Mijia Circulation Fan Pro Driver'
-permissions:
-  lan: {}
-  discovery: {}

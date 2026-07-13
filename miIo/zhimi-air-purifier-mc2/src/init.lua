@@ -5,8 +5,10 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miio = require "miio"
 
-local airMode = capabilities["concertmirror08464.zhimiAirPurifierMode"]
-local deviceControls = capabilities["concertmirror08464.xiaomiDeviceControls"]
+local airModeAirPurifierMode = capabilities["concertmirror08464.zhimiAirMc2AirPurifierMode"]
+local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiAirMc2Buzzer"]
+local deviceControlsChildLock = capabilities["concertmirror08464.zhimiAirMc2ChildLock"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirMc2LedBrightness"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -101,7 +103,7 @@ local function poll_device_status(device)
 
     local mode = MODE_TO_ST[values.mode]
     if mode then
-        device:emit_event(airMode.airPurifierMode({value = mode}))
+        device:emit_event(airModeAirPurifierMode.airPurifierMode({value = mode}))
     end
 
     if values.aqi and type(values.aqi) == "number" then
@@ -132,17 +134,17 @@ function emit_device_controls(device, values)
     end
 
     if led_brightness then
-        device:emit_event(deviceControls.ledBrightness({value = led_brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = led_brightness}))
     end
 
     local buzzer = miio_on_off_to_st(values.buzzer)
     if buzzer then
-        device:emit_event(deviceControls.buzzer({value = buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = buzzer}))
     end
 
     local child_lock = miio_on_off_to_st(values.child_lock)
     if child_lock then
-        device:emit_event(deviceControls.childLock({value = child_lock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -190,7 +192,7 @@ local function handle_set_air_purifier_mode(_, device, command)
     miio.set_prop(device, ip, token, "set_power", {"on"})
     if miio.set_prop(device, ip, token, "set_mode", {miio_mode}) then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(airMode.airPurifierMode({value = mode}))
+        device:emit_event(airModeAirPurifierMode.airPurifierMode({value = mode}))
     end
 end
 
@@ -211,7 +213,7 @@ local function handle_set_led_brightness(_, device, command)
 
     local brightness_ok = miio.set_prop(device, ip, token, "set_led_b", {led_b})
     if led_ok and brightness_ok then
-        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
     end
 end
 
@@ -221,7 +223,7 @@ local function handle_set_buzzer(_, device, command)
 
     local buzzer = command.args.buzzer
     if miio.set_prop(device, ip, token, "set_buzzer", {buzzer}) then
-        device:emit_event(deviceControls.buzzer({value = buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = buzzer}))
     end
 end
 
@@ -231,7 +233,7 @@ local function handle_set_child_lock(_, device, command)
 
     local child_lock = command.args.childLock
     if miio.set_prop(device, ip, token, "set_child_lock", {child_lock}) then
-        device:emit_event(deviceControls.childLock({value = child_lock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -240,7 +242,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(airMode.ID, "main") then
+    if not device:supports_capability_by_id(airModeAirPurifierMode.ID, "main") then
         device:try_update_metadata({profile = "zhimi-mc2"})
     end
 end
@@ -248,15 +250,15 @@ end
 local function device_added(_, device)
     ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(airMode.airPurifierMode({value = "auto"}))
+    device:emit_event(airModeAirPurifierMode.airPurifierMode({value = "auto"}))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.fineDustSensor.fineDustLevel(0))
     device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
-    device:emit_event(deviceControls.ledBrightness({value = "bright"}))
-    device:emit_event(deviceControls.buzzer({value = "off"}))
-    device:emit_event(deviceControls.childLock({value = "off"}))
+    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
+    device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(deviceControlsChildLock.childLock({value = "off"}))
 end
 
 local function device_init(_, device)
@@ -310,13 +312,17 @@ local driver = Driver("miio-air-purifier-mc2", {
             [capabilities.switch.commands.on.NAME] = handle_on,
             [capabilities.switch.commands.off.NAME] = handle_off
         },
-        [airMode.ID] = {
-            [airMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
+        [airModeAirPurifierMode.ID] = {
+            [airModeAirPurifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
         },
-        [deviceControls.ID] = {
-            [deviceControls.commands.setLedBrightness.NAME] = handle_set_led_brightness,
-            [deviceControls.commands.setBuzzer.NAME] = handle_set_buzzer,
-            [deviceControls.commands.setChildLock.NAME] = handle_set_child_lock
+        [deviceControlsLedBrightness.ID] = {
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = handle_set_led_brightness
+        },
+        [deviceControlsBuzzer.ID] = {
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+        },
+        [deviceControlsChildLock.ID] = {
+            [deviceControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler
@@ -325,4 +331,3 @@ local driver = Driver("miio-air-purifier-mc2", {
 })
 
 driver:run()
-

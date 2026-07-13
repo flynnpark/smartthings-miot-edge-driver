@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.p221`.
 - Model: `dmaker.fan.p221`
 - specModel: `dmaker-p221`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p221:2`
-- Basis: Exact MIoT spec defines the local siid/piid contract, model docs identify p221 as the p220 battery edition variant without remote control, and community SmartThings Mi-Fan compatibility lists p221.
+- Basis: current `hass-xiaomi-miot` lists exact model `dmaker.fan.p221` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 

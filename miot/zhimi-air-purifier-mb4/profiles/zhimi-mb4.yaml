@@ -4,13 +4,17 @@ components:
   capabilities:
   - id: switch
     version: 1
-  - id: concertmirror08464.zhimiAirPurifierThreeMode
+  - id: concertmirror08464.zhimiAirMb4AirPurifierMode
     version: 1
   - id: fineDustSensor
     version: 1
   - id: filterState
     version: 1
-  - id: concertmirror08464.xiaomiDeviceControls
+  - id: concertmirror08464.zhimiAirMb4Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiAirMb4ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiAirMb4LedBrightness
     version: 1
   - id: refresh
     version: 1
@@ -34,11 +38,23 @@ deviceConfig:
           - label: " PM2.5: {{fineDustLevel.value}}"
         composite: true
       - component: main
-        capability: concertmirror08464.xiaomiDeviceControls
+        capability: concertmirror08464.zhimiAirMb4Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMb4ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMb4LedBrightness
         version: 1
     actions:
       - component: main
-        capability: concertmirror08464.xiaomiDeviceControls
+        capability: concertmirror08464.zhimiAirMb4Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMb4ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirMb4LedBrightness
         version: 1
       - component: main
         capability: switch
@@ -49,7 +65,7 @@ deviceConfig:
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiAirPurifierThreeMode
+      capability: concertmirror08464.zhimiAirMb4AirPurifierMode
       version: 1
     - component: main
       capability: fineDustSensor
@@ -58,7 +74,13 @@ deviceConfig:
       capability: filterState
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDeviceControls
+      capability: concertmirror08464.zhimiAirMb4Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMb4ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirMb4LedBrightness
       version: 1
     - component: main
       capability: refresh
@@ -69,7 +91,7 @@ deviceConfig:
         capability: switch
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiAirPurifierThreeMode
+        capability: concertmirror08464.zhimiAirMb4AirPurifierMode
         version: 1
       - component: main
         capability: fineDustSensor
@@ -82,7 +104,7 @@ deviceConfig:
         capability: switch
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiAirPurifierThreeMode
+        capability: concertmirror08464.zhimiAirMb4AirPurifierMode
         version: 1
 
 preferences:

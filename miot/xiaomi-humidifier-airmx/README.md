@@ -12,7 +12,7 @@ This LAN driver needs the device Xiaomi token and local IP address. Use [Xiaomi 
 - Model: `xiaomi.humidifier.airmx`
 - specModel: `xiaomi-3pro`
 - URN: `urn:miot-spec-v2:device:humidifier:0000A00E:xiaomi-3pro:1:0000D061`
-- Basis: model docs identify `xiaomi.humidifier.airmx` as Mijia Mist-Free Humidifier 3 Pro. hass-xiaomi-miot documents LAN MIoT host/token support for miot-spec devices. The exact MIoT spec confirms the mapped properties below.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.humidifier.airmx` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 ## Exposed Capabilities
 
@@ -20,8 +20,8 @@ This LAN driver needs the device Xiaomi token and local IP address. Use [Xiaomi 
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.xiaomiHumidifier3ProControls`
-- `concertmirror08464.xiaomiHumidifier3ProStats`
+- `concertmirror08464.xiaomiHumAirmxMode`, `concertmirror08464.xiaomiHumAirmxTargetHumidity`, `concertmirror08464.xiaomiHumAirmxAutomaticAirDrying`, `concertmirror08464.xiaomiHumAirmxIndicatorBrightness`, `concertmirror08464.xiaomiHumAirmxChildLock`, `concertmirror08464.xiaomiHumAirmxAlarm`, `concertmirror08464.xiaomiHumAirmxIndicatorLight`, `concertmirror08464.xiaomiHumAirmxIndicatorMode`, `concertmirror08464.xiaomiHumAirmxOverwetProtect`
+- `concertmirror08464.xiaomiHumAirmxFault`, `concertmirror08464.xiaomiHumAirmxWaterLevel`, `concertmirror08464.xiaomiHumAirmxWaterStatus`
 - `refresh`
 
 ## MIoT Mapping

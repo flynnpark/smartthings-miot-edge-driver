@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fish-tank model `hfjh.fishbowl.m
 - Model: `hfjh.fishbowl.m100`
 - specModel: `hfjh-m100`
 - URN: `urn:miot-spec-v2:device:fish-tank:0000A0A2:hfjh-m100:3`
-- Basis: Exact MIoT spec v3 defines the fish-tank services used by MYG100, and product documentation confirms Mi Home Wi-Fi control, pump/filter, water temperature, RGB light, and automatic feeding.
+- Basis: current `hass-xiaomi-miot` lists exact model `hfjh.fishbowl.m100` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fish-tank contract.
 
 ## Exposed Capabilities
 
@@ -16,8 +16,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fish-tank model `hfjh.fishbowl.m
 - `temperatureMeasurement`
 - `filterState`
 - `colorControl`
-- `concertmirror08464.xiaomiFishTankM100Controls`
-- `concertmirror08464.xiaomiFishTankM100Light`
+- `concertmirror08464.xiaomiTankM100IndicatorBrightness`, `concertmirror08464.xiaomiTankM100WaterPump`, `concertmirror08464.xiaomiTankM100ChildLock`, `concertmirror08464.xiaomiTankM100Alarm`, `concertmirror08464.xiaomiTankM100IndicatorLight`, `concertmirror08464.xiaomiTankM100PumpFlux`, `concertmirror08464.xiaomiTankM100FeederStatus`, `concertmirror08464.xiaomiTankM100PumpStatus`, `concertmirror08464.xiaomiTankM100FeedNow`
+- `concertmirror08464.xiaomiTankM100LightMode`, `concertmirror08464.xiaomiTankM100FlowSpeed`, `concertmirror08464.xiaomiTankM100LightBrightness`, `concertmirror08464.xiaomiTankM100LightSwitch`
 - `refresh`
 
 ## MIoT Mapping

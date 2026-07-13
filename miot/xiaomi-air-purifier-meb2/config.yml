@@ -1,5 +1,0 @@
-name: "Mijia Air Purifier MEB2"
-packageKey: "Mijia Air Purifier MEB2 Driver"
-permissions:
-  lan: {}
-  discovery: {}

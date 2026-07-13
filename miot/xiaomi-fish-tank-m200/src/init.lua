@@ -5,8 +5,21 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.xiaomiFishbowlM200Controls"]
-local light = capabilities["concertmirror08464.xiaomiFishbowlM200Light"]
+local controlsWaterPump = capabilities["concertmirror08464.xiaomiTankM200WaterPump"]
+local controlsFeedProtectStatus = capabilities["concertmirror08464.xiaomiTankM200FeedProtectStatus"]
+local controlsChildLock = capabilities["concertmirror08464.xiaomiTankM200ChildLock"]
+local controlsNoDisturb = capabilities["concertmirror08464.xiaomiTankM200NoDisturb"]
+local controlsAlarm = capabilities["concertmirror08464.xiaomiTankM200Alarm"]
+local controlsIndicatorLight = capabilities["concertmirror08464.xiaomiTankM200IndicatorLight"]
+local controlsPumpFlux = capabilities["concertmirror08464.xiaomiTankM200PumpFlux"]
+local controlsFeederStatus = capabilities["concertmirror08464.xiaomiTankM200FeederStatus"]
+local controlsFeedProtect = capabilities["concertmirror08464.xiaomiTankM200FeedProtect"]
+local controlsPumpStatus = capabilities["concertmirror08464.xiaomiTankM200PumpStatus"]
+local controlsFeedNow = capabilities["concertmirror08464.xiaomiTankM200FeedNow"]
+local lightLightMode = capabilities["concertmirror08464.xiaomiTankM200LightMode"]
+local lightFlowSpeed = capabilities["concertmirror08464.xiaomiTankM200FlowSpeed"]
+local lightLightBrightness = capabilities["concertmirror08464.xiaomiTankM200LightBrightness"]
+local lightLightSwitch = capabilities["concertmirror08464.xiaomiTankM200LightSwitch"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -298,62 +311,62 @@ local function poll_device_status(device)
                 if piid == POWER_PIID then
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
                 elseif piid == WATER_PUMP_PIID then
-                    emit_on_off(device, controls.waterPump, value)
+                    emit_on_off(device, controlsWaterPump.waterPump, value)
                 elseif piid == PUMP_FLUX_PIID then
                     local flux = PUMP_FLUX_TO_ST[value]
                     if flux then
-                        device:emit_event(controls.pumpFlux({value = flux}))
+                        device:emit_event(controlsPumpFlux.pumpFlux({value = flux}))
                     end
                 elseif piid == TEMPERATURE_PIID then
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
                 elseif piid == WATER_PUMP_STATUS_PIID then
                     local status = PUMP_STATUS_TO_ST[value]
                     if status then
-                        device:emit_event(controls.pumpStatus({value = status}))
+                        device:emit_event(controlsPumpStatus.pumpStatus({value = status}))
                     end
                 end
             elseif siid == FILTER_SIID and piid == FILTER_LIFE_LEVEL_PIID then
                 device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
             elseif siid == ALARM_SIID and piid == ALARM_PIID then
-                emit_on_off(device, controls.alarm, value)
+                emit_on_off(device, controlsAlarm.alarm, value)
             elseif siid == INDICATOR_LIGHT_SIID then
                 if piid == INDICATOR_LIGHT_PIID then
-                    emit_on_off(device, controls.indicatorLight, value)
+                    emit_on_off(device, controlsIndicatorLight.indicatorLight, value)
                 end
             elseif siid == LIGHT_SIID then
                 if piid == LIGHT_SWITCH_PIID then
-                    emit_on_off(device, light.lightSwitch, value)
+                    emit_on_off(device, lightLightSwitch.lightSwitch, value)
                 elseif piid == LIGHT_MODE_PIID then
                     local mode = LIGHT_MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(light.lightMode({value = mode}))
+                        device:emit_event(lightLightMode.lightMode({value = mode}))
                     end
                 elseif piid == LIGHT_BRIGHTNESS_PIID then
-                    device:emit_event(light.lightBrightness({value = value, unit = "%"}))
+                    device:emit_event(lightLightBrightness.lightBrightness({value = value, unit = "%"}))
                 elseif piid == FLOW_SPEED_PIID then
                     local speed = FLOW_SPEED_TO_ST[value]
                     if speed then
-                        device:emit_event(light.flowSpeed({value = speed}))
+                        device:emit_event(lightFlowSpeed.flowSpeed({value = speed}))
                     end
                 end
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                emit_on_off(device, controls.childLock, value)
+                emit_on_off(device, controlsChildLock.childLock, value)
             elseif siid == NO_DISTURB_SIID and piid == NO_DISTURB_PIID then
-                emit_on_off(device, controls.noDisturb, value)
+                emit_on_off(device, controlsNoDisturb.noDisturb, value)
             elseif siid == LIGHT_CUSTOM_SIID and piid == LIGHT_EDIT_COLOR_PIID and type(value) == "number" then
                 emit_color(device, value)
             elseif siid == FEEDER_CUSTOM_SIID then
                 if piid == FEEDER_STATUS_PIID then
                     local status = FEEDER_STATUS_TO_ST[value]
                     if status then
-                        device:emit_event(controls.feederStatus({value = status}))
+                        device:emit_event(controlsFeederStatus.feederStatus({value = status}))
                     end
                 elseif piid == FEED_PROTECT_PIID then
-                    emit_on_off(device, controls.feedProtect, value)
+                    emit_on_off(device, controlsFeedProtect.feedProtect, value)
                 elseif piid == FEED_PROTECT_STATUS_PIID then
                     local status = FEEDER_STATUS_TO_ST[value]
                     if status then
-                        device:emit_event(controls.feedProtectStatus({value = status}))
+                        device:emit_event(controlsFeedProtectStatus.feedProtectStatus({value = status}))
                     end
                 end
             end
@@ -407,7 +420,7 @@ local function set_water_pump_handler(_, device, command)
     local water_pump = command.args.waterPump
     local ok = pcall(miot.set, device, ip, token, FISH_TANK_SIID, WATER_PUMP_PIID, water_pump == "on")
     if ok then
-        device:emit_event(controls.waterPump({value = water_pump}))
+        device:emit_event(controlsWaterPump.waterPump({value = water_pump}))
     end
 end
 
@@ -421,7 +434,7 @@ local function set_pump_flux_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, FISH_TANK_SIID, PUMP_FLUX_PIID, value)
     if ok then
-        device:emit_event(controls.pumpFlux({value = flux}))
+        device:emit_event(controlsPumpFlux.pumpFlux({value = flux}))
     end
 end
 
@@ -434,7 +447,7 @@ local function feed_now_handler(_, device, command)
         {piid = FEEDING_MEASURE_PIID, value = measure}
     })
     if ok then
-        device:emit_event(controls.feederStatus({value = "busy"}))
+        device:emit_event(controlsFeederStatus.feederStatus({value = "busy"}))
         device.thread:call_with_delay(2, function()
             pcall(poll_device_status, device)
         end)
@@ -448,7 +461,7 @@ local function set_alarm_handler(_, device, command)
     local alarm = command.args.alarm
     local ok = pcall(miot.set, device, ip, token, ALARM_SIID, ALARM_PIID, alarm == "on")
     if ok then
-        device:emit_event(controls.alarm({value = alarm}))
+        device:emit_event(controlsAlarm.alarm({value = alarm}))
     end
 end
 
@@ -459,7 +472,7 @@ local function set_indicator_light_handler(_, device, command)
     local indicator = command.args.indicatorLight
     local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator == "on")
     if ok then
-        device:emit_event(controls.indicatorLight({value = indicator}))
+        device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
     end
 end
 
@@ -470,7 +483,7 @@ local function set_feed_protect_handler(_, device, command)
     local feed_protect = command.args.feedProtect
     local ok = pcall(miot.set, device, ip, token, FEEDER_CUSTOM_SIID, FEED_PROTECT_PIID, feed_protect == "on")
     if ok then
-        device:emit_event(controls.feedProtect({value = feed_protect}))
+        device:emit_event(controlsFeedProtect.feedProtect({value = feed_protect}))
     end
 end
 
@@ -481,7 +494,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(controls.childLock({value = child_lock}))
+        device:emit_event(controlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -492,7 +505,7 @@ local function set_no_disturb_handler(_, device, command)
     local no_disturb = command.args.noDisturb
     local ok = pcall(miot.set, device, ip, token, NO_DISTURB_SIID, NO_DISTURB_PIID, no_disturb == "on")
     if ok then
-        device:emit_event(controls.noDisturb({value = no_disturb}))
+        device:emit_event(controlsNoDisturb.noDisturb({value = no_disturb}))
     end
 end
 
@@ -503,7 +516,7 @@ local function set_light_switch_handler(_, device, command)
     local light_switch = command.args.lightSwitch
     local ok = pcall(miot.set, device, ip, token, LIGHT_SIID, LIGHT_SWITCH_PIID, light_switch == "on")
     if ok then
-        device:emit_event(light.lightSwitch({value = light_switch}))
+        device:emit_event(lightLightSwitch.lightSwitch({value = light_switch}))
     end
 end
 
@@ -517,7 +530,7 @@ local function set_light_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, LIGHT_SIID, LIGHT_MODE_PIID, value)
     if ok then
-        device:emit_event(light.lightMode({value = mode}))
+        device:emit_event(lightLightMode.lightMode({value = mode}))
     end
 end
 
@@ -528,7 +541,7 @@ local function set_light_brightness_handler(_, device, command)
     local brightness = clamp(command.args.brightness, 1, 100)
     local ok = pcall(miot.set, device, ip, token, LIGHT_SIID, LIGHT_BRIGHTNESS_PIID, brightness)
     if ok then
-        device:emit_event(light.lightBrightness({value = brightness, unit = "%"}))
+        device:emit_event(lightLightBrightness.lightBrightness({value = brightness, unit = "%"}))
     end
 end
 
@@ -542,7 +555,7 @@ local function set_flow_speed_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, LIGHT_SIID, FLOW_SPEED_PIID, value)
     if ok then
-        device:emit_event(light.flowSpeed({value = speed}))
+        device:emit_event(lightFlowSpeed.flowSpeed({value = speed}))
     end
 end
 
@@ -558,7 +571,7 @@ local function set_color_handler(_, device, command)
     pcall(miot.set, device, ip, token, LIGHT_SIID, LIGHT_SWITCH_PIID, true)
     local ok = pcall(miot.set, device, ip, token, LIGHT_CUSTOM_SIID, LIGHT_EDIT_COLOR_PIID, rgb)
     if ok then
-        device:emit_event(light.lightSwitch({value = "on"}))
+        device:emit_event(lightLightSwitch.lightSwitch({value = "on"}))
         emit_color(device, rgb)
     end
 end
@@ -594,7 +607,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsWaterPump.ID, "main") then
         device:try_update_metadata({profile = "xiaomi-fish-tank-m200"})
     end
 end
@@ -612,20 +625,20 @@ local function device_added(_, device)
     device:emit_event(capabilities.colorControl.hue(0))
     device:emit_event(capabilities.colorControl.saturation(100))
     device:emit_event(capabilities.colorControl.color({hue = 0, saturation = 100}))
-    device:emit_event(controls.waterPump({value = "off"}))
-    device:emit_event(controls.pumpFlux({value = "level1"}))
-    device:emit_event(controls.pumpStatus({value = "off"}))
-    device:emit_event(controls.feederStatus({value = "idle"}))
-    device:emit_event(controls.feedProtect({value = "off"}))
-    device:emit_event(controls.feedProtectStatus({value = "idle"}))
-    device:emit_event(controls.alarm({value = "off"}))
-    device:emit_event(controls.indicatorLight({value = "on"}))
-    device:emit_event(controls.childLock({value = "off"}))
-    device:emit_event(controls.noDisturb({value = "off"}))
-    device:emit_event(light.lightSwitch({value = "off"}))
-    device:emit_event(light.lightMode({value = "day"}))
-    device:emit_event(light.lightBrightness({value = 100, unit = "%"}))
-    device:emit_event(light.flowSpeed({value = "medium"}))
+    device:emit_event(controlsWaterPump.waterPump({value = "off"}))
+    device:emit_event(controlsPumpFlux.pumpFlux({value = "level1"}))
+    device:emit_event(controlsPumpStatus.pumpStatus({value = "off"}))
+    device:emit_event(controlsFeederStatus.feederStatus({value = "idle"}))
+    device:emit_event(controlsFeedProtect.feedProtect({value = "off"}))
+    device:emit_event(controlsFeedProtectStatus.feedProtectStatus({value = "idle"}))
+    device:emit_event(controlsAlarm.alarm({value = "off"}))
+    device:emit_event(controlsIndicatorLight.indicatorLight({value = "on"}))
+    device:emit_event(controlsChildLock.childLock({value = "off"}))
+    device:emit_event(controlsNoDisturb.noDisturb({value = "off"}))
+    device:emit_event(lightLightSwitch.lightSwitch({value = "off"}))
+    device:emit_event(lightLightMode.lightMode({value = "day"}))
+    device:emit_event(lightLightBrightness.lightBrightness({value = 100, unit = "%"}))
+    device:emit_event(lightFlowSpeed.flowSpeed({value = "medium"}))
 end
 
 local function device_init(_, device)
@@ -679,21 +692,41 @@ local driver = Driver("miot-xiaomi-fish-tank-m200", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [controls.ID] = {
-            [controls.commands.setWaterPump.NAME] = set_water_pump_handler,
-            [controls.commands.setPumpFlux.NAME] = set_pump_flux_handler,
-            [controls.commands.feedNow.NAME] = feed_now_handler,
-            [controls.commands.setFeedProtect.NAME] = set_feed_protect_handler,
-            [controls.commands.setAlarm.NAME] = set_alarm_handler,
-            [controls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [controls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [controls.commands.setNoDisturb.NAME] = set_no_disturb_handler
+        [controlsWaterPump.ID] = {
+            [controlsWaterPump.commands.setWaterPump.NAME] = set_water_pump_handler
         },
-        [light.ID] = {
-            [light.commands.setLightSwitch.NAME] = set_light_switch_handler,
-            [light.commands.setLightMode.NAME] = set_light_mode_handler,
-            [light.commands.setLightBrightness.NAME] = set_light_brightness_handler,
-            [light.commands.setFlowSpeed.NAME] = set_flow_speed_handler
+        [controlsPumpFlux.ID] = {
+            [controlsPumpFlux.commands.setPumpFlux.NAME] = set_pump_flux_handler
+        },
+        [controlsFeedNow.ID] = {
+            [controlsFeedNow.commands.feedNow.NAME] = feed_now_handler
+        },
+        [controlsFeedProtect.ID] = {
+            [controlsFeedProtect.commands.setFeedProtect.NAME] = set_feed_protect_handler
+        },
+        [controlsAlarm.ID] = {
+            [controlsAlarm.commands.setAlarm.NAME] = set_alarm_handler
+        },
+        [controlsIndicatorLight.ID] = {
+            [controlsIndicatorLight.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [controlsChildLock.ID] = {
+            [controlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [controlsNoDisturb.ID] = {
+            [controlsNoDisturb.commands.setNoDisturb.NAME] = set_no_disturb_handler
+        },
+        [lightLightSwitch.ID] = {
+            [lightLightSwitch.commands.setLightSwitch.NAME] = set_light_switch_handler
+        },
+        [lightLightMode.ID] = {
+            [lightLightMode.commands.setLightMode.NAME] = set_light_mode_handler
+        },
+        [lightLightBrightness.ID] = {
+            [lightLightBrightness.commands.setLightBrightness.NAME] = set_light_brightness_handler
+        },
+        [lightFlowSpeed.ID] = {
+            [lightFlowSpeed.commands.setFlowSpeed.NAME] = set_flow_speed_handler
         },
         [capabilities.colorControl.ID] = {
             [capabilities.colorControl.commands.setColor.NAME] = set_color_handler,

@@ -5,8 +5,16 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.deermaHumidifierJsq2wControls"]
-local stats = capabilities["concertmirror08464.deermaHumidifierJsq2wStats"]
+local controlsMode = capabilities["concertmirror08464.deermaHumJsq2wMode"]
+local controlsTargetHumidity = capabilities["concertmirror08464.deermaHumJsq2wTargetHumidity"]
+local controlsAlarm = capabilities["concertmirror08464.deermaHumJsq2wAlarm"]
+local controlsIndicatorLight = capabilities["concertmirror08464.deermaHumJsq2wIndicatorLight"]
+local controlsFanLevel = capabilities["concertmirror08464.deermaHumJsq2wFanLevel"]
+local controlsOverwetProtect = capabilities["concertmirror08464.deermaHumJsq2wOverwetProtect"]
+local statsTankFilled = capabilities["concertmirror08464.deermaHumJsq2wTankFilled"]
+local statsFault = capabilities["concertmirror08464.deermaHumJsq2wFault"]
+local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq2wWaterShortageFault"]
+local statsStatus = capabilities["concertmirror08464.deermaHumJsq2wStatus"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -147,24 +155,24 @@ local function poll_device_status(device)
                 elseif piid == FAULT_PIID then
                     local fault = FAULT_TO_ST[value]
                     if fault then
-                        device:emit_event(stats.fault({value = fault}))
+                        device:emit_event(statsFault.fault({value = fault}))
                     end
                 elseif piid == FAN_LEVEL_PIID then
                     local level = FAN_LEVEL_TO_ST[value]
                     if level then
-                        device:emit_event(controls.fanLevel({value = level}))
+                        device:emit_event(controlsFanLevel.fanLevel({value = level}))
                     end
                 elseif piid == TARGET_HUMIDITY_PIID then
-                    device:emit_event(controls.targetHumidity({value = value, unit = "%"}))
+                    device:emit_event(controlsTargetHumidity.targetHumidity({value = value, unit = "%"}))
                 elseif piid == STATUS_PIID then
                     local status = STATUS_TO_ST[value]
                     if status then
-                        device:emit_event(stats.status({value = status}))
+                        device:emit_event(statsStatus.status({value = status}))
                     end
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(controls.mode({value = mode}))
+                        device:emit_event(controlsMode.mode({value = mode}))
                     end
                 end
             elseif siid == ENVIRONMENT_SIID then
@@ -174,16 +182,16 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
                 end
             elseif siid == ALARM_SIID and piid == ALARM_PIID then
-                device:emit_event(controls.alarm({value = bool_to_st(value)}))
+                device:emit_event(controlsAlarm.alarm({value = bool_to_st(value)}))
             elseif siid == INDICATOR_LIGHT_SIID and piid == INDICATOR_LIGHT_PIID then
-                device:emit_event(controls.indicatorLight({value = bool_to_st(value)}))
+                device:emit_event(controlsIndicatorLight.indicatorLight({value = bool_to_st(value)}))
             elseif siid == CUSTOM_SIID then
                 if piid == TANK_FILLED_PIID then
-                    device:emit_event(stats.tankFilled({value = bool_to_st(value)}))
+                    device:emit_event(statsTankFilled.tankFilled({value = bool_to_st(value)}))
                 elseif piid == WATER_SHORTAGE_PIID then
-                    device:emit_event(stats.waterShortageFault({value = bool_to_st(value)}))
+                    device:emit_event(statsWaterShortageFault.waterShortageFault({value = bool_to_st(value)}))
                 elseif piid == OVERWET_PROTECT_ON_PIID then
-                    device:emit_event(controls.overwetProtect({value = bool_to_st(value)}))
+                    device:emit_event(controlsOverwetProtect.overwetProtect({value = bool_to_st(value)}))
                 end
             end
         end
@@ -239,7 +247,7 @@ local function set_fan_level_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, FAN_LEVEL_PIID, value)
     if ok then
-        device:emit_event(controls.fanLevel({value = level}))
+        device:emit_event(controlsFanLevel.fanLevel({value = level}))
     end
 end
 
@@ -253,7 +261,7 @@ local function set_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, value)
     if ok then
-        device:emit_event(controls.mode({value = mode}))
+        device:emit_event(controlsMode.mode({value = mode}))
         device.thread:call_with_delay(1, function()
             pcall(poll_device_status, device)
         end)
@@ -267,7 +275,7 @@ local function set_target_humidity_handler(_, device, command)
     local humidity = math.max(40, math.min(70, command.args.humidity))
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, humidity)
     if ok then
-        device:emit_event(controls.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(controlsTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -278,7 +286,7 @@ local function set_alarm_handler(_, device, command)
     local alarm = command.args.alarm
     local ok = pcall(miot.set, device, ip, token, ALARM_SIID, ALARM_PIID, alarm == "on")
     if ok then
-        device:emit_event(controls.alarm({value = alarm}))
+        device:emit_event(controlsAlarm.alarm({value = alarm}))
     end
 end
 
@@ -289,7 +297,7 @@ local function set_indicator_light_handler(_, device, command)
     local indicator = command.args.indicatorLight
     local ok = pcall(miot.set, device, ip, token, INDICATOR_LIGHT_SIID, INDICATOR_LIGHT_PIID, indicator == "on")
     if ok then
-        device:emit_event(controls.indicatorLight({value = indicator}))
+        device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
     end
 end
 
@@ -300,7 +308,7 @@ local function set_overwet_protect_handler(_, device, command)
     local overwet = command.args.overwetProtect
     local ok = pcall(miot.set, device, ip, token, CUSTOM_SIID, OVERWET_PROTECT_ON_PIID, overwet == "on")
     if ok then
-        device:emit_event(controls.overwetProtect({value = overwet}))
+        device:emit_event(controlsOverwetProtect.overwetProtect({value = overwet}))
     end
 end
 
@@ -309,7 +317,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsMode.ID, "main") then
         device:try_update_metadata({profile = "deerma-humidifier-jsq2w"})
     end
 end
@@ -319,16 +327,16 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(controls.fanLevel({value = "level1"}))
-    device:emit_event(controls.mode({value = "none"}))
-    device:emit_event(controls.targetHumidity({value = 40, unit = "%"}))
-    device:emit_event(controls.alarm({value = "off"}))
-    device:emit_event(controls.indicatorLight({value = "off"}))
-    device:emit_event(controls.overwetProtect({value = "off"}))
-    device:emit_event(stats.fault({value = "noFaults"}))
-    device:emit_event(stats.status({value = "idle"}))
-    device:emit_event(stats.waterShortageFault({value = "off"}))
-    device:emit_event(stats.tankFilled({value = "off"}))
+    device:emit_event(controlsFanLevel.fanLevel({value = "level1"}))
+    device:emit_event(controlsMode.mode({value = "none"}))
+    device:emit_event(controlsTargetHumidity.targetHumidity({value = 40, unit = "%"}))
+    device:emit_event(controlsAlarm.alarm({value = "off"}))
+    device:emit_event(controlsIndicatorLight.indicatorLight({value = "off"}))
+    device:emit_event(controlsOverwetProtect.overwetProtect({value = "off"}))
+    device:emit_event(statsFault.fault({value = "noFaults"}))
+    device:emit_event(statsStatus.status({value = "idle"}))
+    device:emit_event(statsWaterShortageFault.waterShortageFault({value = "off"}))
+    device:emit_event(statsTankFilled.tankFilled({value = "off"}))
 end
 
 local function device_init(_, device)
@@ -382,13 +390,23 @@ local driver = Driver("miot-deerma-humidifier-jsq2w", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [controls.ID] = {
-            [controls.commands.setFanLevel.NAME] = set_fan_level_handler,
-            [controls.commands.setMode.NAME] = set_mode_handler,
-            [controls.commands.setTargetHumidity.NAME] = set_target_humidity_handler,
-            [controls.commands.setAlarm.NAME] = set_alarm_handler,
-            [controls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [controls.commands.setOverwetProtect.NAME] = set_overwet_protect_handler
+        [controlsFanLevel.ID] = {
+            [controlsFanLevel.commands.setFanLevel.NAME] = set_fan_level_handler
+        },
+        [controlsMode.ID] = {
+            [controlsMode.commands.setMode.NAME] = set_mode_handler
+        },
+        [controlsTargetHumidity.ID] = {
+            [controlsTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        },
+        [controlsAlarm.ID] = {
+            [controlsAlarm.commands.setAlarm.NAME] = set_alarm_handler
+        },
+        [controlsIndicatorLight.ID] = {
+            [controlsIndicatorLight.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [controlsOverwetProtect.ID] = {
+            [controlsOverwetProtect.commands.setOverwetProtect.NAME] = set_overwet_protect_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

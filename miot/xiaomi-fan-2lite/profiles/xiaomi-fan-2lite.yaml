@@ -6,12 +6,113 @@ components:
     version: 1
   - id: fanOscillationMode
     version: 1
-  - id: concertmirror08464.xiaomiFan2LiteControls
+  - id: concertmirror08464.xiaomiFan2liteFanMode
+    version: 1
+  - id: concertmirror08464.xiaomiFan2liteBuzzer
+    version: 1
+  - id: concertmirror08464.xiaomiFan2liteChildLock
+    version: 1
+  - id: concertmirror08464.xiaomiFan2liteIndicatorLight
+    version: 1
+  - id: concertmirror08464.xiaomiFan2liteFanLevel
     version: 1
   - id: refresh
     version: 1
   categories:
   - name: Fan
+deviceConfig:
+  dashboard:
+    states:
+    - component: main
+      capability: switch
+      version: 1
+      group: main
+      values:
+      - label: "{{switch.value}}"
+      composite: true
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteFanLevel
+      version: 1
+      group: main
+      values:
+      - label: " {{fanLevel.value}}"
+      composite: true
+    actions:
+    - component: main
+      capability: switch
+      version: 1
+    basicPlus: []
+  detailView:
+  - component: main
+    capability: switch
+    version: 1
+  - component: main
+    capability: fanOscillationMode
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiFan2liteFanMode
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiFan2liteBuzzer
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiFan2liteChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiFan2liteIndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiFan2liteFanLevel
+    version: 1
+  - component: main
+    capability: refresh
+    version: 1
+  automation:
+    conditions:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: fanOscillationMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteFanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteBuzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteFanLevel
+      version: 1
+    actions:
+    - component: main
+      capability: switch
+      version: 1
+    - component: main
+      capability: fanOscillationMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteFanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteBuzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiFan2liteFanLevel
+      version: 1
+
 preferences:
 - name: ipAddress
   title: IP Address

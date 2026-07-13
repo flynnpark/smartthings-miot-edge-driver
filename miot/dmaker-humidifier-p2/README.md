@@ -16,8 +16,8 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `dmaker.humidif
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.dmakerHumidifierP2Controls`
-- `concertmirror08464.dmakerHumidifierP2Stats`
+- `concertmirror08464.dmakerHumP2Mode`, `concertmirror08464.dmakerHumP2TargetHumidity`, `concertmirror08464.dmakerHumP2ChildLock`, `concertmirror08464.dmakerHumP2Alarm`, `concertmirror08464.dmakerHumP2ScreenBrightness`, `concertmirror08464.dmakerHumP2Screen`, `concertmirror08464.dmakerHumP2OverwetProtect`
+- `concertmirror08464.dmakerHumP2Fault`, `concertmirror08464.dmakerHumP2WaterLevel`, `concertmirror08464.dmakerHumP2WaterStatus`
 - `refresh`
 
 ## MIoT Mapping

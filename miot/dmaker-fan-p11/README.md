@@ -55,3 +55,6 @@ Physical controls locked service `siid=7`:
 - `piid=1` child lock, read/write
 
 Angle control: `dmakerFanP11HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/140`.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

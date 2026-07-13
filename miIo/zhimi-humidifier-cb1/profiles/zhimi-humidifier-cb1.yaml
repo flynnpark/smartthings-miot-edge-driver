@@ -4,15 +4,23 @@ components:
   capabilities:
   - id: switch
     version: 1
-  - id: concertmirror08464.zhimiHumidifierClassicCore
+  - id: concertmirror08464.zhimiHumCb1TargetHumidity
     version: 1
-  - id: concertmirror08464.zhimiHumidifierClassicWater
+  - id: concertmirror08464.zhimiHumCb1FanMode
+    version: 1
+  - id: concertmirror08464.zhimiHumCb1DryMode
+    version: 1
+  - id: concertmirror08464.zhimiHumCb1WaterLevel
     version: 1
   - id: temperatureMeasurement
     version: 1
   - id: relativeHumidityMeasurement
     version: 1
-  - id: concertmirror08464.xiaomiDeviceControls
+  - id: concertmirror08464.zhimiHumCb1Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiHumCb1ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiHumCb1LedBrightness
     version: 1
   - id: refresh
     version: 1
@@ -36,11 +44,23 @@ deviceConfig:
           - label: "{{humidity.value}}%"
         composite: true
       - component: main
-        capability: concertmirror08464.xiaomiDeviceControls
+        capability: concertmirror08464.zhimiHumCb1Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1LedBrightness
         version: 1
     actions:
       - component: main
-        capability: concertmirror08464.xiaomiDeviceControls
+        capability: concertmirror08464.zhimiHumCb1Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1LedBrightness
         version: 1
       - component: main
         capability: switch
@@ -51,10 +71,16 @@ deviceConfig:
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiHumidifierClassicCore
+      capability: concertmirror08464.zhimiHumCb1TargetHumidity
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiHumidifierClassicWater
+      capability: concertmirror08464.zhimiHumCb1FanMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHumCb1DryMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHumCb1WaterLevel
       version: 1
     - component: main
       capability: temperatureMeasurement
@@ -63,7 +89,13 @@ deviceConfig:
       capability: relativeHumidityMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDeviceControls
+      capability: concertmirror08464.zhimiHumCb1Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHumCb1ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHumCb1LedBrightness
       version: 1
     - component: main
       capability: refresh
@@ -74,10 +106,16 @@ deviceConfig:
         capability: switch
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiHumidifierClassicCore
+        capability: concertmirror08464.zhimiHumCb1TargetHumidity
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiHumidifierClassicWater
+        capability: concertmirror08464.zhimiHumCb1FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1DryMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1WaterLevel
         version: 1
       - component: main
         capability: temperatureMeasurement
@@ -90,10 +128,16 @@ deviceConfig:
         capability: switch
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiHumidifierClassicCore
+        capability: concertmirror08464.zhimiHumCb1TargetHumidity
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiHumidifierClassicWater
+        capability: concertmirror08464.zhimiHumCb1FanMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1DryMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiHumCb1WaterLevel
         version: 1
 
 preferences:

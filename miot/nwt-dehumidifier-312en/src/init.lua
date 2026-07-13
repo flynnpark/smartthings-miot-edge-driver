@@ -5,7 +5,11 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.nwtDerh312enControls"]
+local controlsMode = capabilities["concertmirror08464.nwtDehum312enMode"]
+local controlsTargetHumidity = capabilities["concertmirror08464.nwtDehum312enTargetHumidity"]
+local controlsChildLock = capabilities["concertmirror08464.nwtDehum312enChildLock"]
+local controlsIndicatorLight = capabilities["concertmirror08464.nwtDehum312enIndicatorLight"]
+local controlsAlarm = capabilities["concertmirror08464.nwtDehum312enAlarm"]
 local status = capabilities["concertmirror08464.nwtDerh312enStatus"]
 
 local POLLING_TIMER = "polling_timer"
@@ -129,12 +133,12 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(controls.mode({value = mode}))
+                        device:emit_event(controlsMode.mode({value = mode}))
                     end
                 elseif piid == TARGET_HUMIDITY_PIID then
                     local target = TARGET_HUMIDITY_TO_ST[value]
                     if target then
-                        device:emit_event(controls.targetHumidity({value = target}))
+                        device:emit_event(controlsTargetHumidity.targetHumidity({value = target}))
                     end
                 end
             elseif siid == ENVIRONMENT_SIID then
@@ -144,11 +148,11 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
                 end
             elseif siid == ALARM_SIID and piid == ALARM_PIID then
-                device:emit_event(controls.alarm({value = bool_to_st(value)}))
+                device:emit_event(controlsAlarm.alarm({value = bool_to_st(value)}))
             elseif siid == INDICATOR_SIID and piid == INDICATOR_ON_PIID then
-                device:emit_event(controls.indicatorLight({value = bool_to_st(value)}))
+                device:emit_event(controlsIndicatorLight.indicatorLight({value = bool_to_st(value)}))
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(controls.childLock({value = bool_to_st(value)}))
+                device:emit_event(controlsChildLock.childLock({value = bool_to_st(value)}))
             elseif siid == EVENT_SERVICE_SIID and piid == WATER_TANK_STATUS_PIID then
                 device:emit_event(status.tankStatus({value = value and "fullOrRemoved" or "normal"}))
             end
@@ -207,7 +211,7 @@ local function set_mode_handler(_, device, command)
     local ok = pcall(miot.set, device, ip, token, DEHUMIDIFIER_SIID, MODE_PIID, value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(controls.mode({value = mode}))
+        device:emit_event(controlsMode.mode({value = mode}))
         device.thread:call_with_delay(1, function()
             pcall(poll_device_status, device)
         end)
@@ -224,7 +228,7 @@ local function set_target_humidity_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, DEHUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, value)
     if ok then
-        device:emit_event(controls.targetHumidity({value = target_humidity}))
+        device:emit_event(controlsTargetHumidity.targetHumidity({value = target_humidity}))
     end
 end
 
@@ -235,7 +239,7 @@ local function set_indicator_light_handler(_, device, command)
     local indicator = command.args.indicatorLight
     local ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_ON_PIID, indicator == "on")
     if ok then
-        device:emit_event(controls.indicatorLight({value = indicator}))
+        device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
     end
 end
 
@@ -246,7 +250,7 @@ local function set_alarm_handler(_, device, command)
     local alarm = command.args.alarm
     local ok = pcall(miot.set, device, ip, token, ALARM_SIID, ALARM_PIID, alarm == "on")
     if ok then
-        device:emit_event(controls.alarm({value = alarm}))
+        device:emit_event(controlsAlarm.alarm({value = alarm}))
     end
 end
 
@@ -257,7 +261,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(controls.childLock({value = child_lock}))
+        device:emit_event(controlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -266,7 +270,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsMode.ID, "main") then
         device:try_update_metadata({profile = "nwt-dehumidifier-312en"})
     end
 end
@@ -276,11 +280,11 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
-    device:emit_event(controls.mode({value = "smart"}))
-    device:emit_event(controls.targetHumidity({value = "h50"}))
-    device:emit_event(controls.indicatorLight({value = "on"}))
-    device:emit_event(controls.alarm({value = "off"}))
-    device:emit_event(controls.childLock({value = "off"}))
+    device:emit_event(controlsMode.mode({value = "smart"}))
+    device:emit_event(controlsTargetHumidity.targetHumidity({value = "h50"}))
+    device:emit_event(controlsIndicatorLight.indicatorLight({value = "on"}))
+    device:emit_event(controlsAlarm.alarm({value = "off"}))
+    device:emit_event(controlsChildLock.childLock({value = "off"}))
     device:emit_event(status.tankStatus({value = "normal"}))
 end
 
@@ -335,12 +339,20 @@ local driver = Driver("miot-nwt-dehumidifier-312en", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [controls.ID] = {
-            [controls.commands.setMode.NAME] = set_mode_handler,
-            [controls.commands.setTargetHumidity.NAME] = set_target_humidity_handler,
-            [controls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [controls.commands.setAlarm.NAME] = set_alarm_handler,
-            [controls.commands.setChildLock.NAME] = set_child_lock_handler
+        [controlsMode.ID] = {
+            [controlsMode.commands.setMode.NAME] = set_mode_handler
+        },
+        [controlsTargetHumidity.ID] = {
+            [controlsTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        },
+        [controlsIndicatorLight.ID] = {
+            [controlsIndicatorLight.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [controlsAlarm.ID] = {
+            [controlsAlarm.commands.setAlarm.NAME] = set_alarm_handler
+        },
+        [controlsChildLock.ID] = {
+            [controlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

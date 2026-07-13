@@ -8,7 +8,17 @@ components:
     version: 1
   - id: thermostatHeatingSetpoint
     version: 1
-  - id: concertmirror08464.zhimiHeaterMc2Controls
+  - id: concertmirror08464.zhimiHeaterMc2CountdownHours
+    version: 1
+  - id: concertmirror08464.zhimiHeaterMc2FaultCode
+    version: 1
+  - id: concertmirror08464.zhimiHeaterMc2Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiHeaterMc2ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiHeaterMc2IndicatorLight
+    version: 1
+  - id: concertmirror08464.zhimiHeaterMc2Fault
     version: 1
   - id: refresh
     version: 1
@@ -47,7 +57,22 @@ deviceConfig:
     capability: thermostatHeatingSetpoint
     version: 1
   - component: main
-    capability: concertmirror08464.zhimiHeaterMc2Controls
+    capability: concertmirror08464.zhimiHeaterMc2CountdownHours
+    version: 1
+  - component: main
+    capability: concertmirror08464.zhimiHeaterMc2FaultCode
+    version: 1
+  - component: main
+    capability: concertmirror08464.zhimiHeaterMc2Buzzer
+    version: 1
+  - component: main
+    capability: concertmirror08464.zhimiHeaterMc2ChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.zhimiHeaterMc2IndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.zhimiHeaterMc2Fault
     version: 1
   - component: main
     capability: refresh
@@ -64,7 +89,22 @@ deviceConfig:
       capability: thermostatHeatingSetpoint
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiHeaterMc2Controls
+      capability: concertmirror08464.zhimiHeaterMc2CountdownHours
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2FaultCode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2IndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2Fault
       version: 1
     actions:
     - component: main
@@ -74,7 +114,22 @@ deviceConfig:
       capability: thermostatHeatingSetpoint
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiHeaterMc2Controls
+      capability: concertmirror08464.zhimiHeaterMc2CountdownHours
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2FaultCode
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2IndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiHeaterMc2Fault
       version: 1
 
 preferences:

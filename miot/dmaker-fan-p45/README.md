@@ -59,3 +59,6 @@ Dmaker service `siid=8`:
 - `piid=5..9` natural wind customization strings, read/write
 
 Angle control: `dmakerFanP45HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=5`, `30/60/90/120/150`.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

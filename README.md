@@ -35,12 +35,7 @@ Supported drivers are grouped by protocol and device type.
 
 | Driver folder | Device model | Product name | SmartThings driver name |
 |---------------|--------------|--------------|-------------------------|
-| `miot/zhimi-air-purifier-mb5` | `zhimi.airpurifier.mb5` | Xiaomi Smart Air Purifier 4 | `Zhimi Air Purifier MB5` |
 | `miot/zhimi-air-purifier-airp-mb5` | `zhimi.airp.mb5` | Xiaomi Smart Air Purifier 4 | `Xiaomi Smart Air Purifier 4` |
-| `miot/xiaomi-air-purifier-mb5` | `xiaomi.airp.mb5` | Mijia Smart Air Purifier 6 | `Mijia Smart Air Purifier 6` |
-| `miot/xiaomi-air-purifier-mb6` | `xiaomi.airp.mb6` | Mijia Smart Air Purifier MAX | `Mijia Smart Air Purifier MAX` |
-| `miot/xiaomi-air-purifier-meb2` | `xiaomi.airp.meb2` | Mijia Smart Air Purifier Elite | `Mijia Air Purifier MEB2` |
-| `miot/xiaomi-air-purifier-va5` | `xiaomi.airp.va5` | Mijia Smart Air Purifier 5 Pro | `Mijia Smart Air Purifier 5 Pro` |
 | `miot/zhimi-air-purifier-mb5a` | `zhimi.airp.mb5a` | Xiaomi Smart Air Purifier 4 | `Zhimi Air Purifier MB5A` |
 | `miot/zhimi-air-purifier-va2` | `zhimi.airp.va2` | Xiaomi Air Purifier Pro H | `Zhimi Air Purifier VA2` |
 | `miot/zhimi-air-purifier-vb4` | `zhimi.airp.vb4` | Xiaomi Air Purifier Pro 4 | `Zhimi Air Purifier VB4` |
@@ -73,7 +68,6 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-humidifier-p2` | `dmaker.humidifier.p2` | Dmaker Humidifier P2 | `Dmaker Humidifier P2` |
 | `miot/xiaomi-humidifier-3lite` | `xiaomi.humidifier.3lite` | Xiaomi Smart Humidifier 3 Lite | `Xiaomi Humidifier 3lite` |
 | `miot/xiaomi-humidifier-4lite` | `xiaomi.humidifier.4lite` | Xiaomi Humidifier 4 Lite | `Xiaomi Humidifier 4lite` |
-| `miot/xiaomi-humidifier-600` | `xiaomi.humidifier.600` | Xiaomi Humidifier 600 | `Xiaomi Humidifier 600` |
 
 ### MIoT Dehumidifiers
 
@@ -113,11 +107,9 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-fan-p70` | `xiaomi.fan.p70` | Xiaomi BPLDS10DM Smart Desktop Air Circulation Fan | `Xiaomi Fan P70` |
 | `miot/xiaomi-fan-p76` | `xiaomi.fan.p76` | Xiaomi Smart Standing Air Circulation Fan | `Xiaomi Fan P76` |
 | `miot/xiaomi-fan-p85` | `xiaomi.fan.p85` | Mijia Smart Standing Fan Pro Slim | `Mijia Fan P85` |
-| `miot/xiaomi-fan-p90` | `xiaomi.fan.p90` | Mijia Smart Inverter Air Circulation Fan Pro | `Mijia Circulation Fan Pro` |
-| `miot/pinlo-fan-fs1` | `pinlo.fan.fs1` | Plabson Slim Fan | `Plabson Slim Fan` |
 | `miot/dmaker-fan-p45` | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 | `Mijia DC Inverter Tower Fan 2` |
 | `miot/xiaomi-fan-p43` | `xiaomi.fan.p43` | Xiaomi Fan P43 | `Xiaomi Fan P43` |
-| `miot/zhimi-fan-za4` | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
+| `miIo/zhimi-fan-za4` | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
 | `miot/zhimi-fan-za5` | `zhimi.fan.za5` | Smartmi Standing Fan 3 | `Smartmi Standing Fan 3` |
 
 ### MIoT Other Devices

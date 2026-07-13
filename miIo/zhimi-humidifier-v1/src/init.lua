@@ -5,8 +5,11 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miio = require "miio"
 
-local humidifierCore = capabilities["concertmirror08464.zhimiHumidifierClassicCore"]
-local deviceControls = capabilities["concertmirror08464.xiaomiDeviceControls"]
+local humidifierCoreTargetHumidity = capabilities["concertmirror08464.zhimiHumV1TargetHumidity"]
+local humidifierCoreFanMode = capabilities["concertmirror08464.zhimiHumV1FanMode"]
+local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiHumV1Buzzer"]
+local deviceControlsChildLock = capabilities["concertmirror08464.zhimiHumV1ChildLock"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiHumV1LedBrightness"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -94,7 +97,7 @@ local function poll_device_status(device)
     end
 
     if values.mode then
-        device:emit_event(humidifierCore.fanMode({value = values.mode}))
+        device:emit_event(humidifierCoreFanMode.fanMode({value = values.mode}))
     end
 
     if values.humidity and type(values.humidity) == "number" then
@@ -106,22 +109,22 @@ local function poll_device_status(device)
     end
 
     if values.limit_hum and type(values.limit_hum) == "number" then
-        device:emit_event(humidifierCore.targetHumidity({value = values.limit_hum, unit = "%"}))
+        device:emit_event(humidifierCoreTargetHumidity.targetHumidity({value = values.limit_hum, unit = "%"}))
     end
 
     local led_brightness = LED_BRIGHTNESS_TO_ST[values.led_b]
     if led_brightness then
-        device:emit_event(deviceControls.ledBrightness({value = led_brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = led_brightness}))
     end
 
     local buzzer = miio_on_off_to_st(values.buzzer)
     if buzzer then
-        device:emit_event(deviceControls.buzzer({value = buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = buzzer}))
     end
 
     local child_lock = miio_on_off_to_st(values.child_lock)
     if child_lock then
-        device:emit_event(deviceControls.childLock({value = child_lock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -164,7 +167,7 @@ local function handle_set_fan_mode(_, device, command)
 
     local mode = command.args.mode
     if miio.set_prop(device, ip, token, "set_mode", {mode}) then
-        device:emit_event(humidifierCore.fanMode({value = mode}))
+        device:emit_event(humidifierCoreFanMode.fanMode({value = mode}))
     end
 end
 
@@ -174,7 +177,7 @@ local function handle_set_target_humidity(_, device, command)
 
     local humidity = normalize_target_humidity(command.args.humidity)
     if miio.set_prop(device, ip, token, "set_limit_hum", {humidity}) then
-        device:emit_event(humidifierCore.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(humidifierCoreTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -187,7 +190,7 @@ local function handle_set_led_brightness(_, device, command)
     if led_b == nil then return end
 
     if miio.set_prop(device, ip, token, "set_led_b", {led_b}) then
-        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
     end
 end
 
@@ -197,7 +200,7 @@ local function handle_set_buzzer(_, device, command)
 
     local buzzer = command.args.buzzer
     if miio.set_prop(device, ip, token, "set_buzzer", {buzzer}) then
-        device:emit_event(deviceControls.buzzer({value = buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = buzzer}))
     end
 end
 
@@ -207,7 +210,7 @@ local function handle_set_child_lock(_, device, command)
 
     local child_lock = command.args.childLock
     if miio.set_prop(device, ip, token, "set_child_lock", {child_lock}) then
-        device:emit_event(deviceControls.childLock({value = child_lock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -216,7 +219,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(humidifierCore.ID, "main") then
+    if not device:supports_capability_by_id(humidifierCoreTargetHumidity.ID, "main") then
         device:try_update_metadata({profile = "zhimi-humidifier-v1"})
     end
 end
@@ -224,13 +227,13 @@ end
 local function device_added(_, device)
     ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(humidifierCore.fanMode({value = "auto"}))
-    device:emit_event(humidifierCore.targetHumidity({value = 40, unit = "%"}))
+    device:emit_event(humidifierCoreFanMode.fanMode({value = "auto"}))
+    device:emit_event(humidifierCoreTargetHumidity.targetHumidity({value = 40, unit = "%"}))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(deviceControls.ledBrightness({value = "bright"}))
-    device:emit_event(deviceControls.buzzer({value = "off"}))
-    device:emit_event(deviceControls.childLock({value = "off"}))
+    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
+    device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(deviceControlsChildLock.childLock({value = "off"}))
 end
 
 local function device_init(_, device)
@@ -284,14 +287,20 @@ local driver = Driver("miio-humidifier-v1", {
             [capabilities.switch.commands.on.NAME] = handle_on,
             [capabilities.switch.commands.off.NAME] = handle_off
         },
-        [humidifierCore.ID] = {
-            [humidifierCore.commands.setFanMode.NAME] = handle_set_fan_mode,
-            [humidifierCore.commands.setTargetHumidity.NAME] = handle_set_target_humidity
+        [humidifierCoreFanMode.ID] = {
+            [humidifierCoreFanMode.commands.setFanMode.NAME] = handle_set_fan_mode
         },
-        [deviceControls.ID] = {
-            [deviceControls.commands.setLedBrightness.NAME] = handle_set_led_brightness,
-            [deviceControls.commands.setBuzzer.NAME] = handle_set_buzzer,
-            [deviceControls.commands.setChildLock.NAME] = handle_set_child_lock
+        [humidifierCoreTargetHumidity.ID] = {
+            [humidifierCoreTargetHumidity.commands.setTargetHumidity.NAME] = handle_set_target_humidity
+        },
+        [deviceControlsLedBrightness.ID] = {
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = handle_set_led_brightness
+        },
+        [deviceControlsBuzzer.ID] = {
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+        },
+        [deviceControlsChildLock.ID] = {
+            [deviceControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

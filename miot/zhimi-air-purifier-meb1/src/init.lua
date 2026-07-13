@@ -5,7 +5,13 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.airPurifierEliteControls"]
+local controlsUv = capabilities["concertmirror08464.zhimiAirMeb1Uv"]
+local controlsAirPurifierMode = capabilities["concertmirror08464.zhimiAirMeb1AirPurifierMode"]
+local controlsBuzzer = capabilities["concertmirror08464.zhimiAirMeb1Buzzer"]
+local controlsChildLock = capabilities["concertmirror08464.zhimiAirMeb1ChildLock"]
+local controlsFanLevel = capabilities["concertmirror08464.zhimiAirMeb1FanLevel"]
+local controlsDisplayBrightness = capabilities["concertmirror08464.zhimiAirMeb1DisplayBrightness"]
+local controlsPlasma = capabilities["concertmirror08464.zhimiAirMeb1Plasma"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -153,17 +159,17 @@ poll_device_status = function(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(controls.airPurifierMode({value = mode}))
+                        device:emit_event(controlsAirPurifierMode.airPurifierMode({value = mode}))
                     end
                 elseif piid == FAN_LEVEL_PIID then
                     local level = FAN_LEVEL_TO_ST[value]
                     if level then
-                        device:emit_event(controls.fanLevel({value = level}))
+                        device:emit_event(controlsFanLevel.fanLevel({value = level}))
                     end
                 elseif piid == PLASMA_PIID then
-                    device:emit_event(controls.plasma({value = bool_to_on_off(value)}))
+                    device:emit_event(controlsPlasma.plasma({value = bool_to_on_off(value)}))
                 elseif piid == UV_PIID then
-                    device:emit_event(controls.uv({value = bool_to_on_off(value)}))
+                    device:emit_event(controlsUv.uv({value = bool_to_on_off(value)}))
                 end
             elseif siid == ENVIRONMENT_SIID then
                 if piid == HUMIDITY_PIID then
@@ -178,13 +184,13 @@ poll_device_status = function(device)
             elseif siid == FILTER_SIID and piid == FILTER_LIFE_PIID then
                 device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                device:emit_event(controls.buzzer({value = bool_to_on_off(value)}))
+                device:emit_event(controlsBuzzer.buzzer({value = bool_to_on_off(value)}))
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(controls.childLock({value = bool_to_on_off(value)}))
+                device:emit_event(controlsChildLock.childLock({value = bool_to_on_off(value)}))
             elseif siid == SCREEN_SIID and piid == DISPLAY_BRIGHTNESS_PIID then
                 local brightness = DISPLAY_BRIGHTNESS_TO_ST[value]
                 if brightness then
-                    device:emit_event(controls.displayBrightness({value = brightness}))
+                    device:emit_event(controlsDisplayBrightness.displayBrightness({value = brightness}))
                 end
             end
         end
@@ -241,7 +247,7 @@ local function handle_set_air_purifier_mode(_, device, command)
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, MODE_PIID, value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(controls.airPurifierMode({value = mode}))
+        device:emit_event(controlsAirPurifierMode.airPurifierMode({value = mode}))
         schedule_refresh(device)
     end
 end
@@ -260,8 +266,8 @@ local function handle_set_fan_level(_, device, command)
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, FAN_LEVEL_PIID, value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(controls.airPurifierMode({value = "manual"}))
-        device:emit_event(controls.fanLevel({value = fan_level}))
+        device:emit_event(controlsAirPurifierMode.airPurifierMode({value = "manual"}))
+        device:emit_event(controlsFanLevel.fanLevel({value = fan_level}))
         schedule_refresh(device)
     end
 end
@@ -276,7 +282,7 @@ local function handle_set_display_brightness(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, DISPLAY_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(controls.displayBrightness({value = brightness}))
+        device:emit_event(controlsDisplayBrightness.displayBrightness({value = brightness}))
     end
 end
 
@@ -288,7 +294,7 @@ local function handle_set_plasma(_, device, command)
     local value = plasma == "on"
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, PLASMA_PIID, value)
     if ok then
-        device:emit_event(controls.plasma({value = plasma}))
+        device:emit_event(controlsPlasma.plasma({value = plasma}))
     end
 end
 
@@ -300,7 +306,7 @@ local function handle_set_uv(_, device, command)
     local value = uv == "on"
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, UV_PIID, value)
     if ok then
-        device:emit_event(controls.uv({value = uv}))
+        device:emit_event(controlsUv.uv({value = uv}))
     end
 end
 
@@ -312,7 +318,7 @@ local function handle_set_buzzer(_, device, command)
     local value = buzzer == "on"
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, value)
     if ok then
-        device:emit_event(controls.buzzer({value = buzzer}))
+        device:emit_event(controlsBuzzer.buzzer({value = buzzer}))
     end
 end
 
@@ -324,7 +330,7 @@ local function handle_set_child_lock(_, device, command)
     local value = child_lock == "on"
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value)
     if ok then
-        device:emit_event(controls.childLock({value = child_lock}))
+        device:emit_event(controlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -333,7 +339,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsUv.ID, "main") then
         device:try_update_metadata({profile = "zhimi-air-purifier-meb1"})
     end
 end
@@ -341,13 +347,13 @@ end
 local function device_added(_, device)
     ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(controls.airPurifierMode({value = "auto"}))
-    device:emit_event(controls.fanLevel({value = "level1"}))
-    device:emit_event(controls.displayBrightness({value = "brightest"}))
-    device:emit_event(controls.plasma({value = "off"}))
-    device:emit_event(controls.uv({value = "off"}))
-    device:emit_event(controls.buzzer({value = "off"}))
-    device:emit_event(controls.childLock({value = "off"}))
+    device:emit_event(controlsAirPurifierMode.airPurifierMode({value = "auto"}))
+    device:emit_event(controlsFanLevel.fanLevel({value = "level1"}))
+    device:emit_event(controlsDisplayBrightness.displayBrightness({value = "brightest"}))
+    device:emit_event(controlsPlasma.plasma({value = "off"}))
+    device:emit_event(controlsUv.uv({value = "off"}))
+    device:emit_event(controlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(controlsChildLock.childLock({value = "off"}))
     device:emit_event(capabilities.dustSensor.fineDustLevel(0))
     device:emit_event(capabilities.dustSensor.dustLevel(0))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
@@ -407,14 +413,26 @@ local driver = Driver("miot-air-purifier-meb1", {
             [capabilities.switch.commands.on.NAME] = handle_on,
             [capabilities.switch.commands.off.NAME] = handle_off
         },
-        [controls.ID] = {
-            [controls.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode,
-            [controls.commands.setFanLevel.NAME] = handle_set_fan_level,
-            [controls.commands.setDisplayBrightness.NAME] = handle_set_display_brightness,
-            [controls.commands.setPlasma.NAME] = handle_set_plasma,
-            [controls.commands.setUv.NAME] = handle_set_uv,
-            [controls.commands.setBuzzer.NAME] = handle_set_buzzer,
-            [controls.commands.setChildLock.NAME] = handle_set_child_lock
+        [controlsAirPurifierMode.ID] = {
+            [controlsAirPurifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
+        },
+        [controlsFanLevel.ID] = {
+            [controlsFanLevel.commands.setFanLevel.NAME] = handle_set_fan_level
+        },
+        [controlsDisplayBrightness.ID] = {
+            [controlsDisplayBrightness.commands.setDisplayBrightness.NAME] = handle_set_display_brightness
+        },
+        [controlsPlasma.ID] = {
+            [controlsPlasma.commands.setPlasma.NAME] = handle_set_plasma
+        },
+        [controlsUv.ID] = {
+            [controlsUv.commands.setUv.NAME] = handle_set_uv
+        },
+        [controlsBuzzer.ID] = {
+            [controlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+        },
+        [controlsChildLock.ID] = {
+            [controlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

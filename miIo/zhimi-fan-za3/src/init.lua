@@ -27,6 +27,7 @@ local CURRENT_PERCENT = "current_percent"
 -- ZA3 is listed by python-miio in the classic Zhimi Fan class.
 
 local PROPERTIES = {
+    "angle",
     "power",
     "angle_enable",
     "speed_level",
@@ -97,15 +98,15 @@ local function poll_device_status(device)
         return
     end
 
-    local response = miio.cmd(device, ip, token, "get_prop", PROPERTIES)
-    if not response or not response.result then
-        return
+    local values = {}
+    for _, property in ipairs(PROPERTIES) do
+        local response = miio.cmd(device, ip, token, "get_prop", {property})
+        if response and response.result then
+            values[property] = response.result[1]
+        end
     end
 
-    local values = {}
-    for index, property in ipairs(PROPERTIES) do
-        values[property] = response.result[index]
-    end
+    emit_angle_values(device, values)
 
     if values.power ~= nil then
         device:emit_event(capabilities.switch.switch(on_off_to_bool(values.power) and "on" or "off"))

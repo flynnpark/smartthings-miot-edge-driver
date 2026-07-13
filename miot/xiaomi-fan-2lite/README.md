@@ -8,13 +8,13 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.2lite`.
 - Model: `xiaomi.fan.2lite`
 - specModel: `xiaomi-2lite`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-2lite:1:0000D062`
-- Basis: Exact MIoT spec defines the local fan contract and model docs identify `xiaomi.fan.2lite` as the Wi-Fi Mi Smart Standing Fan 2 Lite.
+- Basis: current `syssi/xiaomi_fan` implements exact model `xiaomi.fan.2lite` as `Fan2Lite(MiotDevice)`, with explicit `siid`/`piid` mapping, `get_properties` polling, and `set_property` writes. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 
 - `switch`
 - `fanOscillationMode`
-- `concertmirror08464.xiaomiFan2LiteControls`
+- `concertmirror08464.xiaomiFan2liteFanMode`, `concertmirror08464.xiaomiFan2liteBuzzer`, `concertmirror08464.xiaomiFan2liteChildLock`, `concertmirror08464.xiaomiFan2liteIndicatorLight`, `concertmirror08464.xiaomiFan2liteFanLevel`
 - `refresh`
 
 ## MIoT Mapping

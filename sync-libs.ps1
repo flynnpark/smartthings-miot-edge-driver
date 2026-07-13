@@ -6,12 +6,7 @@ $groups = @(
     @{
         Source = "libs\miot.lua"
         Targets = @(
-            "miot\zhimi-air-purifier-mb5\src\miot.lua",
             "miot\zhimi-air-purifier-airp-mb5\src\miot.lua",
-            "miot\xiaomi-air-purifier-va5\src\miot.lua",
-            "miot\xiaomi-air-purifier-mb5\src\miot.lua",
-            "miot\xiaomi-air-purifier-mb6\src\miot.lua",
-            "miot\xiaomi-air-purifier-meb2\src\miot.lua",
             "miot\zhimi-air-purifier-mb5a\src\miot.lua",
             "miot\zhimi-air-purifier-va2\src\miot.lua",
             "miot\zhimi-air-purifier-vb4\src\miot.lua",
@@ -39,7 +34,6 @@ $groups = @(
             "miot\dmaker-humidifier-p2\src\miot.lua",
             "miot\xiaomi-humidifier-3lite\src\miot.lua",
             "miot\xiaomi-humidifier-4lite\src\miot.lua",
-            "miot\xiaomi-humidifier-600\src\miot.lua",
             "miot\xiaomi-dehumidifier-lite\src\miot.lua",
             "miot\xiaomi-dehumidifier-13l\src\miot.lua",
             "miot\dmaker-dehumidifier-22l\src\miot.lua",
@@ -74,10 +68,7 @@ $groups = @(
             "miot\xiaomi-fan-p70\src\miot.lua",
             "miot\xiaomi-fan-p76\src\miot.lua",
             "miot\xiaomi-fan-p85\src\miot.lua",
-            "miot\xiaomi-fan-p90\src\miot.lua",
-            "miot\pinlo-fan-fs1\src\miot.lua",
             "miot\xiaomi-fan-p43\src\miot.lua",
-            "miot\zhimi-fan-za4\src\miot.lua",
             "miot\zhimi-fan-za5\src\miot.lua"
         )
     },
@@ -106,6 +97,7 @@ $groups = @(
             "miIo\zhimi-fan-sa1\src\miio.lua",
             "miIo\zhimi-fan-za1\src\miio.lua",
             "miIo\zhimi-fan-za3\src\miio.lua",
+            "miIo\zhimi-fan-za4\src\miio.lua",
             "miIo\zhimi-fan-v3\src\miio.lua",
             "miIo\chuangmi-plug-m1\src\miio.lua",
             "miIo\chuangmi-plug-m3\src\miio.lua",
@@ -121,12 +113,7 @@ $groups = @(
     @{
         Source = "libs\md5.lua"
         Targets = @(
-            "miot\zhimi-air-purifier-mb5\src\md5.lua",
             "miot\zhimi-air-purifier-airp-mb5\src\md5.lua",
-            "miot\xiaomi-air-purifier-va5\src\md5.lua",
-            "miot\xiaomi-air-purifier-mb5\src\md5.lua",
-            "miot\xiaomi-air-purifier-mb6\src\md5.lua",
-            "miot\xiaomi-air-purifier-meb2\src\md5.lua",
             "miot\zhimi-air-purifier-mb5a\src\md5.lua",
             "miot\zhimi-air-purifier-va2\src\md5.lua",
             "miot\zhimi-air-purifier-vb4\src\md5.lua",
@@ -154,7 +141,6 @@ $groups = @(
             "miot\dmaker-humidifier-p2\src\md5.lua",
             "miot\xiaomi-humidifier-3lite\src\md5.lua",
             "miot\xiaomi-humidifier-4lite\src\md5.lua",
-            "miot\xiaomi-humidifier-600\src\md5.lua",
             "miot\xiaomi-dehumidifier-lite\src\md5.lua",
             "miot\xiaomi-dehumidifier-13l\src\md5.lua",
             "miot\dmaker-dehumidifier-22l\src\md5.lua",
@@ -189,10 +175,7 @@ $groups = @(
             "miot\xiaomi-fan-p70\src\md5.lua",
             "miot\xiaomi-fan-p76\src\md5.lua",
             "miot\xiaomi-fan-p85\src\md5.lua",
-            "miot\xiaomi-fan-p90\src\md5.lua",
-            "miot\pinlo-fan-fs1\src\md5.lua",
             "miot\xiaomi-fan-p43\src\md5.lua",
-            "miot\zhimi-fan-za4\src\md5.lua",
             "miot\zhimi-fan-za5\src\md5.lua",
             "miIo\zhimi-air-purifier-mc1\src\md5.lua",
             "miIo\zhimi-air-purifier-mc2\src\md5.lua",
@@ -216,6 +199,7 @@ $groups = @(
             "miIo\zhimi-fan-sa1\src\md5.lua",
             "miIo\zhimi-fan-za1\src\md5.lua",
             "miIo\zhimi-fan-za3\src\md5.lua",
+            "miIo\zhimi-fan-za4\src\md5.lua",
             "miIo\zhimi-fan-v3\src\md5.lua",
             "miIo\chuangmi-plug-m1\src\md5.lua",
             "miIo\chuangmi-plug-m3\src\md5.lua",

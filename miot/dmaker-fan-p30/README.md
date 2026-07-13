@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `dmaker.fan.p30`.
 - Model: `dmaker.fan.p30`
 - specModel: `dmaker-p30`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:dmaker-p30:1`
-- Basis: Exact MIoT spec defines local fan service controls for `dmaker.fan.p30`, and model/community docs identify this exact Xiaomi fan model.
+- Basis: current `hass-xiaomi-miot` lists exact model `dmaker.fan.p30` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 

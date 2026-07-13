@@ -8,12 +8,12 @@ SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.meb1`.
 - Model: `zhimi.airp.meb1`
 - Spec model: `zhimi-meb1`
 - URN: `urn:miot-spec-v2:device:air-purifier:0000A007:zhimi-meb1:1`
-- Basis: model docs identify `zhimi.airp.meb1` as Xiaomi Smart Air Purifier Elite, Home Assistant users report Xiaomi Miot Auto works for this exact model, and the exact MIoT spec confirms the core siid/piid layout.
+- Basis: current `hass-xiaomi-miot` lists exact model `zhimi.airp.meb1` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 ## Exposed capabilities
 
 - `switch`: power
-- `concertmirror08464.airPurifierEliteControls`
+- `concertmirror08464.zhimiAirMeb1Uv`, `concertmirror08464.zhimiAirMeb1AirPurifierMode`, `concertmirror08464.zhimiAirMeb1Buzzer`, `concertmirror08464.zhimiAirMeb1ChildLock`, `concertmirror08464.zhimiAirMeb1FanLevel`, `concertmirror08464.zhimiAirMeb1DisplayBrightness`, `concertmirror08464.zhimiAirMeb1Plasma`
   - `airPurifierMode`: `auto` / `sleep` / `favorite` / `manual`
   - `fanLevel`: `level1` / `level2` / `level3`
   - `displayBrightness`: `off` / `bright` / `brightest`
@@ -66,3 +66,6 @@ Screen service `siid=13`:
 - `piid=2` display brightness, read/write, `0=off`, `1=bright`, `2=brightest`
 
 Favorite, display unit, custom diagnostics, filter-time, AQI heartbeat, and RFID services are not exposed as core SmartThings controls or sensors.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

@@ -4,9 +4,9 @@ components:
   capabilities:
   - id: switch
     version: 1
-  - id: connectamber53538.zhimiairpurifierfanmode
+  - id: concertmirror08464.zhimiAirAirpMb5FanMode
     version: 1
-  - id: connectamber53538.zhimiairpurifierfanspeed
+  - id: concertmirror08464.zhimiAirAirpMb5FanSpeed
     version: 1
   - id: temperatureMeasurement
     version: 1
@@ -16,7 +16,11 @@ components:
     version: 1
   - id: filterState
     version: 1
-  - id: concertmirror08464.xiaomiDeviceControls
+  - id: concertmirror08464.zhimiAirAirpMb5Buzzer
+    version: 1
+  - id: concertmirror08464.zhimiAirAirpMb5ChildLock
+    version: 1
+  - id: concertmirror08464.zhimiAirAirpMb5LedBrightness
     version: 1
   - id: refresh
     version: 1
@@ -40,11 +44,23 @@ deviceConfig:
           - label: " PM2.5: {{fineDustLevel.value}}"
         composite: true
       - component: main
-        capability: concertmirror08464.xiaomiDeviceControls
+        capability: concertmirror08464.zhimiAirAirpMb5Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirAirpMb5ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirAirpMb5LedBrightness
         version: 1
     actions:
       - component: main
-        capability: concertmirror08464.xiaomiDeviceControls
+        capability: concertmirror08464.zhimiAirAirpMb5Buzzer
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirAirpMb5ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.zhimiAirAirpMb5LedBrightness
         version: 1
       - component: main
         capability: switch
@@ -55,10 +71,10 @@ deviceConfig:
       capability: switch
       version: 1
     - component: main
-      capability: connectamber53538.zhimiairpurifierfanmode
+      capability: concertmirror08464.zhimiAirAirpMb5FanMode
       version: 1
     - component: main
-      capability: connectamber53538.zhimiairpurifierfanspeed
+      capability: concertmirror08464.zhimiAirAirpMb5FanSpeed
       version: 1
     - component: main
       capability: fineDustSensor
@@ -73,7 +89,13 @@ deviceConfig:
       capability: filterState
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDeviceControls
+      capability: concertmirror08464.zhimiAirAirpMb5Buzzer
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirAirpMb5ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.zhimiAirAirpMb5LedBrightness
       version: 1
     - component: main
       capability: refresh
@@ -84,10 +106,10 @@ deviceConfig:
         capability: switch
         version: 1
       - component: main
-        capability: connectamber53538.zhimiairpurifierfanmode
+        capability: concertmirror08464.zhimiAirAirpMb5FanMode
         version: 1
       - component: main
-        capability: connectamber53538.zhimiairpurifierfanspeed
+        capability: concertmirror08464.zhimiAirAirpMb5FanSpeed
         version: 1
       - component: main
         capability: fineDustSensor
@@ -106,10 +128,10 @@ deviceConfig:
         capability: switch
         version: 1
       - component: main
-        capability: connectamber53538.zhimiairpurifierfanmode
+        capability: concertmirror08464.zhimiAirAirpMb5FanMode
         version: 1
       - component: main
-        capability: connectamber53538.zhimiairpurifierfanspeed
+        capability: concertmirror08464.zhimiAirAirpMb5FanSpeed
         version: 1
 
 preferences:

@@ -8,14 +8,14 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `nwt.derh.312
 - Model: `nwt.derh.312en`
 - specModel: `nwt-312en`
 - URN: `urn:miot-spec-v2:device:dehumidifier:0000A02D:nwt-312en:2`
-- Basis: the exact MIoT spec defines local MIoT properties for power, mode, target humidity, humidity, temperature, alarm, indicator light, child lock, and water tank status.
+- Basis: current `hass-xiaomi-miot` lists exact model `nwt.derh.312en` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped property contract.
 
 ## Exposed Capabilities
 
 - `switch`
 - `relativeHumidityMeasurement`
 - `temperatureMeasurement`
-- `concertmirror08464.nwtDerh312enControls`
+- `concertmirror08464.nwtDehum312enMode`, `concertmirror08464.nwtDehum312enTargetHumidity`, `concertmirror08464.nwtDehum312enChildLock`, `concertmirror08464.nwtDehum312enIndicatorLight`, `concertmirror08464.nwtDehum312enAlarm`
 - `concertmirror08464.nwtDerh312enStatus`
 - `refresh`
 

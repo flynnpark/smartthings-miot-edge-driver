@@ -1,5 +1,0 @@
-name: 'Plabson Slim Fan'
-packageKey: 'Plabson Slim Fan Driver'
-permissions:
-  lan: {}
-  discovery: {}

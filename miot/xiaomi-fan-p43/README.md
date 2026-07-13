@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p43`.
 - Model: `xiaomi.fan.p43`
 - specModel: `xiaomi-p43`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p43:2`
-- Basis: Exact MIoT spec v2 confirms the local fan layout with mode `0/1/2`, stepless speed, horizontal swing, indicator light, buzzer, and child lock.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.fan.p43` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 

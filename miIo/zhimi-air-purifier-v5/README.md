@@ -11,13 +11,13 @@ SmartThings Edge LAN driver for the Xiaomi/miIO air purifier model `zhimi.airpur
 ## Exposed Capabilities
 
 - `switch`
-- `concertmirror08464.zhimiAirPurifierClassicMode`
+- `concertmirror08464.zhimiAirV5AirPurifierMode`
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `fineDustSensor`
 - `fanSpeedPercent`
 - `filterState`
-- `concertmirror08464.xiaomiDeviceControls`
+- `concertmirror08464.zhimiAirV5Buzzer`, `concertmirror08464.zhimiAirV5ChildLock`, `concertmirror08464.zhimiAirV5LedBrightness`
 - `refresh`
 
 ## miIO Mapping

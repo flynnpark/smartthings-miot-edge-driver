@@ -48,3 +48,6 @@ Dmaker service `siid=4`:
 - `aiid=2` loop mode
 
 Angle control: `dmakerFanP39HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=6`, `30/60/90/120/150`.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

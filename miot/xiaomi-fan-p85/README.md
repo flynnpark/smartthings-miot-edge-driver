@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p85`.
 - Model: `xiaomi.fan.p85`
 - specModel: `xiaomi-p85`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p85:1:0000D062`
-- Basis: Exact MIoT spec defines read/write fan, indicator, alarm, child-lock, and dm-service properties for `xiaomi.fan.p85`; the product page identifies it as a 2.4G Wi-Fi Xiaomi fan with no gateway.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.fan.p85` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 

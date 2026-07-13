@@ -8,9 +8,25 @@ components:
     version: 1
   - id: temperatureMeasurement
     version: 1
-  - id: concertmirror08464.mijiaDehumidifier22lControls
+  - id: concertmirror08464.dmakerDehum22lMode
     version: 1
-  - id: concertmirror08464.mijiaDehumidifier22lStatus
+  - id: concertmirror08464.dmakerDehum22lTargetHumidity
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lChildLock
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lIndicatorLight
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lAlarm
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lDryAfterOff
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lResetFilter
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lTankStatus
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lFilterStatus
+    version: 1
+  - id: concertmirror08464.dmakerDehum22lFault
     version: 1
   - id: refresh
     version: 1
@@ -55,10 +71,34 @@ deviceConfig:
     capability: temperatureMeasurement
     version: 1
   - component: main
-    capability: concertmirror08464.mijiaDehumidifier22lControls
+    capability: concertmirror08464.dmakerDehum22lMode
     version: 1
   - component: main
-    capability: concertmirror08464.mijiaDehumidifier22lStatus
+    capability: concertmirror08464.dmakerDehum22lTargetHumidity
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lIndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lAlarm
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lDryAfterOff
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lResetFilter
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lTankStatus
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lFilterStatus
+    version: 1
+  - component: main
+    capability: concertmirror08464.dmakerDehum22lFault
     version: 1
   - component: main
     capability: refresh
@@ -75,14 +115,38 @@ deviceConfig:
       capability: temperatureMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.mijiaDehumidifier22lStatus
+      capability: concertmirror08464.dmakerDehum22lTankStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lFilterStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lFault
       version: 1
     actions:
     - component: main
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.mijiaDehumidifier22lControls
+      capability: concertmirror08464.dmakerDehum22lMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lDryAfterOff
+      version: 1
+    - component: main
+      capability: concertmirror08464.dmakerDehum22lResetFilter
       version: 1
     - component: main
       capability: refresh

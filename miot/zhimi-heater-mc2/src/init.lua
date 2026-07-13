@@ -5,7 +5,12 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.zhimiHeaterMc2Controls"]
+local controlsCountdownHours = capabilities["concertmirror08464.zhimiHeaterMc2CountdownHours"]
+local controlsFaultCode = capabilities["concertmirror08464.zhimiHeaterMc2FaultCode"]
+local controlsBuzzer = capabilities["concertmirror08464.zhimiHeaterMc2Buzzer"]
+local controlsChildLock = capabilities["concertmirror08464.zhimiHeaterMc2ChildLock"]
+local controlsIndicatorLight = capabilities["concertmirror08464.zhimiHeaterMc2IndicatorLight"]
+local controlsFault = capabilities["concertmirror08464.zhimiHeaterMc2Fault"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -101,7 +106,7 @@ local function emit_heating_range(device)
 end
 
 local function emit_countdown_range(device)
-    device:emit_event(controls.countdownHoursRange({
+    device:emit_event(controlsCountdownHours.countdownHoursRange({
         value = {
             minimum = COUNTDOWN_MIN,
             maximum = COUNTDOWN_MAX,
@@ -113,8 +118,8 @@ end
 
 local function emit_fault(device, value)
     local fault = value == 0 and "noFaults" or "fault"
-    device:emit_event(controls.fault({value = fault}))
-    device:emit_event(controls.faultCode({value = value}))
+    device:emit_event(controlsFault.fault({value = fault}))
+    device:emit_event(controlsFaultCode.faultCode({value = value}))
 end
 
 local function poll_device_status(device)
@@ -154,17 +159,17 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.thermostatHeatingSetpoint.heatingSetpoint({value = value, unit = "C"}))
                 end
             elseif siid == COUNTDOWN_SIID and piid == COUNTDOWN_TIME_PIID then
-                device:emit_event(controls.countdownHours({value = value, unit = "h"}))
+                device:emit_event(controlsCountdownHours.countdownHours({value = value, unit = "h"}))
             elseif siid == ENVIRONMENT_SIID and piid == TEMPERATURE_PIID then
                 device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(controls.childLock({value = bool_to_st(value)}))
+                device:emit_event(controlsChildLock.childLock({value = bool_to_st(value)}))
             elseif siid == ALARM_SIID and piid == ALARM_PIID then
-                device:emit_event(controls.buzzer({value = bool_to_st(value)}))
+                device:emit_event(controlsBuzzer.buzzer({value = bool_to_st(value)}))
             elseif siid == INDICATOR_SIID and piid == INDICATOR_BRIGHTNESS_PIID then
                 local indicator = INDICATOR_TO_ST[value]
                 if indicator then
-                    device:emit_event(controls.indicatorLight({value = indicator}))
+                    device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
                 end
             end
         end
@@ -228,7 +233,7 @@ local function set_countdown_hours_handler(_, device, command)
     local hours = clamp(math.floor(command.args.countdownHours + 0.5), COUNTDOWN_MIN, COUNTDOWN_MAX)
     local ok = pcall(miot.set, device, ip, token, COUNTDOWN_SIID, COUNTDOWN_TIME_PIID, hours)
     if ok then
-        device:emit_event(controls.countdownHours({value = hours, unit = "h"}))
+        device:emit_event(controlsCountdownHours.countdownHours({value = hours, unit = "h"}))
     end
 end
 
@@ -239,7 +244,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(controls.childLock({value = child_lock}))
+        device:emit_event(controlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -250,7 +255,7 @@ local function set_buzzer_handler(_, device, command)
     local buzzer = command.args.buzzer
     local ok = pcall(miot.set, device, ip, token, ALARM_SIID, ALARM_PIID, buzzer == "on")
     if ok then
-        device:emit_event(controls.buzzer({value = buzzer}))
+        device:emit_event(controlsBuzzer.buzzer({value = buzzer}))
     end
 end
 
@@ -264,7 +269,7 @@ local function set_indicator_light_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(controls.indicatorLight({value = indicator}))
+        device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
     end
 end
 
@@ -275,7 +280,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsCountdownHours.ID, "main") then
         device:try_update_metadata({profile = "zhimi-heater-mc2"})
     end
 end
@@ -286,11 +291,11 @@ local function device_added(_, device)
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.thermostatHeatingSetpoint.heatingSetpoint({value = TARGET_TEMPERATURE_MIN, unit = "C"}))
     emit_heating_range(device)
-    device:emit_event(controls.countdownHours({value = 0, unit = "h"}))
+    device:emit_event(controlsCountdownHours.countdownHours({value = 0, unit = "h"}))
     emit_countdown_range(device)
-    device:emit_event(controls.childLock({value = "off"}))
-    device:emit_event(controls.buzzer({value = "off"}))
-    device:emit_event(controls.indicatorLight({value = "bright"}))
+    device:emit_event(controlsChildLock.childLock({value = "off"}))
+    device:emit_event(controlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(controlsIndicatorLight.indicatorLight({value = "bright"}))
     emit_fault(device, 0)
 end
 
@@ -350,11 +355,17 @@ local driver = Driver("miot-zhimi-heater-mc2", {
         [capabilities.thermostatHeatingSetpoint.ID] = {
             [capabilities.thermostatHeatingSetpoint.commands.setHeatingSetpoint.NAME] = set_heating_setpoint_handler
         },
-        [controls.ID] = {
-            [controls.commands.setCountdownHours.NAME] = set_countdown_hours_handler,
-            [controls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [controls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [controls.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        [controlsCountdownHours.ID] = {
+            [controlsCountdownHours.commands.setCountdownHours.NAME] = set_countdown_hours_handler
+        },
+        [controlsChildLock.ID] = {
+            [controlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [controlsBuzzer.ID] = {
+            [controlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [controlsIndicatorLight.ID] = {
+            [controlsIndicatorLight.commands.setIndicatorLight.NAME] = set_indicator_light_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

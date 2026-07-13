@@ -5,8 +5,10 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local purifierMode = capabilities["concertmirror08464.zhimiAirPurifierThreeMode"]
-local compactControls = capabilities["concertmirror08464.xiaomiAp4cControls"]
+local purifierModeAirPurifierMode = capabilities["concertmirror08464.zhimiAirCpa4AirPurifierMode"]
+local compactControlsBuzzer = capabilities["concertmirror08464.zhimiAirCpa4Buzzer"]
+local compactControlsChildLock = capabilities["concertmirror08464.zhimiAirCpa4ChildLock"]
+local compactControlsScreenBrightness = capabilities["concertmirror08464.zhimiAirCpa4ScreenBrightness"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -100,20 +102,20 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.switch.switch(result.value and "on" or "off"))
                 elseif result.piid == MODE_PIID then
                     local mode = MODE_TO_ST[result.value] or "auto"
-                    device:emit_event(purifierMode.airPurifierMode({value = mode}))
+                    device:emit_event(purifierModeAirPurifierMode.airPurifierMode({value = mode}))
                 end
             elseif result.siid == ENVIRONMENT_SIID and result.piid == PM25_PIID then
                 device:emit_event(capabilities.fineDustSensor.fineDustLevel(math.floor(result.value)))
             elseif result.siid == FILTER_SIID and result.piid == FILTER_LIFE_PIID then
                 device:emit_event(capabilities.filterState.filterLifeRemaining({value = result.value, unit = "%"}))
             elseif result.siid == BUZZER_SIID and result.piid == BUZZER_PIID then
-                device:emit_event(compactControls.buzzer({value = result.value and "on" or "off"}))
+                device:emit_event(compactControlsBuzzer.buzzer({value = result.value and "on" or "off"}))
             elseif result.siid == CHILD_LOCK_SIID and result.piid == CHILD_LOCK_PIID then
-                device:emit_event(compactControls.childLock({value = result.value and "on" or "off"}))
+                device:emit_event(compactControlsChildLock.childLock({value = result.value and "on" or "off"}))
             elseif result.siid == SCREEN_SIID and result.piid == SCREEN_BRIGHTNESS_PIID then
                 local brightness = SCREEN_BRIGHTNESS_TO_ST[result.value]
                 if brightness then
-                    device:emit_event(compactControls.screenBrightness({value = brightness}))
+                    device:emit_event(compactControlsScreenBrightness.screenBrightness({value = brightness}))
                 end
             end
         end
@@ -171,7 +173,7 @@ local function handle_set_air_purifier_mode(_, device, command)
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, MODE_PIID, value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(purifierMode.airPurifierMode({value = mode}))
+        device:emit_event(purifierModeAirPurifierMode.airPurifierMode({value = mode}))
     end
 end
 
@@ -185,7 +187,7 @@ local function handle_set_screen_brightness(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(compactControls.screenBrightness({value = brightness}))
+        device:emit_event(compactControlsScreenBrightness.screenBrightness({value = brightness}))
     end
 end
 
@@ -196,7 +198,7 @@ local function handle_set_buzzer(_, device, command)
     local value = command.args.buzzer == "on"
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, value)
     if ok then
-        device:emit_event(compactControls.buzzer({value = command.args.buzzer}))
+        device:emit_event(compactControlsBuzzer.buzzer({value = command.args.buzzer}))
     end
 end
 
@@ -207,7 +209,7 @@ local function handle_set_child_lock(_, device, command)
     local value = command.args.childLock == "on"
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value)
     if ok then
-        device:emit_event(compactControls.childLock({value = command.args.childLock}))
+        device:emit_event(compactControlsChildLock.childLock({value = command.args.childLock}))
     end
 end
 
@@ -216,7 +218,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(purifierMode.ID, "main") then
+    if not device:supports_capability_by_id(purifierModeAirPurifierMode.ID, "main") then
         device:try_update_metadata({profile = "zhimi-cpa4"})
     end
 end
@@ -224,13 +226,13 @@ end
 local function device_added(_, device)
     ensure_profile(device)
     device:emit_event(capabilities.switch.switch.off())
-    device:emit_event(purifierMode.airPurifierMode({value = "auto"}))
+    device:emit_event(purifierModeAirPurifierMode.airPurifierMode({value = "auto"}))
     device:emit_event(capabilities.fineDustSensor.fineDustLevel(0))
     device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
-    device:emit_event(compactControls.screenBrightness({value = "bright"}))
-    device:emit_event(compactControls.buzzer({value = "off"}))
-    device:emit_event(compactControls.childLock({value = "off"}))
+    device:emit_event(compactControlsScreenBrightness.screenBrightness({value = "bright"}))
+    device:emit_event(compactControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(compactControlsChildLock.childLock({value = "off"}))
 end
 
 local function device_init(_, device)
@@ -284,13 +286,17 @@ local driver = Driver("miot-air-purifier-cpa4", {
             [capabilities.switch.commands.on.NAME] = handle_on,
             [capabilities.switch.commands.off.NAME] = handle_off
         },
-        [purifierMode.ID] = {
-            [purifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
+        [purifierModeAirPurifierMode.ID] = {
+            [purifierModeAirPurifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
         },
-        [compactControls.ID] = {
-            [compactControls.commands.setScreenBrightness.NAME] = handle_set_screen_brightness,
-            [compactControls.commands.setBuzzer.NAME] = handle_set_buzzer,
-            [compactControls.commands.setChildLock.NAME] = handle_set_child_lock
+        [compactControlsScreenBrightness.ID] = {
+            [compactControlsScreenBrightness.commands.setScreenBrightness.NAME] = handle_set_screen_brightness
+        },
+        [compactControlsBuzzer.ID] = {
+            [compactControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+        },
+        [compactControlsChildLock.ID] = {
+            [compactControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

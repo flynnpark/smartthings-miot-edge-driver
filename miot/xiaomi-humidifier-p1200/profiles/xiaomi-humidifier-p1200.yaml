@@ -10,9 +10,27 @@ components:
     version: 1
   - id: filterState
     version: 1
-  - id: concertmirror08464.xiaomiHumidifierP1200Controls
+  - id: concertmirror08464.xiaomiHumP1200Mode
     version: 1
-  - id: concertmirror08464.xiaomiHumidifierP1200Stats
+  - id: concertmirror08464.xiaomiHumP1200TargetHumidity
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200ChildLock
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200Alarm
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200ScreenBrightness
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200OverwetProtect
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200DrySwitch
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200FilterClean
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200Fault
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200WaterLevel
+    version: 1
+  - id: concertmirror08464.xiaomiHumP1200WaterStatus
     version: 1
   - id: refresh
     version: 1
@@ -54,10 +72,37 @@ deviceConfig:
     capability: filterState
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumidifierP1200Controls
+    capability: concertmirror08464.xiaomiHumP1200Mode
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumidifierP1200Stats
+    capability: concertmirror08464.xiaomiHumP1200TargetHumidity
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200ChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200Alarm
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200ScreenBrightness
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200OverwetProtect
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200DrySwitch
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200FilterClean
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200Fault
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200WaterLevel
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHumP1200WaterStatus
     version: 1
   - component: main
     capability: refresh
@@ -77,17 +122,62 @@ deviceConfig:
       capability: filterState
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumidifierP1200Controls
+      capability: concertmirror08464.xiaomiHumP1200Mode
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumidifierP1200Stats
+      capability: concertmirror08464.xiaomiHumP1200TargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200Alarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200ScreenBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200OverwetProtect
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200DrySwitch
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200FilterClean
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200Fault
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200WaterLevel
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200WaterStatus
       version: 1
     actions:
     - component: main
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumidifierP1200Controls
+      capability: concertmirror08464.xiaomiHumP1200Mode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200TargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200Alarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200ScreenBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200OverwetProtect
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHumP1200DrySwitch
       version: 1
 
 preferences:

@@ -51,3 +51,6 @@ Indicator light service `siid=5`:
 - `piid=1` indicator light, read/write, not used because python-miio maps light to fan service `siid=2/piid=9`
 
 Angle control: `dmakerFanP9HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=6`, `30/60/90/120/150`.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

@@ -12,13 +12,13 @@ SmartThings Edge LAN driver for the Xiaomi Mi Air Purifier Pro product code `AC-
 ## Exposed Capabilities
 
 - `switch`
-- `concertmirror08464.zhimiAirPurifierClassicMode`
+- `concertmirror08464.zhimiAirV6AirPurifierMode`
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `fineDustSensor`
 - `fanSpeedPercent`
 - `filterState`
-- `concertmirror08464.xiaomiDeviceControls`
+- `concertmirror08464.zhimiAirV6Buzzer`, `concertmirror08464.zhimiAirV6ChildLock`, `concertmirror08464.zhimiAirV6LedBrightness`
 - `refresh`
 
 ## miIO Mapping

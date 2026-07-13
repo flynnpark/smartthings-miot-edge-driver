@@ -8,7 +8,15 @@ components:
     version: 1
   - id: temperatureMeasurement
     version: 1
-  - id: concertmirror08464.nwtDerh312enControls
+  - id: concertmirror08464.nwtDehum312enMode
+    version: 1
+  - id: concertmirror08464.nwtDehum312enTargetHumidity
+    version: 1
+  - id: concertmirror08464.nwtDehum312enChildLock
+    version: 1
+  - id: concertmirror08464.nwtDehum312enIndicatorLight
+    version: 1
+  - id: concertmirror08464.nwtDehum312enAlarm
     version: 1
   - id: concertmirror08464.nwtDerh312enStatus
     version: 1
@@ -49,7 +57,19 @@ deviceConfig:
     capability: temperatureMeasurement
     version: 1
   - component: main
-    capability: concertmirror08464.nwtDerh312enControls
+    capability: concertmirror08464.nwtDehum312enMode
+    version: 1
+  - component: main
+    capability: concertmirror08464.nwtDehum312enTargetHumidity
+    version: 1
+  - component: main
+    capability: concertmirror08464.nwtDehum312enChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.nwtDehum312enIndicatorLight
+    version: 1
+  - component: main
+    capability: concertmirror08464.nwtDehum312enAlarm
     version: 1
   - component: main
     capability: concertmirror08464.nwtDerh312enStatus
@@ -69,7 +89,19 @@ deviceConfig:
       capability: temperatureMeasurement
       version: 1
     - component: main
-      capability: concertmirror08464.nwtDerh312enControls
+      capability: concertmirror08464.nwtDehum312enMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enAlarm
       version: 1
     - component: main
       capability: concertmirror08464.nwtDerh312enStatus
@@ -79,7 +111,19 @@ deviceConfig:
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.nwtDerh312enControls
+      capability: concertmirror08464.nwtDehum312enMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enIndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.nwtDehum312enAlarm
       version: 1
 
 preferences:

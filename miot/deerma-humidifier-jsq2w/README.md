@@ -15,8 +15,8 @@ SmartThings Edge LAN driver for the Xiaomi/Deerma MIoT humidifier model `deerma.
 - `switch`
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
-- `concertmirror08464.deermaHumidifierJsq2wControls`
-- `concertmirror08464.deermaHumidifierJsq2wStats`
+- `concertmirror08464.deermaHumJsq2wMode`, `concertmirror08464.deermaHumJsq2wTargetHumidity`, `concertmirror08464.deermaHumJsq2wAlarm`, `concertmirror08464.deermaHumJsq2wIndicatorLight`, `concertmirror08464.deermaHumJsq2wFanLevel`, `concertmirror08464.deermaHumJsq2wOverwetProtect`
+- `concertmirror08464.deermaHumJsq2wTankFilled`, `concertmirror08464.deermaHumJsq2wFault`, `concertmirror08464.deermaHumJsq2wWaterShortageFault`, `concertmirror08464.deermaHumJsq2wStatus`
 - `refresh`
 
 ## MIoT Mapping
@@ -38,3 +38,6 @@ SmartThings Edge LAN driver for the Xiaomi/Deerma MIoT humidifier model `deerma.
 | Overwet protection | RW | `siid=7`, `piid=6` | `deermaHumidifierJsq2wControls.overwetProtect` |
 
 Child lock is not exposed because the exact JSQ2W MIoT spec does not include a child-lock property.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

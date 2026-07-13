@@ -8,9 +8,23 @@ components:
     version: 1
   - id: filterState
     version: 1
-  - id: concertmirror08464.xiaomiHumidifier3liteControls
+  - id: concertmirror08464.xiaomiHum3liteMode
     version: 1
-  - id: concertmirror08464.xiaomiHumidifier3liteStats
+  - id: concertmirror08464.xiaomiHum3liteTargetHumidity
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteAutomaticAirDrying
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteChildLock
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteAlarm
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteScreenBrightness
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteOverwetProtect
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteFault
+    version: 1
+  - id: concertmirror08464.xiaomiHum3liteWaterStatus
     version: 1
   - id: refresh
     version: 1
@@ -49,10 +63,31 @@ deviceConfig:
     capability: filterState
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumidifier3liteControls
+    capability: concertmirror08464.xiaomiHum3liteMode
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumidifier3liteStats
+    capability: concertmirror08464.xiaomiHum3liteTargetHumidity
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteAutomaticAirDrying
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteChildLock
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteAlarm
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteScreenBrightness
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteOverwetProtect
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteFault
+    version: 1
+  - component: main
+    capability: concertmirror08464.xiaomiHum3liteWaterStatus
     version: 1
   - component: main
     capability: refresh
@@ -69,17 +104,56 @@ deviceConfig:
       capability: filterState
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumidifier3liteControls
+      capability: concertmirror08464.xiaomiHum3liteMode
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumidifier3liteStats
+      capability: concertmirror08464.xiaomiHum3liteTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteAutomaticAirDrying
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteScreenBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteOverwetProtect
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteFault
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteWaterStatus
       version: 1
     actions:
     - component: main
       capability: switch
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumidifier3liteControls
+      capability: concertmirror08464.xiaomiHum3liteMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteTargetHumidity
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteAutomaticAirDrying
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteAlarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteScreenBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiHum3liteOverwetProtect
       version: 1
 
 preferences:

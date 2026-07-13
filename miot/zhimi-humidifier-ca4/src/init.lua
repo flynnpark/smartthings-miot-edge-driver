@@ -5,8 +5,13 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local ca4Core = capabilities["concertmirror08464.zhimiHumidifierCa4Core"]
-local deviceControls = capabilities["concertmirror08464.xiaomiDeviceControls"]
+local ca4CoreTargetHumidity = capabilities["concertmirror08464.zhimiHumCa4TargetHumidity"]
+local ca4CoreFanMode = capabilities["concertmirror08464.zhimiHumCa4FanMode"]
+local ca4CoreDryMode = capabilities["concertmirror08464.zhimiHumCa4DryMode"]
+local ca4CoreWaterLevel = capabilities["concertmirror08464.zhimiHumCa4WaterLevel"]
+local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiHumCa4Buzzer"]
+local deviceControlsChildLock = capabilities["concertmirror08464.zhimiHumCa4ChildLock"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiHumCa4LedBrightness"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -107,24 +112,24 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(ca4Core.fanMode({value = mode}))
+                        device:emit_event(ca4CoreFanMode.fanMode({value = mode}))
                     end
                 elseif piid == TARGET_HUMIDITY_PIID then
-                    device:emit_event(ca4Core.targetHumidity({value = value, unit = "%"}))
+                    device:emit_event(ca4CoreTargetHumidity.targetHumidity({value = value, unit = "%"}))
                 elseif piid == WATER_LEVEL_PIID then
-                    device:emit_event(ca4Core.waterLevel({value = value, unit = "%"}))
+                    device:emit_event(ca4CoreWaterLevel.waterLevel({value = value, unit = "%"}))
                 elseif piid == AUTO_DRY_PIID then
-                    device:emit_event(ca4Core.dryMode({value = value and "on" or "off"}))
+                    device:emit_event(ca4CoreDryMode.dryMode({value = value and "on" or "off"}))
                 end
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                device:emit_event(deviceControls.buzzer({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsBuzzer.buzzer({value = value and "on" or "off"}))
             elseif siid == LED_BRIGHTNESS_SIID and piid == LED_BRIGHTNESS_PIID then
                 local brightness = LED_BRIGHTNESS_TO_ST[value]
                 if brightness then
-                    device:emit_event(deviceControls.ledBrightness({value = brightness}))
+                    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
                 end
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(deviceControls.childLock({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsChildLock.childLock({value = value and "on" or "off"}))
             elseif siid == ENVIRONMENT_SIID then
                 if piid == TEMPERATURE_PIID then
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
@@ -185,7 +190,7 @@ local function set_fan_mode_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, value)
     if ok then
-        device:emit_event(ca4Core.fanMode({value = mode}))
+        device:emit_event(ca4CoreFanMode.fanMode({value = mode}))
     end
 end
 
@@ -196,7 +201,7 @@ local function set_target_humidity_handler(_, device, command)
     local humidity = math.max(30, math.min(80, command.args.humidity))
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, humidity)
     if ok then
-        device:emit_event(ca4Core.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(ca4CoreTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -207,7 +212,7 @@ local function set_dry_mode_handler(_, device, command)
     local mode = command.args.mode
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, AUTO_DRY_PIID, mode == "on")
     if ok then
-        device:emit_event(ca4Core.dryMode({value = mode}))
+        device:emit_event(ca4CoreDryMode.dryMode({value = mode}))
     end
 end
 
@@ -221,7 +226,7 @@ local function set_led_brightness_handler(_, device, command)
 
     local ok = pcall(miot.set, device, ip, token, LED_BRIGHTNESS_SIID, LED_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
     end
 end
 
@@ -232,7 +237,7 @@ local function set_buzzer_handler(_, device, command)
     local value = command.args.buzzer == "on"
     local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, value)
     if ok then
-        device:emit_event(deviceControls.buzzer({value = command.args.buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = command.args.buzzer}))
     end
 end
 
@@ -243,7 +248,7 @@ local function set_child_lock_handler(_, device, command)
     local value = command.args.childLock == "on"
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value)
     if ok then
-        device:emit_event(deviceControls.childLock({value = command.args.childLock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = command.args.childLock}))
     end
 end
 
@@ -252,7 +257,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(ca4Core.ID, "main") then
+    if not device:supports_capability_by_id(ca4CoreTargetHumidity.ID, "main") then
         device:try_update_metadata({profile = "zhimi-humidifier-ca4"})
     end
 end
@@ -262,13 +267,13 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(ca4Core.fanMode({value = "auto"}))
-    device:emit_event(ca4Core.targetHumidity({value = 50, unit = "%"}))
-    device:emit_event(ca4Core.waterLevel({value = 0, unit = "%"}))
-    device:emit_event(ca4Core.dryMode({value = "off"}))
-    device:emit_event(deviceControls.ledBrightness({value = "bright"}))
-    device:emit_event(deviceControls.buzzer({value = "off"}))
-    device:emit_event(deviceControls.childLock({value = "off"}))
+    device:emit_event(ca4CoreFanMode.fanMode({value = "auto"}))
+    device:emit_event(ca4CoreTargetHumidity.targetHumidity({value = 50, unit = "%"}))
+    device:emit_event(ca4CoreWaterLevel.waterLevel({value = 0, unit = "%"}))
+    device:emit_event(ca4CoreDryMode.dryMode({value = "off"}))
+    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
+    device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(deviceControlsChildLock.childLock({value = "off"}))
 end
 
 local function device_init(_, device)
@@ -322,15 +327,23 @@ local driver = Driver("miot-humidifier-ca4", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [ca4Core.ID] = {
-            [ca4Core.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [ca4Core.commands.setTargetHumidity.NAME] = set_target_humidity_handler,
-            [ca4Core.commands.setDryMode.NAME] = set_dry_mode_handler
+        [ca4CoreFanMode.ID] = {
+            [ca4CoreFanMode.commands.setFanMode.NAME] = set_fan_mode_handler
         },
-        [deviceControls.ID] = {
-            [deviceControls.commands.setLedBrightness.NAME] = set_led_brightness_handler,
-            [deviceControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [deviceControls.commands.setChildLock.NAME] = set_child_lock_handler
+        [ca4CoreTargetHumidity.ID] = {
+            [ca4CoreTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        },
+        [ca4CoreDryMode.ID] = {
+            [ca4CoreDryMode.commands.setDryMode.NAME] = set_dry_mode_handler
+        },
+        [deviceControlsLedBrightness.ID] = {
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = set_led_brightness_handler
+        },
+        [deviceControlsBuzzer.ID] = {
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [deviceControlsChildLock.ID] = {
+            [deviceControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for one MIoT model: `xiaomi.fan.p45`.
 - Model: `xiaomi.fan.p45`
 - Spec model: `xiaomi-p45`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p45:1:0000D062`
-- Basis: homebridge-miot lists `xiaomi.fan.p45` as Xiaomi Smart Tower Fan 2 under a MIoT plugin; Xiaomi Korea product page confirms direct/natural/sleep modes, 100 speed levels, 150-degree oscillation, app control, child lock, and indicator behavior; MIoT spec v1 confirms the core siid/piid layout.
+- Basis: current `hass-xiaomi-miot` lists exact model `xiaomi.fan.p45` in `MIOT_LOCAL_MODELS`; its local path sends `get_properties` and `set_properties` with `siid`/`piid` mappings. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed capabilities
 
@@ -62,3 +62,6 @@ Xiaomi dm-service `siid=13`:
 - `piid=3..7` natural wind customization strings, read/write
 
 Angle control: `xiaomiFanP45HorizontalAngleV2.horizontalAngle` maps MIoT `siid=2`, `piid=7`, `30/60/90/120/150`.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

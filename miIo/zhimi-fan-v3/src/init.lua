@@ -26,6 +26,7 @@ local CURRENT_PERCENT = "current_percent"
 --                set_angle_enable, set_led_b, set_buzzer, set_child_lock
 
 local PROPERTIES = {
+    "angle",
     "power",
     "angle_enable",
     "speed_level",
@@ -108,6 +109,8 @@ local function poll_device_status(device)
     for index, property in ipairs(PROPERTIES) do
         values[property] = response.result[index]
     end
+
+    emit_angle_values(device, values)
 
     if values.power ~= nil then
         device:emit_event(capabilities.switch.switch(on_off_to_bool(values.power) and "on" or "off"))

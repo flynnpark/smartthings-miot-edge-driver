@@ -8,11 +8,13 @@ local miot = require "miot"
 
 -- 커스텀 Capability 참조
 
-local cap_fanmode = capabilities["connectamber53538.zhimica6fanmode"]
-local cap_waterlevel = capabilities["connectamber53538.zhimica6waterlevel"]
-local cap_targethumidity = capabilities["connectamber53538.zhimica6targethumidity"]
-local cap_drymode = capabilities["connectamber53538.zhimihumidifierdrymode"]
-local deviceControls = capabilities["concertmirror08464.xiaomiDeviceControls"]
+local capFanmodeFanMode = capabilities["concertmirror08464.zhimiHumCa6FanMode"]
+local capWaterlevelWaterLevel = capabilities["concertmirror08464.zhimiHumCa6WaterLevel"]
+local capTargethumidityTargetHumidity = capabilities["concertmirror08464.zhimiHumCa6TargetHumidity"]
+local capDrymodeDryMode = capabilities["concertmirror08464.zhimiHumCa6DryMode"]
+local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiHumCa6Buzzer"]
+local deviceControlsChildLock = capabilities["concertmirror08464.zhimiHumCa6ChildLock"]
+local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiHumCa6LedBrightness"]
 
 -- 상수 정의
 
@@ -136,24 +138,24 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
                 elseif piid == FAN_LEVEL_PIID then
                     local mode = FAN_LEVEL_TO_MODE[value] or "auto"
-                    device:emit_event(cap_fanmode.fanMode({value = mode}))
+                    device:emit_event(capFanmodeFanMode.fanMode({value = mode}))
                 elseif piid == TARGET_HUMIDITY_PIID then
-                    device:emit_event(cap_targethumidity.targetHumidity({value = value, unit = "%"}))
+                    device:emit_event(capTargethumidityTargetHumidity.targetHumidity({value = value, unit = "%"}))
                 elseif piid == WATER_LEVEL_PIID then
                     local status = WATER_LEVEL_TO_STATUS[value] or "empty"
-                    device:emit_event(cap_waterlevel.waterLevel({value = status}))
+                    device:emit_event(capWaterlevelWaterLevel.waterLevel({value = status}))
                 elseif piid == AUTO_DRY_PIID then
-                    device:emit_event(cap_drymode.dryMode({value = value and "on" or "off"}))
+                    device:emit_event(capDrymodeDryMode.dryMode({value = value and "on" or "off"}))
                 end
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
-                device:emit_event(deviceControls.buzzer({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsBuzzer.buzzer({value = value and "on" or "off"}))
             elseif siid == LED_BRIGHTNESS_SIID and piid == LED_BRIGHTNESS_PIID then
                 local brightness = LED_BRIGHTNESS_TO_ST[value]
                 if brightness then
-                    device:emit_event(deviceControls.ledBrightness({value = brightness}))
+                    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
                 end
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(deviceControls.childLock({value = value and "on" or "off"}))
+                device:emit_event(deviceControlsChildLock.childLock({value = value and "on" or "off"}))
             -- 환경 센서 데이터
             elseif siid == ENVIRONMENT_SIID then
                 if piid == TEMPERATURE_PIID then
@@ -219,7 +221,7 @@ local function set_fan_mode_handler(_, device, command)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, FAN_LEVEL_PIID, level)
     if ok then
-        device:emit_event(cap_fanmode.fanMode({value = mode}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = mode}))
     end
 end
 
@@ -230,7 +232,7 @@ local function set_fav_handler(_, device, _)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, FAN_LEVEL_PIID, 0)
     if ok then
-        device:emit_event(cap_fanmode.fanMode({value = "fav"}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = "fav"}))
     end
 end
 
@@ -240,7 +242,7 @@ local function set_auto_handler(_, device, _)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, FAN_LEVEL_PIID, 1)
     if ok then
-        device:emit_event(cap_fanmode.fanMode({value = "auto"}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = "auto"}))
     end
 end
 
@@ -250,7 +252,7 @@ local function set_sleep_handler(_, device, _)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, FAN_LEVEL_PIID, 2)
     if ok then
-        device:emit_event(cap_fanmode.fanMode({value = "sleep"}))
+        device:emit_event(capFanmodeFanMode.fanMode({value = "sleep"}))
     end
 end
 
@@ -265,7 +267,7 @@ local function set_target_humidity_handler(_, device, command)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, humidity)
     if ok then
-        device:emit_event(cap_targethumidity.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(capTargethumidityTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -279,7 +281,7 @@ local function set_dry_mode_handler(_, device, command)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, AUTO_DRY_PIID, value)
     if ok then
-        device:emit_event(cap_drymode.dryMode({value = mode}))
+        device:emit_event(capDrymodeDryMode.dryMode({value = mode}))
     end
 end
 
@@ -289,7 +291,7 @@ local function dry_on_handler(_, device, _)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, AUTO_DRY_PIID, true)
     if ok then
-        device:emit_event(cap_drymode.dryMode({value = "on"}))
+        device:emit_event(capDrymodeDryMode.dryMode({value = "on"}))
     end
 end
 
@@ -299,7 +301,7 @@ local function dry_off_handler(_, device, _)
     
     local ok, _ = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, AUTO_DRY_PIID, false)
     if ok then
-        device:emit_event(cap_drymode.dryMode({value = "off"}))
+        device:emit_event(capDrymodeDryMode.dryMode({value = "off"}))
     end
 end
 
@@ -313,7 +315,7 @@ local function set_led_brightness_handler(_, device, command)
 
     local ok, _ = pcall(miot.set, device, ip, token, LED_BRIGHTNESS_SIID, LED_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(deviceControls.ledBrightness({value = brightness}))
+        device:emit_event(deviceControlsLedBrightness.ledBrightness({value = brightness}))
     end
 end
 
@@ -324,7 +326,7 @@ local function set_buzzer_handler(_, device, command)
     local value = command.args.buzzer == "on"
     local ok, _ = pcall(miot.set, device, ip, token, BUZZER_SIID, BUZZER_PIID, value)
     if ok then
-        device:emit_event(deviceControls.buzzer({value = command.args.buzzer}))
+        device:emit_event(deviceControlsBuzzer.buzzer({value = command.args.buzzer}))
     end
 end
 
@@ -335,7 +337,7 @@ local function set_child_lock_handler(_, device, command)
     local value = command.args.childLock == "on"
     local ok, _ = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, value)
     if ok then
-        device:emit_event(deviceControls.childLock({value = command.args.childLock}))
+        device:emit_event(deviceControlsChildLock.childLock({value = command.args.childLock}))
     end
 end
 
@@ -348,7 +350,7 @@ end
 
 -- 장치 추가됨
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(cap_fanmode.ID, "main") then
+    if not device:supports_capability_by_id(capFanmodeFanMode.ID, "main") then
         device:try_update_metadata({profile = "zhimi-humidifier-ca6"})
     end
 end
@@ -359,13 +361,13 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(cap_fanmode.fanMode({value = "auto"}))
-    device:emit_event(cap_targethumidity.targetHumidity({value = 40, unit = "%"}))
-    device:emit_event(cap_waterlevel.waterLevel({value = "full"}))
-    device:emit_event(cap_drymode.dryMode({value = "off"}))
-    device:emit_event(deviceControls.ledBrightness({value = "bright"}))
-    device:emit_event(deviceControls.buzzer({value = "off"}))
-    device:emit_event(deviceControls.childLock({value = "off"}))
+    device:emit_event(capFanmodeFanMode.fanMode({value = "auto"}))
+    device:emit_event(capTargethumidityTargetHumidity.targetHumidity({value = 40, unit = "%"}))
+    device:emit_event(capWaterlevelWaterLevel.waterLevel({value = "full"}))
+    device:emit_event(capDrymodeDryMode.dryMode({value = "off"}))
+    device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
+    device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
+    device:emit_event(deviceControlsChildLock.childLock({value = "off"}))
 end
 
 -- 장치 초기화
@@ -426,24 +428,28 @@ local driver = Driver("miot-humidifier-ca6", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [cap_fanmode.ID] = {
-            [cap_fanmode.commands.setFanMode.NAME] = set_fan_mode_handler,
-            [cap_fanmode.commands.setFav.NAME] = set_fav_handler,
-            [cap_fanmode.commands.setAuto.NAME] = set_auto_handler,
-            [cap_fanmode.commands.setSleep.NAME] = set_sleep_handler
+        [capFanmodeFanMode.ID] = {
+            [capFanmodeFanMode.commands.setFanMode.NAME] = set_fan_mode_handler,
+            [capFanmodeFanMode.commands.setFav.NAME] = set_fav_handler,
+            [capFanmodeFanMode.commands.setAuto.NAME] = set_auto_handler,
+            [capFanmodeFanMode.commands.setSleep.NAME] = set_sleep_handler
         },
-        [cap_targethumidity.ID] = {
-            [cap_targethumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        [capTargethumidityTargetHumidity.ID] = {
+            [capTargethumidityTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
         },
-        [cap_drymode.ID] = {
-            [cap_drymode.commands.setDryMode.NAME] = set_dry_mode_handler,
-            [cap_drymode.commands.on.NAME] = dry_on_handler,
-            [cap_drymode.commands.off.NAME] = dry_off_handler
+        [capDrymodeDryMode.ID] = {
+            [capDrymodeDryMode.commands.setDryMode.NAME] = set_dry_mode_handler,
+            [capDrymodeDryMode.commands.on.NAME] = dry_on_handler,
+            [capDrymodeDryMode.commands.off.NAME] = dry_off_handler
         },
-        [deviceControls.ID] = {
-            [deviceControls.commands.setLedBrightness.NAME] = set_led_brightness_handler,
-            [deviceControls.commands.setBuzzer.NAME] = set_buzzer_handler,
-            [deviceControls.commands.setChildLock.NAME] = set_child_lock_handler
+        [deviceControlsLedBrightness.ID] = {
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = set_led_brightness_handler
+        },
+        [deviceControlsBuzzer.ID] = {
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
+        },
+        [deviceControlsChildLock.ID] = {
+            [deviceControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

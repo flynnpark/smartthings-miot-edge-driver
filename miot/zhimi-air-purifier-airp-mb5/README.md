@@ -13,13 +13,13 @@ SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.mb5`.
 ## Exposed capabilities
 
 - `switch`: power
-- `connectamber53538.zhimiairpurifierfanmode`: `auto` / `sleep` / `favorite` / `manual`
-- `connectamber53538.zhimiairpurifierfanspeed`: fan level `1..3`
+- `concertmirror08464.zhimiAirAirpMb5FanMode`: `auto` / `sleep` / `favorite` / `manual`
+- `concertmirror08464.zhimiAirAirpMb5FanSpeed`: fan level `1..3`
 - `fineDustSensor`: PM2.5 density
 - `temperatureMeasurement`: temperature
 - `relativeHumidityMeasurement`: humidity
 - `filterState`: filter life remaining
-- `concertmirror08464.xiaomiDeviceControls`
+- `concertmirror08464.zhimiAirAirpMb5Buzzer`, `concertmirror08464.zhimiAirAirpMb5ChildLock`, `concertmirror08464.zhimiAirAirpMb5LedBrightness`
   - `ledBrightness`: display brightness, `off` / `dim` / `bright`
   - `buzzer`: 부저음, `off` / `on`
   - `childLock`: 차일드락, `off` / `on`
@@ -65,3 +65,6 @@ Device display unit service `siid=14`:
 - `piid=1` temperature display unit, read/write, not exposed
 
 Custom service `siid=9`, filter-time `siid=10`, aqi `siid=11`, and rfid `siid=12` contain motor diagnostics, favorite tuning, accumulated AQI, and RFID values. They are not exposed as core SmartThings controls or sensors.
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

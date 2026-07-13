@@ -14,7 +14,7 @@ SmartThings Edge LAN driver for one MIoT model: `dmaker.fan.1c`.
 
 - `switch`: power
 - `fanOscillationMode`: horizontal oscillation, `off` / `horizontal`
-- `concertmirror08464.xiaomiFan1cControls`
+- `concertmirror08464.dmakerFan1cFanMode`, `concertmirror08464.dmakerFan1cBuzzer`, `concertmirror08464.dmakerFan1cChildLock`, `concertmirror08464.dmakerFan1cIndicatorLight`, `concertmirror08464.dmakerFan1cFanLevel`
   - `fanLevel`: `1..3`
   - `fanMode`: `normal` / `sleep`
   - `indicatorLight`: 표시등, `off` / `on`
@@ -37,3 +37,6 @@ Fan service `siid=2`:
 Physical controls locked service `siid=3`:
 
 - `piid=1` child lock, read/write
+
+
+Not exposed: auxiliary diagnostics, accumulated usage, hardware metadata, and non-core private values are intentionally omitted.

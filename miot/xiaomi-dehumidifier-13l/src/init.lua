@@ -5,8 +5,16 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.xiaomiDehumidifier13lControls"]
-local status = capabilities["concertmirror08464.xiaomiDehumidifier13lStatus"]
+local controlsMode = capabilities["concertmirror08464.xiaomiDehum13lMode"]
+local controlsTargetHumidity = capabilities["concertmirror08464.xiaomiDehum13lTargetHumidity"]
+local controlsChildLock = capabilities["concertmirror08464.xiaomiDehum13lChildLock"]
+local controlsIndicatorLight = capabilities["concertmirror08464.xiaomiDehum13lIndicatorLight"]
+local controlsAlarm = capabilities["concertmirror08464.xiaomiDehum13lAlarm"]
+local controlsDryAfterOff = capabilities["concertmirror08464.xiaomiDehum13lDryAfterOff"]
+local controlsResetFilter = capabilities["concertmirror08464.xiaomiDehum13lResetFilter"]
+local statusTankStatus = capabilities["concertmirror08464.xiaomiDehum13lTankStatus"]
+local statusFilterStatus = capabilities["concertmirror08464.xiaomiDehum13lFilterStatus"]
+local statusFault = capabilities["concertmirror08464.xiaomiDehum13lFault"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -116,9 +124,9 @@ end
 local function emit_fault(device, value)
     local fault = FAULT_TO_ST[value]
     if fault then
-        device:emit_event(status.fault({value = fault}))
-        device:emit_event(status.tankStatus({value = fault == "waterFull" and "full" or "normal"}))
-        device:emit_event(status.filterStatus({value = fault == "filterClean" and "cleanRequired" or "normal"}))
+        device:emit_event(statusFault.fault({value = fault}))
+        device:emit_event(statusTankStatus.tankStatus({value = fault == "waterFull" and "full" or "normal"}))
+        device:emit_event(statusFilterStatus.filterStatus({value = fault == "filterClean" and "cleanRequired" or "normal"}))
     end
 end
 
@@ -164,10 +172,10 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(controls.mode({value = mode}))
+                        device:emit_event(controlsMode.mode({value = mode}))
                     end
                 elseif piid == TARGET_HUMIDITY_PIID then
-                    device:emit_event(controls.targetHumidity({value = value, unit = "%"}))
+                    device:emit_event(controlsTargetHumidity.targetHumidity({value = value, unit = "%"}))
                 end
             elseif siid == ENVIRONMENT_SIID then
                 if piid == HUMIDITY_PIID then
@@ -176,7 +184,7 @@ local function poll_device_status(device)
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
                 end
             elseif siid == ALARM_SIID and piid == ALARM_PIID then
-                device:emit_event(controls.alarm({value = bool_to_st(value)}))
+                device:emit_event(controlsAlarm.alarm({value = bool_to_st(value)}))
             elseif siid == INDICATOR_SIID then
                 if piid == INDICATOR_ON_PIID then
                     indicator_on = value
@@ -184,19 +192,19 @@ local function poll_device_status(device)
                     indicator_mode = value
                 end
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(controls.childLock({value = bool_to_st(value)}))
+                device:emit_event(controlsChildLock.childLock({value = bool_to_st(value)}))
             elseif siid == DM_SERVICE_SIID and piid == DRY_AFTER_OFF_PIID then
-                device:emit_event(controls.dryAfterOff({value = bool_to_st(value)}))
+                device:emit_event(controlsDryAfterOff.dryAfterOff({value = bool_to_st(value)}))
             end
         end
     end
 
     if indicator_on == false or indicator_mode == 0 then
-        device:emit_event(controls.indicatorLight({value = "off"}))
+        device:emit_event(controlsIndicatorLight.indicatorLight({value = "off"}))
     elseif indicator_mode ~= nil then
         local indicator = INDICATOR_MODE_TO_ST[indicator_mode]
         if indicator then
-            device:emit_event(controls.indicatorLight({value = indicator}))
+            device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
         end
     end
 end
@@ -252,7 +260,7 @@ local function set_mode_handler(_, device, command)
     local ok = pcall(miot.set, device, ip, token, DEHUMIDIFIER_SIID, MODE_PIID, value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(controls.mode({value = mode}))
+        device:emit_event(controlsMode.mode({value = mode}))
         device.thread:call_with_delay(1, function()
             pcall(poll_device_status, device)
         end)
@@ -266,7 +274,7 @@ local function set_target_humidity_handler(_, device, command)
     local humidity = math.max(30, math.min(70, command.args.humidity))
     local ok = pcall(miot.set, device, ip, token, DEHUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, humidity)
     if ok then
-        device:emit_event(controls.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(controlsTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -278,7 +286,7 @@ local function set_indicator_light_handler(_, device, command)
     if indicator == "off" then
         local ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_ON_PIID, false)
         if ok then
-            device:emit_event(controls.indicatorLight({value = "off"}))
+            device:emit_event(controlsIndicatorLight.indicatorLight({value = "off"}))
         end
         return
     end
@@ -289,7 +297,7 @@ local function set_indicator_light_handler(_, device, command)
     pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_ON_PIID, true)
     local ok = pcall(miot.set, device, ip, token, INDICATOR_SIID, INDICATOR_MODE_PIID, value)
     if ok then
-        device:emit_event(controls.indicatorLight({value = indicator}))
+        device:emit_event(controlsIndicatorLight.indicatorLight({value = indicator}))
     end
 end
 
@@ -300,7 +308,7 @@ local function set_alarm_handler(_, device, command)
     local alarm = command.args.alarm
     local ok = pcall(miot.set, device, ip, token, ALARM_SIID, ALARM_PIID, alarm == "on")
     if ok then
-        device:emit_event(controls.alarm({value = alarm}))
+        device:emit_event(controlsAlarm.alarm({value = alarm}))
     end
 end
 
@@ -311,7 +319,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(controls.childLock({value = child_lock}))
+        device:emit_event(controlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -322,7 +330,7 @@ local function set_dry_after_off_handler(_, device, command)
     local dry_after_off = command.args.dryAfterOff
     local ok = pcall(miot.set, device, ip, token, DM_SERVICE_SIID, DRY_AFTER_OFF_PIID, dry_after_off == "on")
     if ok then
-        device:emit_event(controls.dryAfterOff({value = dry_after_off}))
+        device:emit_event(controlsDryAfterOff.dryAfterOff({value = dry_after_off}))
     end
 end
 
@@ -332,7 +340,7 @@ local function reset_filter_handler(_, device, _)
 
     local ok = pcall(miot.action, device, ip, token, DM_SERVICE_SIID, RESET_FILTER_AIID, {})
     if ok then
-        device:emit_event(status.filterStatus({value = "normal"}))
+        device:emit_event(statusFilterStatus.filterStatus({value = "normal"}))
     end
 end
 
@@ -341,7 +349,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsMode.ID, "main") then
         device:try_update_metadata({profile = "xiaomi-dehumidifier-13l"})
     end
 end
@@ -351,15 +359,15 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
-    device:emit_event(controls.mode({value = "smart"}))
-    device:emit_event(controls.targetHumidity({value = 50, unit = "%"}))
-    device:emit_event(controls.indicatorLight({value = "full"}))
-    device:emit_event(controls.alarm({value = "off"}))
-    device:emit_event(controls.childLock({value = "off"}))
-    device:emit_event(controls.dryAfterOff({value = "off"}))
-    device:emit_event(status.tankStatus({value = "normal"}))
-    device:emit_event(status.filterStatus({value = "normal"}))
-    device:emit_event(status.fault({value = "noFaults"}))
+    device:emit_event(controlsMode.mode({value = "smart"}))
+    device:emit_event(controlsTargetHumidity.targetHumidity({value = 50, unit = "%"}))
+    device:emit_event(controlsIndicatorLight.indicatorLight({value = "full"}))
+    device:emit_event(controlsAlarm.alarm({value = "off"}))
+    device:emit_event(controlsChildLock.childLock({value = "off"}))
+    device:emit_event(controlsDryAfterOff.dryAfterOff({value = "off"}))
+    device:emit_event(statusTankStatus.tankStatus({value = "normal"}))
+    device:emit_event(statusFilterStatus.filterStatus({value = "normal"}))
+    device:emit_event(statusFault.fault({value = "noFaults"}))
 end
 
 local function device_init(_, device)
@@ -413,14 +421,26 @@ local driver = Driver("miot-xiaomi-dehumidifier-13l", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [controls.ID] = {
-            [controls.commands.setMode.NAME] = set_mode_handler,
-            [controls.commands.setTargetHumidity.NAME] = set_target_humidity_handler,
-            [controls.commands.setIndicatorLight.NAME] = set_indicator_light_handler,
-            [controls.commands.setAlarm.NAME] = set_alarm_handler,
-            [controls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [controls.commands.setDryAfterOff.NAME] = set_dry_after_off_handler,
-            [controls.commands.resetFilter.NAME] = reset_filter_handler
+        [controlsMode.ID] = {
+            [controlsMode.commands.setMode.NAME] = set_mode_handler
+        },
+        [controlsTargetHumidity.ID] = {
+            [controlsTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        },
+        [controlsIndicatorLight.ID] = {
+            [controlsIndicatorLight.commands.setIndicatorLight.NAME] = set_indicator_light_handler
+        },
+        [controlsAlarm.ID] = {
+            [controlsAlarm.commands.setAlarm.NAME] = set_alarm_handler
+        },
+        [controlsChildLock.ID] = {
+            [controlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [controlsDryAfterOff.ID] = {
+            [controlsDryAfterOff.commands.setDryAfterOff.NAME] = set_dry_after_off_handler
+        },
+        [controlsResetFilter.ID] = {
+            [controlsResetFilter.commands.resetFilter.NAME] = reset_filter_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

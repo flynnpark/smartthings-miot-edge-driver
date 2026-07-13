@@ -10,9 +10,35 @@ components:
     version: 1
   - id: colorControl
     version: 1
-  - id: concertmirror08464.xiaomiFishbowlM200Controls
+  - id: concertmirror08464.xiaomiTankM200WaterPump
     version: 1
-  - id: concertmirror08464.xiaomiFishbowlM200Light
+  - id: concertmirror08464.xiaomiTankM200FeedProtectStatus
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200ChildLock
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200NoDisturb
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200Alarm
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200IndicatorLight
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200PumpFlux
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200FeederStatus
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200FeedProtect
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200PumpStatus
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200FeedNow
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200LightMode
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200FlowSpeed
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200LightBrightness
+    version: 1
+  - id: concertmirror08464.xiaomiTankM200LightSwitch
     version: 1
   - id: refresh
     version: 1
@@ -54,10 +80,49 @@ deviceConfig:
       capability: colorControl
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiFishbowlM200Controls
+      capability: concertmirror08464.xiaomiTankM200WaterPump
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiFishbowlM200Light
+      capability: concertmirror08464.xiaomiTankM200FeedProtectStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200ChildLock
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200NoDisturb
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200Alarm
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200IndicatorLight
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200PumpFlux
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200FeederStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200FeedProtect
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200PumpStatus
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200FeedNow
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200LightMode
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200FlowSpeed
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200LightBrightness
+      version: 1
+    - component: main
+      capability: concertmirror08464.xiaomiTankM200LightSwitch
       version: 1
     - component: main
       capability: refresh
@@ -87,10 +152,49 @@ deviceConfig:
         capability: colorControl
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFishbowlM200Controls
+        capability: concertmirror08464.xiaomiTankM200WaterPump
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiFishbowlM200Light
+        capability: concertmirror08464.xiaomiTankM200FeedProtectStatus
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200ChildLock
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200NoDisturb
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200Alarm
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200IndicatorLight
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200PumpFlux
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200FeederStatus
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200FeedProtect
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200PumpStatus
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200FeedNow
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200LightMode
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200FlowSpeed
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200LightBrightness
+        version: 1
+      - component: main
+        capability: concertmirror08464.xiaomiTankM200LightSwitch
         version: 1
 preferences:
 - name: ipAddress

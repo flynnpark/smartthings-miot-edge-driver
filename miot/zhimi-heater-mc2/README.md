@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT heater model `zhimi.heater.mc2`.
 - `switch`
 - `temperatureMeasurement`
 - `thermostatHeatingSetpoint`
-- `concertmirror08464.zhimiHeaterMc2Controls`
+- `concertmirror08464.zhimiHeaterMc2CountdownHours`, `concertmirror08464.zhimiHeaterMc2FaultCode`, `concertmirror08464.zhimiHeaterMc2Buzzer`, `concertmirror08464.zhimiHeaterMc2ChildLock`, `concertmirror08464.zhimiHeaterMc2IndicatorLight`, `concertmirror08464.zhimiHeaterMc2Fault`
 - `refresh`
 
 ## MIoT Mapping
@@ -32,4 +32,3 @@ SmartThings Edge LAN driver for the Xiaomi MIoT heater model `zhimi.heater.mc2`.
 | Indicator light | RW | `siid=7`, `piid=3`; `0=bright`, `1=off` | `zhimiHeaterMc2Controls.indicatorLight` |
 
 Not exposed: private service values such as hardware-enable, use-time, country-code, button events, and vendor diagnostic events because they are auxiliary/internal rather than core SmartThings controls or sensors for this port.
-

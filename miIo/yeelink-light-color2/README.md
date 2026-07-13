@@ -6,7 +6,7 @@ SmartThings Edge LAN driver for the Xiaomi/miIO light model `yeelink.light.color
 
 - Protocol: miIO
 - Model: `yeelink.light.color2`
-- Basis: `python-miio` lists `yeelink.light.color2` in the Yeelight miIO integration and implements local miIO Yeelight control; the MIoT spec records the equivalent power, brightness, color temperature, and RGB color contract.
+- Basis: current `python-miio` Yeelight specs list exact model `yeelink.light.color2`; its classic `Device` implementation uses `get_prop`, `set_power`, `set_bright`, `set_ct_abx`, and `set_rgb`. The MIoT spec is equivalent capability-contract evidence only.
 
 ## Exposed Capabilities
 

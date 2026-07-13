@@ -6,7 +6,7 @@ SmartThings Edge LAN driver for the Xiaomi/miIO light model `yeelink.light.bslam
 
 - Protocol: miIO
 - Model: `yeelink.light.bslamp2`
-- Basis: `python-miio` lists `yeelink.light.bslamp2` in the Yeelight miIO integration and the Xiaomi Mi Bedside Lamp 2 manual identifies `model=yeelink.light.bslamp2`; the MIoT spec records the equivalent power, brightness, color temperature, and RGB color contract.
+- Basis: current `python-miio` Yeelight specs list exact model `yeelink.light.bslamp2`; its classic `Device` implementation uses `get_prop`, `set_power`, `set_bright`, `set_ct_abx`, and `set_rgb`. The MIoT spec is equivalent capability-contract evidence only.
 
 ## Exposed Capabilities
 

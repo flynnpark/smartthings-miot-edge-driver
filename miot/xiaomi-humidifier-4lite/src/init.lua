@@ -5,8 +5,14 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
-local controls = capabilities["concertmirror08464.xiaomiHumidifier4liteControls"]
-local stats = capabilities["concertmirror08464.xiaomiHumidifier4liteStats"]
+local controlsMode = capabilities["concertmirror08464.xiaomiHum4liteMode"]
+local controlsTargetHumidity = capabilities["concertmirror08464.xiaomiHum4liteTargetHumidity"]
+local controlsChildLock = capabilities["concertmirror08464.xiaomiHum4liteChildLock"]
+local controlsScreenBrightness = capabilities["concertmirror08464.xiaomiHum4liteScreenBrightness"]
+local controlsAlarm = capabilities["concertmirror08464.xiaomiHum4liteAlarm"]
+local controlsOverwetProtect = capabilities["concertmirror08464.xiaomiHum4liteOverwetProtect"]
+local statsFault = capabilities["concertmirror08464.xiaomiHum4liteFault"]
+local statsWaterStatus = capabilities["concertmirror08464.xiaomiHum4liteWaterStatus"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -109,8 +115,8 @@ end
 local function emit_fault(device, value)
     local fault = FAULT_TO_ST[value]
     if fault then
-        device:emit_event(stats.fault({value = fault}))
-        device:emit_event(stats.waterStatus({value = fault == "lowWater" and "lowWater" or "normal"}))
+        device:emit_event(statsFault.fault({value = fault}))
+        device:emit_event(statsWaterStatus.waterStatus({value = fault == "lowWater" and "lowWater" or "normal"}))
     end
 end
 
@@ -156,12 +162,12 @@ local function poll_device_status(device)
                 elseif piid == MODE_PIID then
                     local mode = MODE_TO_ST[value]
                     if mode then
-                        device:emit_event(controls.mode({value = mode}))
+                        device:emit_event(controlsMode.mode({value = mode}))
                     end
                 elseif piid == TARGET_HUMIDITY_PIID then
-                    device:emit_event(controls.targetHumidity({value = value, unit = "%"}))
+                    device:emit_event(controlsTargetHumidity.targetHumidity({value = value, unit = "%"}))
                 elseif piid == OVERWET_PROTECT_PIID then
-                    device:emit_event(controls.overwetProtect({value = bool_to_st(value)}))
+                    device:emit_event(controlsOverwetProtect.overwetProtect({value = bool_to_st(value)}))
                 end
             elseif siid == ENVIRONMENT_SIID and piid == HUMIDITY_PIID then
                 device:emit_event(capabilities.relativeHumidityMeasurement.humidity(value))
@@ -174,19 +180,19 @@ local function poll_device_status(device)
                     screen_brightness = value
                 end
             elseif siid == ALARM_SIID and piid == ALARM_PIID then
-                device:emit_event(controls.alarm({value = bool_to_st(value)}))
+                device:emit_event(controlsAlarm.alarm({value = bool_to_st(value)}))
             elseif siid == CHILD_LOCK_SIID and piid == CHILD_LOCK_PIID then
-                device:emit_event(controls.childLock({value = bool_to_st(value)}))
+                device:emit_event(controlsChildLock.childLock({value = bool_to_st(value)}))
             end
         end
     end
 
     if screen_on == false then
-        device:emit_event(controls.screenBrightness({value = "off"}))
+        device:emit_event(controlsScreenBrightness.screenBrightness({value = "off"}))
     elseif screen_brightness ~= nil then
         local brightness = SCREEN_BRIGHTNESS_TO_ST[screen_brightness]
         if brightness then
-            device:emit_event(controls.screenBrightness({value = brightness}))
+            device:emit_event(controlsScreenBrightness.screenBrightness({value = brightness}))
         end
     end
 end
@@ -242,7 +248,7 @@ local function set_mode_handler(_, device, command)
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, MODE_PIID, value)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
-        device:emit_event(controls.mode({value = mode}))
+        device:emit_event(controlsMode.mode({value = mode}))
         device.thread:call_with_delay(1, function()
             pcall(poll_device_status, device)
         end)
@@ -256,7 +262,7 @@ local function set_target_humidity_handler(_, device, command)
     local humidity = math.max(40, math.min(70, command.args.humidity))
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, TARGET_HUMIDITY_PIID, humidity)
     if ok then
-        device:emit_event(controls.targetHumidity({value = humidity, unit = "%"}))
+        device:emit_event(controlsTargetHumidity.targetHumidity({value = humidity, unit = "%"}))
     end
 end
 
@@ -267,7 +273,7 @@ local function set_alarm_handler(_, device, command)
     local alarm = command.args.alarm
     local ok = pcall(miot.set, device, ip, token, ALARM_SIID, ALARM_PIID, alarm == "on")
     if ok then
-        device:emit_event(controls.alarm({value = alarm}))
+        device:emit_event(controlsAlarm.alarm({value = alarm}))
     end
 end
 
@@ -278,7 +284,7 @@ local function set_child_lock_handler(_, device, command)
     local child_lock = command.args.childLock
     local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, CHILD_LOCK_PIID, child_lock == "on")
     if ok then
-        device:emit_event(controls.childLock({value = child_lock}))
+        device:emit_event(controlsChildLock.childLock({value = child_lock}))
     end
 end
 
@@ -290,7 +296,7 @@ local function set_screen_brightness_handler(_, device, command)
     if brightness == "off" then
         local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_ON_PIID, false)
         if ok then
-            device:emit_event(controls.screenBrightness({value = "off"}))
+            device:emit_event(controlsScreenBrightness.screenBrightness({value = "off"}))
         end
         return
     end
@@ -301,7 +307,7 @@ local function set_screen_brightness_handler(_, device, command)
     pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_ON_PIID, true)
     local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, SCREEN_BRIGHTNESS_PIID, value)
     if ok then
-        device:emit_event(controls.screenBrightness({value = brightness}))
+        device:emit_event(controlsScreenBrightness.screenBrightness({value = brightness}))
     end
 end
 
@@ -312,7 +318,7 @@ local function set_overwet_protect_handler(_, device, command)
     local overwet = command.args.overwetProtect
     local ok = pcall(miot.set, device, ip, token, HUMIDIFIER_SIID, OVERWET_PROTECT_PIID, overwet == "on")
     if ok then
-        device:emit_event(controls.overwetProtect({value = overwet}))
+        device:emit_event(controlsOverwetProtect.overwetProtect({value = overwet}))
     end
 end
 
@@ -331,7 +337,7 @@ local function refresh_handler(_, device, _)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(controls.ID, "main") then
+    if not device:supports_capability_by_id(controlsMode.ID, "main") then
         device:try_update_metadata({profile = "xiaomi-humidifier-4lite"})
     end
 end
@@ -341,14 +347,14 @@ local function device_added(_, device)
     device:emit_event(capabilities.switch.switch.off())
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
-    device:emit_event(controls.mode({value = "constantHumidity"}))
-    device:emit_event(controls.targetHumidity({value = 50, unit = "%"}))
-    device:emit_event(controls.alarm({value = "off"}))
-    device:emit_event(controls.childLock({value = "off"}))
-    device:emit_event(controls.screenBrightness({value = "normal"}))
-    device:emit_event(controls.overwetProtect({value = "off"}))
-    device:emit_event(stats.fault({value = "noFaults"}))
-    device:emit_event(stats.waterStatus({value = "normal"}))
+    device:emit_event(controlsMode.mode({value = "constantHumidity"}))
+    device:emit_event(controlsTargetHumidity.targetHumidity({value = 50, unit = "%"}))
+    device:emit_event(controlsAlarm.alarm({value = "off"}))
+    device:emit_event(controlsChildLock.childLock({value = "off"}))
+    device:emit_event(controlsScreenBrightness.screenBrightness({value = "normal"}))
+    device:emit_event(controlsOverwetProtect.overwetProtect({value = "off"}))
+    device:emit_event(statsFault.fault({value = "noFaults"}))
+    device:emit_event(statsWaterStatus.waterStatus({value = "normal"}))
 end
 
 local function device_init(_, device)
@@ -402,13 +408,23 @@ local driver = Driver("miot-xiaomi-humidifier-4lite", {
             [capabilities.switch.commands.on.NAME] = switch_on_handler,
             [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        [controls.ID] = {
-            [controls.commands.setMode.NAME] = set_mode_handler,
-            [controls.commands.setTargetHumidity.NAME] = set_target_humidity_handler,
-            [controls.commands.setAlarm.NAME] = set_alarm_handler,
-            [controls.commands.setChildLock.NAME] = set_child_lock_handler,
-            [controls.commands.setScreenBrightness.NAME] = set_screen_brightness_handler,
-            [controls.commands.setOverwetProtect.NAME] = set_overwet_protect_handler
+        [controlsMode.ID] = {
+            [controlsMode.commands.setMode.NAME] = set_mode_handler
+        },
+        [controlsTargetHumidity.ID] = {
+            [controlsTargetHumidity.commands.setTargetHumidity.NAME] = set_target_humidity_handler
+        },
+        [controlsAlarm.ID] = {
+            [controlsAlarm.commands.setAlarm.NAME] = set_alarm_handler
+        },
+        [controlsChildLock.ID] = {
+            [controlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
+        },
+        [controlsScreenBrightness.ID] = {
+            [controlsScreenBrightness.commands.setScreenBrightness.NAME] = set_screen_brightness_handler
+        },
+        [controlsOverwetProtect.ID] = {
+            [controlsOverwetProtect.commands.setOverwetProtect.NAME] = set_overwet_protect_handler
         },
         [capabilities.filterState.ID] = {
             [capabilities.filterState.commands.resetFilter.NAME] = reset_filter_handler

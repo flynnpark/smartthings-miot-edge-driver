@@ -8,7 +8,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p70`.
 - Model: `xiaomi.fan.p70`
 - specModel: `xiaomi-p70`
 - URN: `urn:miot-spec-v2:device:fan:0000A005:xiaomi-p70:1:0000D062`
-- Basis: Exact MIoT spec defines the local fan service mapping, and the Xiaomi BPLDS10DM manual links Xiaomi Home setup with `model=xiaomi.fan.p70`.
+- Basis: current `syssi/xiaomi_fan` implements exact model `xiaomi.fan.p70` as `FanP70(MiotDevice)`, with explicit `siid`/`piid` mapping, `get_properties` polling, and `set_property` writes. The exact MIoT spec confirms the mapped fan contract.
 
 ## Exposed Capabilities
 
