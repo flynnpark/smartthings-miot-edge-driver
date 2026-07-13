@@ -17,7 +17,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT dehumidifier model `xiaomi.derh.
 - `switch`
 - `relativeHumidityMeasurement`
 - `temperatureMeasurement`
-- `concertmirror08464.xiaomiDehumLiteMode`, `concertmirror08464.xiaomiDehumLiteTargetHumidity`, `concertmirror08464.xiaomiDehumLiteChildLock`, `concertmirror08464.xiaomiDehumLiteIndicatorLight`, `concertmirror08464.xiaomiDehumLiteAlarm`, `concertmirror08464.xiaomiDehumLiteDryAfterOff`, `concertmirror08464.xiaomiDehumLiteResetFilter`
+- `concertmirror08464.xiaomiDehumLiteMode`, `concertmirror08464.xiaomiDehumLiteTargetHum`, `concertmirror08464.xiaomiDehumLiteChildLock`, `concertmirror08464.xiaomiDehumLiteIndicator`, `concertmirror08464.xiaomiDehumLiteAlarm`, `concertmirror08464.xiaomiDehumLiteDryAfterOff`, `concertmirror08464.xiaomiDehumLiteResetFilter`
 - `concertmirror08464.xiaomiDehumLiteTankStatus`, `concertmirror08464.xiaomiDehumLiteFilterStatus`, `concertmirror08464.xiaomiDehumLiteFault`
 - `refresh`
 

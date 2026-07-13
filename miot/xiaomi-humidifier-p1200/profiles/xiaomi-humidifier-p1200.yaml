@@ -18,7 +18,7 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiHumP1200Alarm
     version: 1
-  - id: concertmirror08464.xiaomiHumP1200ScreenBrightness
+  - id: concertmirror08464.xiaomiHumP1200ScreenLevel
     version: 1
   - id: concertmirror08464.xiaomiHumP1200OverwetProtect
     version: 1
@@ -84,7 +84,7 @@ deviceConfig:
     capability: concertmirror08464.xiaomiHumP1200Alarm
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHumP1200ScreenBrightness
+    capability: concertmirror08464.xiaomiHumP1200ScreenLevel
     version: 1
   - component: main
     capability: concertmirror08464.xiaomiHumP1200OverwetProtect
@@ -134,7 +134,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHumP1200Alarm
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumP1200ScreenBrightness
+      capability: concertmirror08464.xiaomiHumP1200ScreenLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHumP1200OverwetProtect
@@ -171,7 +171,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHumP1200Alarm
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHumP1200ScreenBrightness
+      capability: concertmirror08464.xiaomiHumP1200ScreenLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHumP1200OverwetProtect

@@ -21,7 +21,7 @@ SmartThings Edge LAN driver for the Xiaomi/MIoT zhimi air purifier airp mb3a mod
 - `filterState`
 - `concertmirror08464.zhimiAirAirpMb3aBuzzer`
 - `concertmirror08464.zhimiAirAirpMb3aChildLock`
-- `concertmirror08464.zhimiAirAirpMb3aLedBrightness`
+- `concertmirror08464.zhimiAirMb3aLedLevel`
 - `refresh`
 
 ## MIoT Mapping
@@ -37,7 +37,7 @@ SmartThings Edge LAN driver for the Xiaomi/MIoT zhimi air purifier airp mb3a mod
 | filter State | R | Model-specific siid/piid constants in `src/init.lua` | `filterState` |
 | zhimi Air Airp Mb3a Buzzer | RW | Model-specific siid/piid constants in `src/init.lua` | `concertmirror08464.zhimiAirAirpMb3aBuzzer` |
 | zhimi Air Airp Mb3a Child Lock | RW | Model-specific siid/piid constants in `src/init.lua` | `concertmirror08464.zhimiAirAirpMb3aChildLock` |
-| zhimi Air Airp Mb3a Led Brightness | RW | Model-specific siid/piid constants in `src/init.lua` | `concertmirror08464.zhimiAirAirpMb3aLedBrightness` |
+| zhimi Air Airp Mb3a Led Brightness | RW | Model-specific siid/piid constants in `src/init.lua` | `concertmirror08464.zhimiAirMb3aLedLevel` |
 | Refresh | Action | Re-read the model-specific status properties | `refresh` |
 
 Not exposed: diagnostic faults, accumulated usage, hardware metadata, private services, and other non-core values are intentionally omitted.

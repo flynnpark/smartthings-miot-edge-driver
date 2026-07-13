@@ -15,7 +15,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `xiaomi.humidif
 - `switch`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.xiaomiHum4liteMode`, `concertmirror08464.xiaomiHum4liteTargetHumidity`, `concertmirror08464.xiaomiHum4liteChildLock`, `concertmirror08464.xiaomiHum4liteScreenBrightness`, `concertmirror08464.xiaomiHum4liteAlarm`, `concertmirror08464.xiaomiHum4liteOverwetProtect`
+- `concertmirror08464.xiaomiHum4liteMode`, `concertmirror08464.xiaomiHum4liteTargetHumidity`, `concertmirror08464.xiaomiHum4liteChildLock`, `concertmirror08464.xiaomiHum4liteScreenLevel`, `concertmirror08464.xiaomiHum4liteAlarm`, `concertmirror08464.xiaomiHum4liteOverwetProtect`
 - `concertmirror08464.xiaomiHum4liteFault`, `concertmirror08464.xiaomiHum4liteWaterStatus`
 - `refresh`
 

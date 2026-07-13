@@ -13,7 +13,7 @@ SmartThings Edge LAN driver for one MIoT model: `zhimi.airp.meb1`.
 ## Exposed capabilities
 
 - `switch`: power
-- `concertmirror08464.zhimiAirMeb1Uv`, `concertmirror08464.zhimiAirMeb1AirPurifierMode`, `concertmirror08464.zhimiAirMeb1Buzzer`, `concertmirror08464.zhimiAirMeb1ChildLock`, `concertmirror08464.zhimiAirMeb1FanLevel`, `concertmirror08464.zhimiAirMeb1DisplayBrightness`, `concertmirror08464.zhimiAirMeb1Plasma`
+- `concertmirror08464.zhimiAirMeb1Uv`, `concertmirror08464.zhimiAirMeb1AirPurifierMode`, `concertmirror08464.zhimiAirMeb1Buzzer`, `concertmirror08464.zhimiAirMeb1ChildLock`, `concertmirror08464.zhimiAirMeb1FanLevel`, `concertmirror08464.zhimiAirMeb1DisplayLevel`, `concertmirror08464.zhimiAirMeb1Plasma`
   - `airPurifierMode`: `auto` / `sleep` / `favorite` / `manual`
   - `fanLevel`: `level1` / `level2` / `level3`
   - `displayBrightness`: `off` / `bright` / `brightest`

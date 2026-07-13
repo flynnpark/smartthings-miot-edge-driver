@@ -11,7 +11,7 @@ local controlsIndicatorLight = capabilities["concertmirror08464.deermaHumJsq5Ind
 local controlsFanLevel = capabilities["concertmirror08464.deermaHumJsq5FanLevel"]
 local statsTankFilled = capabilities["concertmirror08464.deermaHumJsq5TankFilled"]
 local statsFault = capabilities["concertmirror08464.deermaHumJsq5Fault"]
-local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq5WaterShortage"]
+local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq5LowWater"]
 
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
@@ -144,7 +144,7 @@ local function poll_device_status(device)
                 device:emit_event(controlsIndicatorLight.indicatorLight({value = value and "on" or "off"}))
             elseif siid == CUSTOM_SIID then
                 if piid == WATER_SHORTAGE_PIID then
-                    device:emit_event(statsWaterShortageFault.waterShortageFault({value = value and "on" or "off"}))
+                    device:emit_event(statsWaterShortageFault.lowWater({value = value and "on" or "off"}))
                 elseif piid == TANK_FILLED_PIID then
                     device:emit_event(statsTankFilled.tankFilled({value = value and "on" or "off"}))
                 end
@@ -259,7 +259,7 @@ local function device_added(_, device)
     device:emit_event(controlsAlarm.alarm({value = "off"}))
     device:emit_event(controlsIndicatorLight.indicatorLight({value = "off"}))
     device:emit_event(statsFault.fault({value = "noFaults"}))
-    device:emit_event(statsWaterShortageFault.waterShortageFault({value = "off"}))
+    device:emit_event(statsWaterShortageFault.lowWater({value = "off"}))
     device:emit_event(statsTankFilled.tankFilled({value = "off"}))
 end
 

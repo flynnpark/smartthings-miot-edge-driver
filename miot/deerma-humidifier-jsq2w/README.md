@@ -16,7 +16,7 @@ SmartThings Edge LAN driver for the Xiaomi/Deerma MIoT humidifier model `deerma.
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `concertmirror08464.deermaHumJsq2wMode`, `concertmirror08464.deermaHumJsq2wTargetHumidity`, `concertmirror08464.deermaHumJsq2wAlarm`, `concertmirror08464.deermaHumJsq2wIndicatorLight`, `concertmirror08464.deermaHumJsq2wFanLevel`, `concertmirror08464.deermaHumJsq2wOverwetProtect`
-- `concertmirror08464.deermaHumJsq2wTankFilled`, `concertmirror08464.deermaHumJsq2wFault`, `concertmirror08464.deermaHumJsq2wWaterShortage`, `concertmirror08464.deermaHumJsq2wStatus`
+- `concertmirror08464.deermaHumJsq2wTankFilled`, `concertmirror08464.deermaHumJsq2wFault`, `concertmirror08464.deermaHumJsq2wLowWater`, `concertmirror08464.deermaHumJsq2wStatus`
 - `refresh`
 
 ## MIoT Mapping
@@ -34,7 +34,7 @@ SmartThings Edge LAN driver for the Xiaomi/Deerma MIoT humidifier model `deerma.
 | Alarm / buzzer | RW | `siid=5`, `piid=1` | `deermaHumidifierJsq2wControls.alarm` |
 | Indicator light | RW | `siid=6`, `piid=1` | `deermaHumidifierJsq2wControls.indicatorLight` |
 | Tank detected | R | `siid=7`, `piid=1` | `deermaHumidifierJsq2wStats.tankFilled` |
-| Water shortage | R | `siid=7`, `piid=2` | `deermaHumidifierJsq2wStats.waterShortageFault` |
+| Water shortage | R | `siid=7`, `piid=2` | `deermaHumJsq2wLowWater.lowWater` |
 | Overwet protection | RW | `siid=7`, `piid=6` | `deermaHumidifierJsq2wControls.overwetProtect` |
 
 Child lock is not exposed because the exact JSQ2W MIoT spec does not include a child-lock property.

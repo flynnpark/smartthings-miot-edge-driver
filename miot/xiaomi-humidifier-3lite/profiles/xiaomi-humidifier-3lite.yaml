@@ -18,7 +18,7 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiHum3liteAlarm
     version: 1
-  - id: concertmirror08464.xiaomiHum3liteScreenBrightness
+  - id: concertmirror08464.xiaomiHum3liteScreenLevel
     version: 1
   - id: concertmirror08464.xiaomiHum3liteOverwetProtect
     version: 1
@@ -78,7 +78,7 @@ deviceConfig:
     capability: concertmirror08464.xiaomiHum3liteAlarm
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHum3liteScreenBrightness
+    capability: concertmirror08464.xiaomiHum3liteScreenLevel
     version: 1
   - component: main
     capability: concertmirror08464.xiaomiHum3liteOverwetProtect
@@ -119,7 +119,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHum3liteAlarm
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHum3liteScreenBrightness
+      capability: concertmirror08464.xiaomiHum3liteScreenLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHum3liteOverwetProtect
@@ -150,7 +150,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHum3liteAlarm
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHum3liteScreenBrightness
+      capability: concertmirror08464.xiaomiHum3liteScreenLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHum3liteOverwetProtect

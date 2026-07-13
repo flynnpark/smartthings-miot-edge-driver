@@ -13,7 +13,7 @@ local controlsFanLevel = capabilities["concertmirror08464.deermaHumJsq2wFanLevel
 local controlsOverwetProtect = capabilities["concertmirror08464.deermaHumJsq2wOverwetProtect"]
 local statsTankFilled = capabilities["concertmirror08464.deermaHumJsq2wTankFilled"]
 local statsFault = capabilities["concertmirror08464.deermaHumJsq2wFault"]
-local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq2wWaterShortage"]
+local statsWaterShortageFault = capabilities["concertmirror08464.deermaHumJsq2wLowWater"]
 local statsStatus = capabilities["concertmirror08464.deermaHumJsq2wStatus"]
 
 local POLLING_TIMER = "polling_timer"
@@ -189,7 +189,7 @@ local function poll_device_status(device)
                 if piid == TANK_FILLED_PIID then
                     device:emit_event(statsTankFilled.tankFilled({value = bool_to_st(value)}))
                 elseif piid == WATER_SHORTAGE_PIID then
-                    device:emit_event(statsWaterShortageFault.waterShortageFault({value = bool_to_st(value)}))
+                    device:emit_event(statsWaterShortageFault.lowWater({value = bool_to_st(value)}))
                 elseif piid == OVERWET_PROTECT_ON_PIID then
                     device:emit_event(controlsOverwetProtect.overwetProtect({value = bool_to_st(value)}))
                 end
@@ -335,7 +335,7 @@ local function device_added(_, device)
     device:emit_event(controlsOverwetProtect.overwetProtect({value = "off"}))
     device:emit_event(statsFault.fault({value = "noFaults"}))
     device:emit_event(statsStatus.status({value = "idle"}))
-    device:emit_event(statsWaterShortageFault.waterShortageFault({value = "off"}))
+    device:emit_event(statsWaterShortageFault.lowWater({value = "off"}))
     device:emit_event(statsTankFilled.tankFilled({value = "off"}))
 end
 

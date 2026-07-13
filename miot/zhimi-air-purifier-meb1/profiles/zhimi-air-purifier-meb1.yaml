@@ -14,7 +14,7 @@ components:
     version: 1
   - id: concertmirror08464.zhimiAirMeb1FanLevel
     version: 1
-  - id: concertmirror08464.zhimiAirMeb1DisplayBrightness
+  - id: concertmirror08464.zhimiAirMeb1DisplayLevel
     version: 1
   - id: concertmirror08464.zhimiAirMeb1Plasma
     version: 1
@@ -63,7 +63,7 @@ deviceConfig:
         capability: concertmirror08464.zhimiAirMeb1FanLevel
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiAirMeb1DisplayBrightness
+        capability: concertmirror08464.zhimiAirMeb1DisplayLevel
         version: 1
       - component: main
         capability: concertmirror08464.zhimiAirMeb1Plasma
@@ -88,7 +88,7 @@ deviceConfig:
         capability: concertmirror08464.zhimiAirMeb1FanLevel
         version: 1
       - component: main
-        capability: concertmirror08464.zhimiAirMeb1DisplayBrightness
+        capability: concertmirror08464.zhimiAirMeb1DisplayLevel
         version: 1
       - component: main
         capability: concertmirror08464.zhimiAirMeb1Plasma
@@ -114,7 +114,7 @@ deviceConfig:
       capability: concertmirror08464.zhimiAirMeb1FanLevel
       version: 1
     - component: main
-      capability: concertmirror08464.zhimiAirMeb1DisplayBrightness
+      capability: concertmirror08464.zhimiAirMeb1DisplayLevel
       version: 1
     - component: main
       capability: concertmirror08464.zhimiAirMeb1Plasma

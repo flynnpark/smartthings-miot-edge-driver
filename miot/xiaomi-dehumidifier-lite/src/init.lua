@@ -6,9 +6,9 @@ local discovery = require "discovery"
 local miot = require "miot"
 
 local controlsMode = capabilities["concertmirror08464.xiaomiDehumLiteMode"]
-local controlsTargetHumidity = capabilities["concertmirror08464.xiaomiDehumLiteTargetHumidity"]
+local controlsTargetHumidity = capabilities["concertmirror08464.xiaomiDehumLiteTargetHum"]
 local controlsChildLock = capabilities["concertmirror08464.xiaomiDehumLiteChildLock"]
-local controlsIndicatorLight = capabilities["concertmirror08464.xiaomiDehumLiteIndicatorLight"]
+local controlsIndicatorLight = capabilities["concertmirror08464.xiaomiDehumLiteIndicator"]
 local controlsAlarm = capabilities["concertmirror08464.xiaomiDehumLiteAlarm"]
 local controlsDryAfterOff = capabilities["concertmirror08464.xiaomiDehumLiteDryAfterOff"]
 local controlsResetFilter = capabilities["concertmirror08464.xiaomiDehumLiteResetFilter"]

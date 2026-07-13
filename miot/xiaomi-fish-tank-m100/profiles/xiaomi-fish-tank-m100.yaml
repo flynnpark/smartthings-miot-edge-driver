@@ -32,7 +32,7 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiTankM100FlowSpeed
     version: 1
-  - id: concertmirror08464.xiaomiTankM100LightBrightness
+  - id: concertmirror08464.xiaomiTankM100LightLevel
     version: 1
   - id: concertmirror08464.xiaomiTankM100LightSwitch
     version: 1
@@ -109,7 +109,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiTankM100FlowSpeed
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiTankM100LightBrightness
+      capability: concertmirror08464.xiaomiTankM100LightLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiTankM100LightSwitch
@@ -175,7 +175,7 @@ deviceConfig:
         capability: concertmirror08464.xiaomiTankM100FlowSpeed
         version: 1
       - component: main
-        capability: concertmirror08464.xiaomiTankM100LightBrightness
+        capability: concertmirror08464.xiaomiTankM100LightLevel
         version: 1
       - component: main
         capability: concertmirror08464.xiaomiTankM100LightSwitch

@@ -10,7 +10,7 @@ local controlsAirPurifierMode = capabilities["concertmirror08464.zhimiAirMeb1Air
 local controlsBuzzer = capabilities["concertmirror08464.zhimiAirMeb1Buzzer"]
 local controlsChildLock = capabilities["concertmirror08464.zhimiAirMeb1ChildLock"]
 local controlsFanLevel = capabilities["concertmirror08464.zhimiAirMeb1FanLevel"]
-local controlsDisplayBrightness = capabilities["concertmirror08464.zhimiAirMeb1DisplayBrightness"]
+local controlsDisplayBrightness = capabilities["concertmirror08464.zhimiAirMeb1DisplayLevel"]
 local controlsPlasma = capabilities["concertmirror08464.zhimiAirMeb1Plasma"]
 
 local POLLING_TIMER = "polling_timer"

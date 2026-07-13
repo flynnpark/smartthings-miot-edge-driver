@@ -17,7 +17,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fish-tank model `xiaomi.fishbowl
 - `filterState`
 - `colorControl`
 - `concertmirror08464.xiaomiTankM200WaterPump`, `concertmirror08464.xiaomiTankM200FeedProtection`, `concertmirror08464.xiaomiTankM200ChildLock`, `concertmirror08464.xiaomiTankM200NoDisturb`, `concertmirror08464.xiaomiTankM200Alarm`, `concertmirror08464.xiaomiTankM200IndicatorLight`, `concertmirror08464.xiaomiTankM200PumpFlux`, `concertmirror08464.xiaomiTankM200FeederStatus`, `concertmirror08464.xiaomiTankM200FeedProtect`, `concertmirror08464.xiaomiTankM200PumpStatus`, `concertmirror08464.xiaomiTankM200FeedNow`
-- `concertmirror08464.xiaomiTankM200LightMode`, `concertmirror08464.xiaomiTankM200FlowSpeed`, `concertmirror08464.xiaomiTankM200LightBrightness`, `concertmirror08464.xiaomiTankM200LightSwitch`
+- `concertmirror08464.xiaomiTankM200LightMode`, `concertmirror08464.xiaomiTankM200FlowSpeed`, `concertmirror08464.xiaomiTankM200LightLevel`, `concertmirror08464.xiaomiTankM200LightSwitch`
 - `refresh`
 
 ## MIoT Mapping

@@ -18,7 +18,7 @@ local controlsPumpStatus = capabilities["concertmirror08464.xiaomiTankM200PumpSt
 local controlsFeedNow = capabilities["concertmirror08464.xiaomiTankM200FeedNow"]
 local lightLightMode = capabilities["concertmirror08464.xiaomiTankM200LightMode"]
 local lightFlowSpeed = capabilities["concertmirror08464.xiaomiTankM200FlowSpeed"]
-local lightLightBrightness = capabilities["concertmirror08464.xiaomiTankM200LightBrightness"]
+local lightLightBrightness = capabilities["concertmirror08464.xiaomiTankM200LightLevel"]
 local lightLightSwitch = capabilities["concertmirror08464.xiaomiTankM200LightSwitch"]
 
 local POLLING_TIMER = "polling_timer"

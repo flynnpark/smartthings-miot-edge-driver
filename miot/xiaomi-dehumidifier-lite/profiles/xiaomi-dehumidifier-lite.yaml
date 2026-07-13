@@ -10,11 +10,11 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiDehumLiteMode
     version: 1
-  - id: concertmirror08464.xiaomiDehumLiteTargetHumidity
+  - id: concertmirror08464.xiaomiDehumLiteTargetHum
     version: 1
   - id: concertmirror08464.xiaomiDehumLiteChildLock
     version: 1
-  - id: concertmirror08464.xiaomiDehumLiteIndicatorLight
+  - id: concertmirror08464.xiaomiDehumLiteIndicator
     version: 1
   - id: concertmirror08464.xiaomiDehumLiteAlarm
     version: 1
@@ -68,13 +68,13 @@ deviceConfig:
     capability: concertmirror08464.xiaomiDehumLiteMode
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiDehumLiteTargetHumidity
+    capability: concertmirror08464.xiaomiDehumLiteTargetHum
     version: 1
   - component: main
     capability: concertmirror08464.xiaomiDehumLiteChildLock
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiDehumLiteIndicatorLight
+    capability: concertmirror08464.xiaomiDehumLiteIndicator
     version: 1
   - component: main
     capability: concertmirror08464.xiaomiDehumLiteAlarm
@@ -112,13 +112,13 @@ deviceConfig:
       capability: concertmirror08464.xiaomiDehumLiteMode
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumLiteTargetHumidity
+      capability: concertmirror08464.xiaomiDehumLiteTargetHum
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiDehumLiteChildLock
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumLiteIndicatorLight
+      capability: concertmirror08464.xiaomiDehumLiteIndicator
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiDehumLiteAlarm
@@ -146,13 +146,13 @@ deviceConfig:
       capability: concertmirror08464.xiaomiDehumLiteMode
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumLiteTargetHumidity
+      capability: concertmirror08464.xiaomiDehumLiteTargetHum
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiDehumLiteChildLock
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiDehumLiteIndicatorLight
+      capability: concertmirror08464.xiaomiDehumLiteIndicator
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiDehumLiteAlarm

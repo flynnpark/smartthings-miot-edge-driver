@@ -14,7 +14,7 @@ components:
     version: 1
   - id: concertmirror08464.xiaomiHum4liteChildLock
     version: 1
-  - id: concertmirror08464.xiaomiHum4liteScreenBrightness
+  - id: concertmirror08464.xiaomiHum4liteScreenLevel
     version: 1
   - id: concertmirror08464.xiaomiHum4liteAlarm
     version: 1
@@ -70,7 +70,7 @@ deviceConfig:
     capability: concertmirror08464.xiaomiHum4liteChildLock
     version: 1
   - component: main
-    capability: concertmirror08464.xiaomiHum4liteScreenBrightness
+    capability: concertmirror08464.xiaomiHum4liteScreenLevel
     version: 1
   - component: main
     capability: concertmirror08464.xiaomiHum4liteAlarm
@@ -108,7 +108,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHum4liteChildLock
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHum4liteScreenBrightness
+      capability: concertmirror08464.xiaomiHum4liteScreenLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHum4liteAlarm
@@ -136,7 +136,7 @@ deviceConfig:
       capability: concertmirror08464.xiaomiHum4liteChildLock
       version: 1
     - component: main
-      capability: concertmirror08464.xiaomiHum4liteScreenBrightness
+      capability: concertmirror08464.xiaomiHum4liteScreenLevel
       version: 1
     - component: main
       capability: concertmirror08464.xiaomiHum4liteAlarm

@@ -16,7 +16,7 @@ SmartThings Edge LAN driver for the Xiaomi MIoT humidifier model `xiaomi.humidif
 - `temperatureMeasurement`
 - `relativeHumidityMeasurement`
 - `filterState`
-- `concertmirror08464.xiaomiHumP1200Mode`, `concertmirror08464.xiaomiHumP1200TargetHumidity`, `concertmirror08464.xiaomiHumP1200ChildLock`, `concertmirror08464.xiaomiHumP1200Alarm`, `concertmirror08464.xiaomiHumP1200ScreenBrightness`, `concertmirror08464.xiaomiHumP1200OverwetProtect`, `concertmirror08464.xiaomiHumP1200DrySwitch`
+- `concertmirror08464.xiaomiHumP1200Mode`, `concertmirror08464.xiaomiHumP1200TargetHumidity`, `concertmirror08464.xiaomiHumP1200ChildLock`, `concertmirror08464.xiaomiHumP1200Alarm`, `concertmirror08464.xiaomiHumP1200ScreenLevel`, `concertmirror08464.xiaomiHumP1200OverwetProtect`, `concertmirror08464.xiaomiHumP1200DrySwitch`
 - `concertmirror08464.xiaomiHumP1200FilterClean`, `concertmirror08464.xiaomiHumP1200Fault`, `concertmirror08464.xiaomiHumP1200WaterLevel`, `concertmirror08464.xiaomiHumP1200WaterStatus`
 - `refresh`
 
