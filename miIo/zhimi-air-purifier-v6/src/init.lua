@@ -11,11 +11,13 @@ local deviceControlsChildLock = capabilities["concertmirror08464.zhimiAirV6Child
 local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirV6LedBrightness"]
 local fanSpeedPercent = capabilities["fanSpeedPercent"]
 
+local PROFILE_NAME = "zhimi-v6"
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
 -- miIO model: zhimi.airpurifier.v6
--- Core read properties: power, mode, aqi, humidity, temp_dec, favorite_level, filter1_life, led, led_b, buzzer, child_lock
+-- Core read properties: power, mode, aqi, humidity, temp_dec, favorite_level,
+-- filter1_life, led, led_b, buzzer, child_lock
 -- Core write methods: set_power, set_mode, set_level_favorite, set_led, set_led_b, set_buzzer, set_child_lock
 local STATUS_PROPERTIES = {
     "power",
@@ -93,7 +95,7 @@ local function get_device_config(device)
     local ip = device.preferences.ipAddress
     local token = device.preferences.token
 
-    if ip and ip ~= "" and token and #token == 32 then
+    if ip and ip ~= "" and token and #token == 32 and token:match("^[0-9a-fA-F]+$") then
         return ip, token
     end
     return nil, nil
@@ -147,7 +149,8 @@ local function poll_device_status(device)
     end
 
     if values.favorite_level and type(values.favorite_level) == "number" then
-        device:emit_event(fanSpeedPercent.percent({value = favorite_level_to_percent(values.favorite_level), unit = "%"}))
+        local percent = favorite_level_to_percent(values.favorite_level)
+        device:emit_event(fanSpeedPercent.percent({value = percent, unit = "%"}))
     end
 
     if values.filter1_life and type(values.filter1_life) == "number" then
@@ -196,7 +199,7 @@ local function stop_polling_timer(device)
     end
 end
 
-local function handle_on(_, device, _)
+local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
     if ip and miio.set_prop(device, ip, token, "set_power", {"on"}) then
         device:emit_event(capabilities.switch.switch.on())
@@ -206,14 +209,14 @@ local function handle_on(_, device, _)
     end
 end
 
-local function handle_off(_, device, _)
+local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
     if ip and miio.set_prop(device, ip, token, "set_power", {"off"}) then
         device:emit_event(capabilities.switch.switch.off())
     end
 end
 
-local function handle_set_air_purifier_mode(_, device, command)
+local function set_air_purifier_mode_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -228,7 +231,7 @@ local function handle_set_air_purifier_mode(_, device, command)
     end
 end
 
-local function handle_set_fan_speed_percent(_, device, command)
+local function set_fan_speed_percent_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -247,7 +250,7 @@ local function handle_set_fan_speed_percent(_, device, command)
     end
 end
 
-local function handle_set_led_brightness(_, device, command)
+local function set_led_brightness_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -268,7 +271,7 @@ local function handle_set_led_brightness(_, device, command)
     end
 end
 
-local function handle_set_buzzer(_, device, command)
+local function set_buzzer_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -278,7 +281,7 @@ local function handle_set_buzzer(_, device, command)
     end
 end
 
-local function handle_set_child_lock(_, device, command)
+local function set_child_lock_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -294,7 +297,7 @@ end
 
 local function ensure_profile(device)
     if not device:supports_capability_by_id(airModeAirPurifierMode.ID, "main") then
-        device:try_update_metadata({profile = "zhimi-v6"})
+        device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
 
@@ -307,7 +310,6 @@ local function device_added(_, device)
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.fineDustSensor.fineDustLevel(0))
     device:emit_event(fanSpeedPercent.percent({value = 0, unit = "%"}))
-    device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
     device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
     device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
@@ -362,23 +364,23 @@ local driver = Driver("miio-air-purifier-v6", {
     },
     capability_handlers = {
         [capabilities.switch.ID] = {
-            [capabilities.switch.commands.on.NAME] = handle_on,
-            [capabilities.switch.commands.off.NAME] = handle_off
+            [capabilities.switch.commands.on.NAME] = switch_on_handler,
+            [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
         [airModeAirPurifierMode.ID] = {
-            [airModeAirPurifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
+            [airModeAirPurifierMode.commands.setAirPurifierMode.NAME] = set_air_purifier_mode_handler
         },
         [fanSpeedPercent.ID] = {
-            [fanSpeedPercent.commands.setPercent.NAME] = handle_set_fan_speed_percent
+            [fanSpeedPercent.commands.setPercent.NAME] = set_fan_speed_percent_handler
         },
         [deviceControlsLedBrightness.ID] = {
-            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = handle_set_led_brightness
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = set_led_brightness_handler
         },
         [deviceControlsBuzzer.ID] = {
-            [deviceControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
         },
         [deviceControlsChildLock.ID] = {
-            [deviceControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
+            [deviceControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler
@@ -387,4 +389,3 @@ local driver = Driver("miio-air-purifier-v6", {
 })
 
 driver:run()
-

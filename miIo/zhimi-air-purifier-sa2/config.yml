@@ -3,6 +3,3 @@ packageKey: 'Zhimi Air Purifier SA2 Driver'
 permissions:
   lan: {}
   discovery: {}
-
-
-

@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier MP4A'
+packageKey: 'Zhimi Air MP4A Driver'
+permissions:
+  lan: {}
+  discovery: {}

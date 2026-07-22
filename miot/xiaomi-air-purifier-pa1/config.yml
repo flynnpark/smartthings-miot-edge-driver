@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier PA1'
+packageKey: 'Xiaomi Air PA1 Driver'
+permissions:
+  lan: {}
+  discovery: {}

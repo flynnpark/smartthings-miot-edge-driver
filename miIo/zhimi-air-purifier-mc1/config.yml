@@ -3,4 +3,3 @@ packageKey: 'Zhimi Air Purifier MC1 Driver'
 permissions:
   lan: {}
   discovery: {}
-

@@ -56,19 +56,19 @@ end
 -- Hello 메시지 전송 (장치 검색)
 local function send_hello(ip)
     local udp = create_udp()
-    
+
     udp:sendto(HELLO_PACKET, ip, PORT)
-    
+
     local response = udp:receive()
     udp:close()
-    
+
     if not response then error("장치 응답 없음") end
-    
+
     -- 응답에서 device_id와 timestamp 추출 (Big Endian 32bit)
     local device_id = string.unpack(">I4", response:sub(9, 12))
     local device_time = string.unpack(">I4", response:sub(13, 16))
     local time_offset = os.time() - device_time
-    
+
     return device_id, time_offset
 end
 
@@ -84,31 +84,31 @@ local function create_message(device, ip, token, method, params, force_hello)
         device:set_field(DEV_ID, dev_id)
         device:set_field(TIME_OFFSET, time_off)
     end
-    
+
     -- JSON 페이로드 생성
     local payload = json.encode({
         id = next_message_id(device),
         method = method,
         params = params or {}
     }) .. '\x00'
-    
+
     -- 암호화 키 생성 (한 번만 계산)
     local token_bin, key, iv = get_crypto_params(token)
-    
+
     -- 페이로드 암호화
     local opts = { cipher = AES_OPTIONS.cipher, iv = iv, padding = AES_OPTIONS.padding }
     local encrypted = security.encrypt_bytes(payload, key, opts)
-    
+
     -- 헤더 생성 (magic + length(2bytes) + reserved(4bytes) + device_id + timestamp)
     local device_id = device:get_field(DEV_ID)
     local timestamp = os.time() - device:get_field(TIME_OFFSET)
     local length = HEADER_SIZE + #encrypted
     local header = string.pack(">c2 I2 I4 I4 I4", "\x21\x31", length, 0, device_id, timestamp) .. token_bin
-    
+
     -- 체크섬 추가
     local checksum = md5.sum(header .. encrypted)
     header = header:sub(1, 16) .. checksum
-    
+
     -- 메시지와 함께 key, iv 반환 (복호화에 재사용)
     return header .. encrypted, key, iv
 end
@@ -116,22 +116,22 @@ end
 -- 명령 전송 및 응답 수신
 local function send_command(device, ip, token, method, params, retry)
     local udp = create_udp()
-    
+
     -- 메시지 전송 (key, iv 함께 반환받아 재사용)
     local message, key, iv = create_message(device, ip, token, method, params, retry)
     udp:sendto(message, ip, PORT)
-    
+
     -- 응답 수신
     local response = udp:receive()
     udp:close()
-    
+
     if not response then error("장치 응답 없음") end
-    
+
     -- 응답 복호화 (create_message에서 반환받은 key, iv 재사용)
     local encrypted_data = response:sub(HEADER_SIZE + 1)
     local opts = { cipher = AES_OPTIONS.cipher, iv = iv, padding = AES_OPTIONS.padding }
     local decrypted = security.decrypt_bytes(encrypted_data, key, opts)
-    
+
     return json.decode(decrypted)
 end
 
@@ -140,7 +140,7 @@ local function send_with_retry(device, ip, token, method, params)
     -- 첫 번째 시도
     local ok, response = pcall(send_command, device, ip, token, method, params, false)
     if ok then return response end
-    
+
     -- 실패시 캐시 클리어 후 재시도
     clear_device_cache(device)
     return send_command(device, ip, token, method, params, true)
@@ -151,14 +151,23 @@ end
 -- 단일 속성 조회: miot.get(device, ip, token, siid, piid)
 function miot.get(device, ip, token, siid, piid)
     return send_with_retry(device, ip, token, "get_properties", {
-        {siid = siid, piid = piid}
+        {
+            did = string.format("prop.%d.%d", siid, piid),
+            siid = siid,
+            piid = piid
+        }
     })
 end
 
 -- 단일 속성 설정: miot.set(device, ip, token, siid, piid, value)
 function miot.set(device, ip, token, siid, piid, value)
     local response = send_with_retry(device, ip, token, "set_properties", {
-        {siid = siid, piid = piid, value = value}
+        {
+            did = string.format("set.%d.%d", siid, piid),
+            siid = siid,
+            piid = piid,
+            value = value
+        }
     })
     return assert_success(response)
 end
@@ -172,7 +181,12 @@ function miot.gets(device, ip, token, properties)
         local batch = {}
         local last = math.min(first + MAX_PROPERTIES_PER_REQUEST - 1, #properties)
         for index = first, last do
-            table.insert(batch, properties[index])
+            local property = properties[index]
+            table.insert(batch, {
+                did = property.did or string.format("prop.%d.%d", property.siid, property.piid),
+                siid = property.siid,
+                piid = property.piid
+            })
         end
 
         local response = send_with_retry(device, ip, token, "get_properties", batch)
@@ -194,6 +208,7 @@ end
 -- 액션 호출: miot.action(device, ip, token, siid, aiid, params)
 function miot.action(device, ip, token, siid, aiid, params)
     local response = send_with_retry(device, ip, token, "action", {
+        did = string.format("call.%d.%d", siid, aiid),
         siid = siid,
         aiid = aiid,
         ["in"] = params or {}

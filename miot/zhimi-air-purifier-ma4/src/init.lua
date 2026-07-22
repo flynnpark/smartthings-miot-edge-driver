@@ -16,6 +16,7 @@ local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirMa4
 
 -- 상수 정의
 
+local PROFILE_NAME = "zhimi-ma4"
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
@@ -71,8 +72,8 @@ local ST_TO_MODE = {
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
     local token = device.preferences.token
-    
-    if ip and ip ~= "" and token and #token == 32 then
+
+    if ip and ip ~= "" and token and #token == 32 and token:match("^[0-9a-fA-F]+$") then
         return ip, token
     end
     return nil, nil
@@ -86,7 +87,7 @@ local function poll_device_status(device)
     if not ip then
         return
     end
-    
+
     -- 조회할 속성 목록
     local properties = {
         -- 공기청정기
@@ -103,24 +104,24 @@ local function poll_device_status(device)
         {siid = LED_BRIGHTNESS_SIID, piid = LED_BRIGHTNESS_PIID},
         {siid = CHILD_LOCK_SIID, piid = CHILD_LOCK_PIID}
     }
-    
+
     -- MIoT로 속성 조회
     local ok, response = pcall(miot.gets, device, ip, token, properties)
     if not ok then
         return
     end
-    
+
     if not response or not response.result then
         return
     end
-    
+
     -- 응답 처리
     for _, result in ipairs(response.result) do
         if result.code == 0 then
             local siid = result.siid
             local piid = result.piid
             local value = result.value
-            
+
             -- 공기청정기 데이터
             if siid == AIR_PURIFIER_SIID then
                 if piid == POWER_PIID then
@@ -146,7 +147,7 @@ local function poll_device_status(device)
                 end
             -- 필터 데이터
             elseif siid == FILTER_SIID then
-                if piid == FILTER_LIFE_PIID then    
+                if piid == FILTER_LIFE_PIID then
                     device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
                 end
             elseif siid == BUZZER_SIID and piid == BUZZER_PIID then
@@ -184,10 +185,10 @@ end
 -- 명령 핸들러
 
 -- 전원 켜기
-local function handle_on(_, device, _)
+local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
-    
+
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, POWER_PIID, true)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
@@ -199,10 +200,10 @@ local function handle_on(_, device, _)
 end
 
 -- 전원 끄기
-local function handle_off(_, device, _)
+local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
-    
+
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, POWER_PIID, false)
     if ok then
         device:emit_event(capabilities.switch.switch.off())
@@ -210,17 +211,17 @@ local function handle_off(_, device, _)
 end
 
 -- 모드 설정 (커스텀 capability)
-local function handle_set_fan_mode(_, device, command)
+local function set_fan_mode_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
-    
+
     local mode = command.args.mode
     local mode_value = ST_TO_MODE[mode]
-    
+
     if mode_value then
         -- 먼저 전원이 꺼져있으면 켜기
         pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, POWER_PIID, true)
-        
+
         local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, MODE_PIID, mode_value)
         if ok then
             device:emit_event(capabilities.switch.switch.on())
@@ -230,21 +231,21 @@ local function handle_set_fan_mode(_, device, command)
 end
 
 -- 팬 속도 설정 (커스텀 capability, 1-3)
-local function handle_set_fan_speed(_, device, command)
+local function set_fan_speed_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
-    
+
     local speed = command.args.speed
-    
+
     -- 유효한 팬 레벨 (1-3)
     local level = math.max(1, math.min(3, speed))
-    
+
     -- 먼저 전원이 꺼져있으면 켜기
     pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, POWER_PIID, true)
-    
+
     -- Manual 모드(3)로 변경 후 팬 레벨 설정
     pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, MODE_PIID, 3)
-    
+
     local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, FAN_LEVEL_PIID, level)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
@@ -253,7 +254,7 @@ local function handle_set_fan_speed(_, device, command)
     end
 end
 
-local function handle_set_led_brightness(_, device, command)
+local function set_led_brightness_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -267,7 +268,7 @@ local function handle_set_led_brightness(_, device, command)
     end
 end
 
-local function handle_set_buzzer(_, device, command)
+local function set_buzzer_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -278,7 +279,7 @@ local function handle_set_buzzer(_, device, command)
     end
 end
 
-local function handle_set_child_lock(_, device, command)
+local function set_child_lock_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -299,7 +300,7 @@ end
 -- 장치 추가됨
 local function ensure_profile(device)
     if not device:supports_capability_by_id(fanModeFanMode.ID, "main") then
-        device:try_update_metadata({profile = "zhimi-ma4"})
+        device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
 
@@ -312,7 +313,6 @@ local function device_added(_, device)
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.fineDustSensor.fineDustLevel(0))
-    device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
     device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
     device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
@@ -323,7 +323,7 @@ end
 local function device_init(_, device)
     ensure_profile(device)
     device:online()
-    
+
     local ip, token = get_device_config(device)
     if ip then
         start_polling_timer(device)
@@ -341,19 +341,19 @@ local function device_info_changed(driver, device, _, args)
     if not args.old_st_store or not args.old_st_store.preferences then
         return
     end
-    
+
     local old = args.old_st_store.preferences
     local new = device.preferences
-    
+
     -- 새 장치 생성 요청
     if old.createDev == false and new.createDev == true then
         discovery.create_device(driver)
     end
-    
+
     -- 설정이 변경되면 폴링 재시작
     if old.ipAddress ~= new.ipAddress or old.token ~= new.token or old.pollingInterval ~= new.pollingInterval then
         stop_polling_timer(device)
-        
+
         local ip, token = get_device_config(device)
         if ip then
             start_polling_timer(device)
@@ -374,23 +374,23 @@ local driver = Driver("miot-air-purifier-ma4", {
     },
     capability_handlers = {
         [capabilities.switch.ID] = {
-            [capabilities.switch.commands.on.NAME] = handle_on,
-            [capabilities.switch.commands.off.NAME] = handle_off
+            [capabilities.switch.commands.on.NAME] = switch_on_handler,
+            [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
         [fanModeFanMode.ID] = {
-            [fanModeFanMode.commands.setFanMode.NAME] = handle_set_fan_mode
+            [fanModeFanMode.commands.setFanMode.NAME] = set_fan_mode_handler
         },
         [fanSpeedFanSpeed.ID] = {
-            [fanSpeedFanSpeed.commands.setFanSpeed.NAME] = handle_set_fan_speed
+            [fanSpeedFanSpeed.commands.setFanSpeed.NAME] = set_fan_speed_handler
         },
         [deviceControlsLedBrightness.ID] = {
-            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = handle_set_led_brightness
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = set_led_brightness_handler
         },
         [deviceControlsBuzzer.ID] = {
-            [deviceControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
         },
         [deviceControlsChildLock.ID] = {
-            [deviceControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
+            [deviceControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

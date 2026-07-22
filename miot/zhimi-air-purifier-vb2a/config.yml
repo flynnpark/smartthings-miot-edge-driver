@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier VB2A'
+packageKey: 'Zhimi Air VB2A Driver'
+permissions:
+  lan: {}
+  discovery: {}

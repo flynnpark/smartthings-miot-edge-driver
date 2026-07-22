@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier UA2'
+packageKey: 'Zhimi Air UA2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

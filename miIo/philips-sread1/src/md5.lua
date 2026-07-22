@@ -91,16 +91,16 @@ end
 local function compute_md5(message)
    local H = {md5_H[1], md5_H[2], md5_H[3], md5_H[4]}
    local length = #message
-   
+
    -- Process message
    local size_tail = length % 64
    md5_feed_64(H, message, 0, length - size_tail)
    local tail = string_sub(message, length + 1 - size_tail)
-   
+
    -- Padding
    local final_blocks = tail .. "\128" .. string_rep("\0", (-9 - length) % 64) .. string_pack("<I8", length * 8)
    md5_feed_64(H, final_blocks, 0, #final_blocks)
-   
+
    return H
 end
 

@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier CPA4'
+packageKey: 'Xiaomi Air CPA4 Driver'
+permissions:
+  lan: {}
+  discovery: {}

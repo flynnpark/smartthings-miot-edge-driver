@@ -53,6 +53,28 @@ Supported drivers are grouped by protocol and device type.
 | `miot/zhimi-air-purifier-airp-mb3a` | `zhimi.airp.mb3a` | Xiaomi Mi Air Purifier 3H v2 | `Zhimi Air Purifier AIRP MB3A` |
 | `miot/zhimi-air-purifier-va1` | `zhimi.airpurifier.va1` | Xiaomi Mi Air Purifier Pro H CN | `Zhimi Air Purifier VA1` |
 | `miot/zhimi-air-purifier-vb2` | `zhimi.airpurifier.vb2` | Xiaomi Mi Air Purifier Pro H | `Zhimi Air Purifier VB2` |
+| `miot/xiaomi-air-purifier-cpa4` | `xiaomi.airp.cpa4` | Xiaomi Air Purifier CPA4 | `Xiaomi Air Purifier CPA4` |
+| `miot/xiaomi-air-purifier-mp4` | `xiaomi.airp.mp4` | Xiaomi Air Purifier MP4 | `Xiaomi Air Purifier MP4` |
+| `miot/xiaomi-air-purifier-mp5` | `xiaomi.airp.mp5` | Xiaomi Air Purifier MP5 | `Xiaomi Air Purifier MP5` |
+| `miot/xiaomi-air-purifier-pa1` | `xiaomi.airp.pa1` | Xiaomi Air Purifier PA1 | `Xiaomi Air Purifier PA1` |
+| `miot/xiaomi-air-purifier-rmb3` | `xiaomi.airp.rmb3` | Xiaomi Air Purifier RMB3 | `Xiaomi Air Purifier RMB3` |
+| `miot/xiaomi-air-purifier-ua3` | `xiaomi.airp.ua3` | Xiaomi Air Purifier UA3 | `Xiaomi Air Purifier UA3` |
+| `miot/xiaomi-air-purifier-va2b` | `xiaomi.airp.va2b` | Xiaomi Air Purifier VA2B | `Xiaomi Air Purifier VA2B` |
+| `miot/xiaomi-air-purifier-va3` | `xiaomi.airp.va3` | Xiaomi Air Purifier VA3 | `Xiaomi Air Purifier VA3` |
+| `miot/xiaomi-air-purifier-va4` | `xiaomi.airp.va4` | Xiaomi Air Purifier VA4 | `Xiaomi Air Purifier VA4` |
+| `miot/zhimi-air-purifier-mea1` | `zhimi.airp.mea1` | Zhimi Air Purifier MEA1 | `Zhimi Air Purifier MEA1` |
+| `miot/zhimi-air-purifier-mp4` | `zhimi.airp.mp4` | Zhimi Air Purifier MP4 | `Zhimi Air Purifier MP4` |
+| `miot/zhimi-air-purifier-mp4a` | `zhimi.airp.mp4a` | Zhimi Air Purifier MP4A | `Zhimi Air Purifier MP4A` |
+| `miot/zhimi-air-purifier-airp-rma2` | `zhimi.airp.rma2` | Zhimi Air Purifier AirP RMA2 | `Zhimi Air Purifier AirP RMA2` |
+| `miot/zhimi-air-purifier-rma3` | `zhimi.airp.rma3` | Zhimi Air Purifier RMA3 | `Zhimi Air Purifier RMA3` |
+| `miot/zhimi-air-purifier-sa4` | `zhimi.airp.sa4` | Zhimi Air Purifier SA4 | `Zhimi Air Purifier SA4` |
+| `miot/zhimi-air-purifier-ua1` | `zhimi.airp.ua1` | Zhimi Air Purifier UA1 | `Zhimi Air Purifier UA1` |
+| `miot/zhimi-air-purifier-ua1a` | `zhimi.airp.ua1a` | Zhimi Air Purifier UA1A | `Zhimi Air Purifier UA1A` |
+| `miot/zhimi-air-purifier-ua2` | `zhimi.airp.ua2` | Zhimi Air Purifier UA2 | `Zhimi Air Purifier UA2` |
+| `miot/zhimi-air-purifier-va2a` | `zhimi.airp.va2a` | Zhimi Air Purifier VA2A | `Zhimi Air Purifier VA2A` |
+| `miot/zhimi-air-purifier-vb2a` | `zhimi.airp.vb2a` | Zhimi Air Purifier VB2A | `Zhimi Air Purifier VB2A` |
+| `miot/zhimi-air-purifier-oa1` | `zhimi.airpurifier.oa1` | Zhimi Air Purifier OA1 | `Zhimi Air Purifier OA1` |
+| `miot/zhimi-air-purifier-xa1` | `zhimi.airpurifier.xa1` | Zhimi Air Purifier XA1 | `Zhimi Air Purifier XA1` |
 
 ### MIoT Humidifiers
 
@@ -180,6 +202,7 @@ Supported drivers are grouped by protocol and device type.
 | `libs/miot.lua` | MIoT protocol implementation (get_properties / set_properties / action) |
 | `libs/miio.lua` | miIO protocol implementation (get_prop / set_prop) |
 | `libs/md5.lua` | MD5 implementation used for AES key derivation - extracted from [pure_lua_SHA](https://github.com/Egor-Skriptunoff/pure_lua_SHA) (MIT) |
+| `libs/air_purifier_miot.lua` | Shared lifecycle, polling, profile migration, and command runtime for exact-model MIoT air purifiers |
 
 ## Related
 

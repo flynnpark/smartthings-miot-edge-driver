@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier RMA3'
+packageKey: 'Zhimi Air RMA3 Driver'
+permissions:
+  lan: {}
+  discovery: {}

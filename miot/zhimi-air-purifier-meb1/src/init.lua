@@ -13,11 +13,13 @@ local controlsFanLevel = capabilities["concertmirror08464.zhimiAirMeb1FanLevel"]
 local controlsDisplayBrightness = capabilities["concertmirror08464.zhimiAirMeb1DisplayLevel"]
 local controlsPlasma = capabilities["concertmirror08464.zhimiAirMeb1Plasma"]
 
+local PROFILE_NAME = "zhimi-air-purifier-meb1"
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
 -- MIoT model: zhimi.airp.meb1
--- Source: Xiaomi Smart Air Purifier Elite model docs, Home Assistant Xiaomi Miot Auto user report, MIoT spec zhimi-meb1 v1.
+-- Source: Xiaomi Smart Air Purifier Elite model docs, Home Assistant Xiaomi Miot Auto user report,
+-- and MIoT spec zhimi-meb1 v1.
 -- Air purifier service (siid=2)
 local AIR_PURIFIER_SIID = 2
 local POWER_PIID = 1             -- RW bool
@@ -98,7 +100,7 @@ local function get_device_config(device)
     local ip = device.preferences.ipAddress
     local token = device.preferences.token
 
-    if ip and ip ~= "" and token and #token == 32 then
+    if ip and ip ~= "" and token and #token == 32 and token:match("^[0-9a-fA-F]+$") then
         return ip, token
     end
     return nil, nil
@@ -213,7 +215,7 @@ local function stop_polling_timer(device)
     end
 end
 
-local function handle_on(_, device, _)
+local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -224,7 +226,7 @@ local function handle_on(_, device, _)
     end
 end
 
-local function handle_off(_, device, _)
+local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -234,7 +236,7 @@ local function handle_off(_, device, _)
     end
 end
 
-local function handle_set_air_purifier_mode(_, device, command)
+local function set_air_purifier_mode_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -252,7 +254,7 @@ local function handle_set_air_purifier_mode(_, device, command)
     end
 end
 
-local function handle_set_fan_level(_, device, command)
+local function set_fan_level_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -272,7 +274,7 @@ local function handle_set_fan_level(_, device, command)
     end
 end
 
-local function handle_set_display_brightness(_, device, command)
+local function set_display_brightness_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -286,7 +288,7 @@ local function handle_set_display_brightness(_, device, command)
     end
 end
 
-local function handle_set_plasma(_, device, command)
+local function set_plasma_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -298,7 +300,7 @@ local function handle_set_plasma(_, device, command)
     end
 end
 
-local function handle_set_uv(_, device, command)
+local function set_uv_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -310,7 +312,7 @@ local function handle_set_uv(_, device, command)
     end
 end
 
-local function handle_set_buzzer(_, device, command)
+local function set_buzzer_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -322,7 +324,7 @@ local function handle_set_buzzer(_, device, command)
     end
 end
 
-local function handle_set_child_lock(_, device, command)
+local function set_child_lock_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -340,7 +342,7 @@ end
 
 local function ensure_profile(device)
     if not device:supports_capability_by_id(controlsUv.ID, "main") then
-        device:try_update_metadata({profile = "zhimi-air-purifier-meb1"})
+        device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
 
@@ -358,7 +360,6 @@ local function device_added(_, device)
     device:emit_event(capabilities.dustSensor.dustLevel(0))
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
-    device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
 end
 
@@ -410,29 +411,29 @@ local driver = Driver("miot-air-purifier-meb1", {
     },
     capability_handlers = {
         [capabilities.switch.ID] = {
-            [capabilities.switch.commands.on.NAME] = handle_on,
-            [capabilities.switch.commands.off.NAME] = handle_off
+            [capabilities.switch.commands.on.NAME] = switch_on_handler,
+            [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
         [controlsAirPurifierMode.ID] = {
-            [controlsAirPurifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
+            [controlsAirPurifierMode.commands.setAirPurifierMode.NAME] = set_air_purifier_mode_handler
         },
         [controlsFanLevel.ID] = {
-            [controlsFanLevel.commands.setFanLevel.NAME] = handle_set_fan_level
+            [controlsFanLevel.commands.setFanLevel.NAME] = set_fan_level_handler
         },
         [controlsDisplayBrightness.ID] = {
-            [controlsDisplayBrightness.commands.setDisplayBrightness.NAME] = handle_set_display_brightness
+            [controlsDisplayBrightness.commands.setDisplayBrightness.NAME] = set_display_brightness_handler
         },
         [controlsPlasma.ID] = {
-            [controlsPlasma.commands.setPlasma.NAME] = handle_set_plasma
+            [controlsPlasma.commands.setPlasma.NAME] = set_plasma_handler
         },
         [controlsUv.ID] = {
-            [controlsUv.commands.setUv.NAME] = handle_set_uv
+            [controlsUv.commands.setUv.NAME] = set_uv_handler
         },
         [controlsBuzzer.ID] = {
-            [controlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+            [controlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
         },
         [controlsChildLock.ID] = {
-            [controlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
+            [controlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

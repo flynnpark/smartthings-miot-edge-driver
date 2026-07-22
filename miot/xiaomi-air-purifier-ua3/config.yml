@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier UA3'
+packageKey: 'Xiaomi Air UA3 Driver'
+permissions:
+  lan: {}
+  discovery: {}

@@ -15,11 +15,11 @@ function discovery.create_device(driver)
             vendor_provided_label = "Zhimi Air Purifier VB2",
         })
     end)
-    
+
     if not success then
         log.error("장치 생성 실패: " .. tostring(err))
     end
-    
+
     return success
 end
 
@@ -31,5 +31,3 @@ function discovery.handle_discovery(driver, opts, cont)
 end
 
 return discovery
-
-

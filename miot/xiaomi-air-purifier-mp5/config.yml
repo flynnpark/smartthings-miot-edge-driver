@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier MP5'
+packageKey: 'Xiaomi Air MP5 Driver'
+permissions:
+  lan: {}
+  discovery: {}

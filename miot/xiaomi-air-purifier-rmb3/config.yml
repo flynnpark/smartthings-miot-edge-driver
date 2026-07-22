@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier RMB3'
+packageKey: 'Xiaomi Air RMB3 Driver'
+permissions:
+  lan: {}
+  discovery: {}

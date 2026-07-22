@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier VA3'
+packageKey: 'Xiaomi Air VA3 Driver'
+permissions:
+  lan: {}
+  discovery: {}

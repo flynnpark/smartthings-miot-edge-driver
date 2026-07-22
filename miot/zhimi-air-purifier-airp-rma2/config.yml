@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier AirP RMA2'
+packageKey: 'Zhimi Air RMA2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

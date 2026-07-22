@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier MP4'
+packageKey: 'Xiaomi Air MP4 Driver'
+permissions:
+  lan: {}
+  discovery: {}

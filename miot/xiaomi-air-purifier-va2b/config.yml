@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Purifier VA2B'
+packageKey: 'Xiaomi Air VA2B Driver'
+permissions:
+  lan: {}
+  discovery: {}

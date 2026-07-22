@@ -10,6 +10,7 @@ local deviceControlsBuzzer = capabilities["concertmirror08464.zhimiAirZa1Buzzer"
 local deviceControlsChildLock = capabilities["concertmirror08464.zhimiAirZa1ChildLock"]
 local deviceControlsLedBrightness = capabilities["concertmirror08464.zhimiAirZa1LedBrightness"]
 
+local PROFILE_NAME = "zhimi-za1"
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 
@@ -57,7 +58,7 @@ local function get_device_config(device)
     local ip = device.preferences.ipAddress
     local token = device.preferences.token
 
-    if ip and ip ~= "" and token and #token == 32 then
+    if ip and ip ~= "" and token and #token == 32 and token:match("^[0-9a-fA-F]+$") then
         return ip, token
     end
     return nil, nil
@@ -101,7 +102,8 @@ local function poll_device_status(device)
                 elseif result.piid == PM25_PIID then
                     device:emit_event(capabilities.fineDustSensor.fineDustLevel(math.floor(result.value)))
                 elseif result.piid == TEMPERATURE_PIID then
-                    device:emit_event(capabilities.temperatureMeasurement.temperature({value = result.value, unit = "C"}))
+                    local temperature = {value = result.value, unit = "C"}
+                    device:emit_event(capabilities.temperatureMeasurement.temperature(temperature))
                 end
             elseif result.siid == FILTER_SIID and result.piid == FILTER_LIFE_PIID then
                 device:emit_event(capabilities.filterState.filterLifeRemaining({value = result.value, unit = "%"}))
@@ -135,7 +137,7 @@ local function stop_polling_timer(device)
     end
 end
 
-local function handle_on(_, device, _)
+local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -148,7 +150,7 @@ local function handle_on(_, device, _)
     end
 end
 
-local function handle_off(_, device, _)
+local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -158,7 +160,7 @@ local function handle_off(_, device, _)
     end
 end
 
-local function handle_set_air_purifier_mode(_, device, command)
+local function set_air_purifier_mode_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -174,7 +176,7 @@ local function handle_set_air_purifier_mode(_, device, command)
     end
 end
 
-local function handle_set_led_brightness(_, device, command)
+local function set_led_brightness_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -188,7 +190,7 @@ local function handle_set_led_brightness(_, device, command)
     end
 end
 
-local function handle_set_buzzer(_, device, command)
+local function set_buzzer_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -199,7 +201,7 @@ local function handle_set_buzzer(_, device, command)
     end
 end
 
-local function handle_set_child_lock(_, device, command)
+local function set_child_lock_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
@@ -216,7 +218,7 @@ end
 
 local function ensure_profile(device)
     if not device:supports_capability_by_id(purifierModeAirPurifierMode.ID, "main") then
-        device:try_update_metadata({profile = "zhimi-za1"})
+        device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
 
@@ -227,7 +229,6 @@ local function device_added(_, device)
     device:emit_event(capabilities.temperatureMeasurement.temperature({value = 0, unit = "C"}))
     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
     device:emit_event(capabilities.fineDustSensor.fineDustLevel(0))
-    device:emit_event(capabilities.filterState.filterState.normal())
     device:emit_event(capabilities.filterState.filterLifeRemaining({value = 100, unit = "%"}))
     device:emit_event(deviceControlsLedBrightness.ledBrightness({value = "bright"}))
     device:emit_event(deviceControlsBuzzer.buzzer({value = "off"}))
@@ -282,20 +283,20 @@ local driver = Driver("miot-air-purifier-za1", {
     },
     capability_handlers = {
         [capabilities.switch.ID] = {
-            [capabilities.switch.commands.on.NAME] = handle_on,
-            [capabilities.switch.commands.off.NAME] = handle_off
+            [capabilities.switch.commands.on.NAME] = switch_on_handler,
+            [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
         [purifierModeAirPurifierMode.ID] = {
-            [purifierModeAirPurifierMode.commands.setAirPurifierMode.NAME] = handle_set_air_purifier_mode
+            [purifierModeAirPurifierMode.commands.setAirPurifierMode.NAME] = set_air_purifier_mode_handler
         },
         [deviceControlsLedBrightness.ID] = {
-            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = handle_set_led_brightness
+            [deviceControlsLedBrightness.commands.setLedBrightness.NAME] = set_led_brightness_handler
         },
         [deviceControlsBuzzer.ID] = {
-            [deviceControlsBuzzer.commands.setBuzzer.NAME] = handle_set_buzzer
+            [deviceControlsBuzzer.commands.setBuzzer.NAME] = set_buzzer_handler
         },
         [deviceControlsChildLock.ID] = {
-            [deviceControlsChildLock.commands.setChildLock.NAME] = handle_set_child_lock
+            [deviceControlsChildLock.commands.setChildLock.NAME] = set_child_lock_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler

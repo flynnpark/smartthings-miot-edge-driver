@@ -1,0 +1,5 @@
+name: 'Zhimi Air Purifier XA1'
+packageKey: 'Zhimi Air XA1 Driver'
+permissions:
+  lan: {}
+  discovery: {}
