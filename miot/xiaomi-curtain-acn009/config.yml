@@ -1,0 +1,5 @@
+name: 'Xiaomi Curtain ACN009'
+packageKey: 'Xiaomi Curtain ACN009 Driver'
+permissions:
+  lan: {}
+  discovery: {}
