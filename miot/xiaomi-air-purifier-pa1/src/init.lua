@@ -1,196 +1,419 @@
+-- Xiaomi Air Purifier PA1 Driver
+
+local capabilities = require "st.capabilities"
+local Driver = require "st.driver"
 local discovery = require "discovery"
-local air_purifier_miot = require "air_purifier_miot"
+local miot = require "miot"
 
--- Exact local MIoT model: xiaomi.airp.pa1
+local airPurifierModeCap = capabilities["concertmirror08464.xiaomiAirPa1Mode"]
+local fanLevelCap = capabilities["concertmirror08464.xiaomiAirPa1FanLevel"]
+local anionCap = capabilities["concertmirror08464.xiaomiAirPa1Anion"]
+local uvCap = capabilities["concertmirror08464.xiaomiAirPa1Uv"]
+local buzzerCap = capabilities["concertmirror08464.xiaomiAirPa1Buzzer"]
+local childLockCap = capabilities["concertmirror08464.xiaomiAirPa1ChildLock"]
+local displayCap = capabilities["concertmirror08464.xiaomiAirPa1Display"]
+local displayLevelCap = capabilities["concertmirror08464.xiaomiAirPa1DisplayLevel"]
+
+local POLLING_TIMER = "polling_timer"
+local DEFAULT_POLLING_INTERVAL = 60
+local PROFILE_NAME = "xiaomi-air-purifier-pa1"
+
+-- Exact local MIoT model: Xiaomi Air Purifier PA1
 -- Property mappings below come from the exact MIoT specification.
+--
+--   siid=2 piid=1 -> power
+--   siid=2 piid=3 -> xiaomiAirPa1Mode.airPurifierMode
+--   siid=2 piid=4 -> xiaomiAirPa1FanLevel.fanLevel
+--   siid=2 piid=5 -> xiaomiAirPa1Anion.anion
+--   siid=2 piid=6 -> xiaomiAirPa1Uv.uv
+--   siid=3 piid=1 -> humidity
+--   siid=3 piid=2 -> temperature
+--   siid=3 piid=4 -> pm25
+--   siid=3 piid=5 -> pm10
+--   siid=4 piid=1 -> filter
+--   siid=6 piid=1 -> xiaomiAirPa1Display.display
+--   siid=6 piid=2 -> xiaomiAirPa1DisplayLevel.displayLevel
+--   siid=7 piid=1 -> xiaomiAirPa1Buzzer.buzzer
+--   siid=8 piid=1 -> xiaomiAirPa1ChildLock.childLock
 
-air_purifier_miot.run({
-    driver_name = "miot-xiaomi-air-purifier-pa1",
-    profile_name = "xiaomi-air-purifier-pa1",
-    expected_capability = "concertmirror08464.xiaomiAirPa1Mode",
-    discovery = discovery,
-    properties = {
-        {
-            kind = "power",
-            siid = 2,
-            piid = 1,
-            initial = false
+local AIRPURIFIERMODE_TO_ST = {
+    [0] = "auto",
+    [3] = "sleep",
+    [5] = "favorite",
+    [6] = "none"
+}
+
+local ST_TO_AIRPURIFIERMODE = {
+    ["auto"] = 0,
+    ["favorite"] = 5,
+    ["none"] = 6,
+    ["sleep"] = 3
+}
+
+local FANLEVEL_TO_ST = {
+    [0] = "level1",
+    [1] = "level2",
+    [2] = "level3"
+}
+
+local ST_TO_FANLEVEL = {
+    ["level1"] = 0,
+    ["level2"] = 1,
+    ["level3"] = 2
+}
+
+local DISPLAYLEVEL_TO_ST = {
+    [0] = "dim",
+    [1] = "bright"
+}
+
+local ST_TO_DISPLAYLEVEL = {
+    ["bright"] = 1,
+    ["dim"] = 0
+}
+
+local function get_device_config(device)
+    local ip = device.preferences.ipAddress
+    local token = device.preferences.token
+
+    if ip and ip ~= "" and token and #token == 32 then
+        return ip, token
+    end
+    return nil, nil
+end
+
+local function ensure_profile(device)
+    if not device:supports_capability_by_id("concertmirror08464.xiaomiAirPa1Mode", "main") then
+        device:try_update_metadata({profile = PROFILE_NAME})
+    end
+end
+
+local function bool_to_st(value)
+    return value and "on" or "off"
+end
+
+local function poll_device_status(device)
+    local ip, token = get_device_config(device)
+    if not ip then
+        return
+    end
+
+    local properties = {
+        {siid = 2, piid = 1},
+        {siid = 2, piid = 3},
+        {siid = 2, piid = 4},
+        {siid = 3, piid = 1},
+        {siid = 3, piid = 2},
+        {siid = 3, piid = 4},
+        {siid = 3, piid = 5},
+        {siid = 4, piid = 1},
+        {siid = 2, piid = 5},
+        {siid = 2, piid = 6},
+        {siid = 7, piid = 1},
+        {siid = 8, piid = 1},
+        {siid = 6, piid = 1},
+        {siid = 6, piid = 2}
+    }
+
+    local ok, response = pcall(miot.gets, device, ip, token, properties)
+    if not ok or not response or not response.result then
+        return
+    end
+
+    for _, result in ipairs(response.result) do
+        if result.code == 0 then
+            local siid = result.siid
+            local piid = result.piid
+            local value = result.value
+
+            if siid == 2 then
+                if piid == 1 then
+                    device:emit_event(capabilities.switch.switch(value and "on" or "off"))
+                elseif piid == 3 then
+                    local mapped = AIRPURIFIERMODE_TO_ST[value]
+                    if mapped then
+                        device:emit_event(airPurifierModeCap.airPurifierMode({value = mapped}))
+                    end
+                elseif piid == 4 then
+                    local mapped = FANLEVEL_TO_ST[value]
+                    if mapped then
+                        device:emit_event(fanLevelCap.fanLevel({value = mapped}))
+                    end
+                elseif piid == 5 then
+                    device:emit_event(anionCap.anion({value = bool_to_st(value)}))
+                elseif piid == 6 then
+                    device:emit_event(uvCap.uv({value = bool_to_st(value)}))
+                end
+            elseif siid == 3 then
+                if piid == 1 then
+                    device:emit_event(capabilities.relativeHumidityMeasurement.humidity(value))
+                elseif piid == 2 then
+                    device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
+                elseif piid == 4 then
+                    device:emit_event(capabilities.dustSensor.fineDustLevel(math.floor(value)))
+                elseif piid == 5 then
+                    device:emit_event(capabilities.dustSensor.dustLevel(math.floor(value)))
+                end
+            elseif siid == 4 then
+                if piid == 1 then
+                    device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
+                end
+            elseif siid == 6 then
+                if piid == 1 then
+                    device:emit_event(displayCap.display({value = bool_to_st(value)}))
+                elseif piid == 2 then
+                    local mapped = DISPLAYLEVEL_TO_ST[value]
+                    if mapped then
+                        device:emit_event(displayLevelCap.displayLevel({value = mapped}))
+                    end
+                end
+            elseif siid == 7 then
+                if piid == 1 then
+                    device:emit_event(buzzerCap.buzzer({value = bool_to_st(value)}))
+                end
+            elseif siid == 8 then
+                if piid == 1 then
+                    device:emit_event(childLockCap.childLock({value = bool_to_st(value)}))
+                end
+            end
+        end
+    end
+end
+
+local function start_polling_timer(device)
+    local interval = device.preferences.pollingInterval or DEFAULT_POLLING_INTERVAL
+    local timer = device.thread:call_on_schedule(interval, function()
+        pcall(poll_device_status, device)
+    end, "Polling")
+    device:set_field(POLLING_TIMER, timer)
+end
+
+local function stop_polling_timer(device)
+    local timer = device:get_field(POLLING_TIMER)
+    if timer then
+        device.thread:cancel_timer(timer)
+        device:set_field(POLLING_TIMER, nil)
+    end
+end
+
+local function switch_on_handler(_, device, _)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local ok = pcall(miot.set, device, ip, token, 2, 1, true)
+    if ok then
+        device:emit_event(capabilities.switch.switch.on())
+        device.thread:call_with_delay(1, function()
+            pcall(poll_device_status, device)
+        end)
+    end
+end
+
+local function switch_off_handler(_, device, _)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local ok = pcall(miot.set, device, ip, token, 2, 1, false)
+    if ok then
+        device:emit_event(capabilities.switch.switch.off())
+    end
+end
+
+local function set_airPurifierMode_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.airPurifierMode
+    local value = ST_TO_AIRPURIFIERMODE[requested]
+    if value == nil then return end
+
+    local ok = pcall(miot.set, device, ip, token, 2, 3, value)
+    if ok then
+        device:emit_event(airPurifierModeCap.airPurifierMode({value = requested}))
+    end
+end
+
+local function set_fanLevel_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.fanLevel
+    local value = ST_TO_FANLEVEL[requested]
+    if value == nil then return end
+
+    local ok = pcall(miot.set, device, ip, token, 2, 4, value)
+    if ok then
+        device:emit_event(fanLevelCap.fanLevel({value = requested}))
+    end
+end
+
+local function set_anion_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.anion
+    local ok = pcall(miot.set, device, ip, token, 2, 5, requested == "on")
+    if ok then
+        device:emit_event(anionCap.anion({value = requested}))
+    end
+end
+
+local function set_uv_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.uv
+    local ok = pcall(miot.set, device, ip, token, 2, 6, requested == "on")
+    if ok then
+        device:emit_event(uvCap.uv({value = requested}))
+    end
+end
+
+local function set_buzzer_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.buzzer
+    local ok = pcall(miot.set, device, ip, token, 7, 1, requested == "on")
+    if ok then
+        device:emit_event(buzzerCap.buzzer({value = requested}))
+    end
+end
+
+local function set_childLock_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.childLock
+    local ok = pcall(miot.set, device, ip, token, 8, 1, requested == "on")
+    if ok then
+        device:emit_event(childLockCap.childLock({value = requested}))
+    end
+end
+
+local function set_display_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.display
+    local ok = pcall(miot.set, device, ip, token, 6, 1, requested == "on")
+    if ok then
+        device:emit_event(displayCap.display({value = requested}))
+    end
+end
+
+local function set_displayLevel_handler(_, device, command)
+    local ip, token = get_device_config(device)
+    if not ip then return end
+
+    local requested = command.args.displayLevel
+    local value = ST_TO_DISPLAYLEVEL[requested]
+    if value == nil then return end
+
+    local ok = pcall(miot.set, device, ip, token, 6, 2, value)
+    if ok then
+        device:emit_event(displayLevelCap.displayLevel({value = requested}))
+    end
+end
+
+local function refresh_handler(_, device, _)
+    pcall(poll_device_status, device)
+end
+
+local function device_added(_, device)
+    ensure_profile(device)
+    device:online()
+    device:emit_event(capabilities.switch.switch.off())
+    device:emit_event(airPurifierModeCap.airPurifierMode({value = "auto"}))
+    device:emit_event(fanLevelCap.fanLevel({value = "level1"}))
+    device:emit_event(anionCap.anion({value = "off"}))
+    device:emit_event(uvCap.uv({value = "off"}))
+    device:emit_event(buzzerCap.buzzer({value = "off"}))
+    device:emit_event(childLockCap.childLock({value = "off"}))
+    device:emit_event(displayCap.display({value = "off"}))
+    device:emit_event(displayLevelCap.displayLevel({value = "dim"}))
+    pcall(poll_device_status, device)
+end
+
+local function device_init(_, device)
+    ensure_profile(device)
+    device:online()
+
+    local ip = get_device_config(device)
+    if ip then
+        start_polling_timer(device)
+        pcall(poll_device_status, device)
+    end
+end
+
+local function device_removed(_, device)
+    stop_polling_timer(device)
+end
+
+local function device_info_changed(driver, device, _, args)
+    if not args.old_st_store or not args.old_st_store.preferences then
+        return
+    end
+
+    local old = args.old_st_store.preferences
+    local new = device.preferences
+
+    if old.createDev == false and new.createDev == true then
+        discovery.create_device(driver)
+    end
+
+    if old.ipAddress ~= new.ipAddress or old.token ~= new.token or old.pollingInterval ~= new.pollingInterval then
+        stop_polling_timer(device)
+
+        local ip = get_device_config(device)
+        if ip then
+            start_polling_timer(device)
+            pcall(poll_device_status, device)
+        end
+    end
+end
+
+local driver = Driver("miot-xiaomi-air-purifier-pa1", {
+    discovery = discovery.handle_discovery,
+    lifecycle_handlers = {
+        added = device_added,
+        init = device_init,
+        removed = device_removed,
+        infoChanged = device_info_changed
+    },
+    capability_handlers = {
+        [capabilities.switch.ID] = {
+            [capabilities.switch.commands.on.NAME] = switch_on_handler,
+            [capabilities.switch.commands.off.NAME] = switch_off_handler
         },
-        {
-            kind = "enum",
-            siid = 2,
-            piid = 3,
-            capability = "concertmirror08464.xiaomiAirPa1Mode",
-            attribute = "airPurifierMode",
-            command = "setAirPurifierMode",
-            argument = "airPurifierMode",
-            to_st = {
-                [0] = "auto",
-                [3] = "sleep",
-                [5] = "favorite",
-                [6] = "none"
-            },
-            from_st = {
-                ["auto"] = 0,
-                ["sleep"] = 3,
-                ["favorite"] = 5,
-                ["none"] = 6
-            },
-            initial = 0
+        [airPurifierModeCap.ID] = {
+            [airPurifierModeCap.commands.setAirPurifierMode.NAME] = set_airPurifierMode_handler
         },
-        {
-            kind = "enum",
-            siid = 2,
-            piid = 4,
-            capability = "concertmirror08464.xiaomiAirPa1FanLevel",
-            attribute = "fanLevel",
-            command = "setFanLevel",
-            argument = "fanLevel",
-            to_st = {
-                [0] = "level1",
-                [1] = "level2",
-                [2] = "level3"
-            },
-            from_st = {
-                ["level1"] = 0,
-                ["level2"] = 1,
-                ["level3"] = 2
-            },
-            initial = 0
+        [fanLevelCap.ID] = {
+            [fanLevelCap.commands.setFanLevel.NAME] = set_fanLevel_handler
         },
-        {
-            kind = "humidity",
-            siid = 3,
-            piid = 1
+        [anionCap.ID] = {
+            [anionCap.commands.setAnion.NAME] = set_anion_handler
         },
-        {
-            kind = "temperature",
-            siid = 3,
-            piid = 2
+        [uvCap.ID] = {
+            [uvCap.commands.setUv.NAME] = set_uv_handler
         },
-        {
-            kind = "pm25",
-            siid = 3,
-            piid = 4,
-            use_dust_sensor = true
+        [buzzerCap.ID] = {
+            [buzzerCap.commands.setBuzzer.NAME] = set_buzzer_handler
         },
-        {
-            kind = "pm10",
-            siid = 3,
-            piid = 5
+        [childLockCap.ID] = {
+            [childLockCap.commands.setChildLock.NAME] = set_childLock_handler
         },
-        {
-            kind = "filter",
-            siid = 4,
-            piid = 1
+        [displayCap.ID] = {
+            [displayCap.commands.setDisplay.NAME] = set_display_handler
         },
-        {
-            kind = "boolean",
-            siid = 2,
-            piid = 5,
-            capability = "concertmirror08464.xiaomiAirPa1Anion",
-            attribute = "anion",
-            command = "setAnion",
-            argument = "anion",
-            to_st = {
-                [false] = "off",
-                [true] = "on"
-            },
-            from_st = {
-                ["off"] = false,
-                ["on"] = true
-            },
-            initial = false
+        [displayLevelCap.ID] = {
+            [displayLevelCap.commands.setDisplayLevel.NAME] = set_displayLevel_handler
         },
-        {
-            kind = "boolean",
-            siid = 2,
-            piid = 6,
-            capability = "concertmirror08464.xiaomiAirPa1Uv",
-            attribute = "uv",
-            command = "setUv",
-            argument = "uv",
-            to_st = {
-                [false] = "off",
-                [true] = "on"
-            },
-            from_st = {
-                ["off"] = false,
-                ["on"] = true
-            },
-            initial = false
-        },
-        {
-            kind = "boolean",
-            siid = 7,
-            piid = 1,
-            capability = "concertmirror08464.xiaomiAirPa1Buzzer",
-            attribute = "buzzer",
-            command = "setBuzzer",
-            argument = "buzzer",
-            to_st = {
-                [false] = "off",
-                [true] = "on"
-            },
-            from_st = {
-                ["off"] = false,
-                ["on"] = true
-            },
-            initial = false
-        },
-        {
-            kind = "boolean",
-            siid = 8,
-            piid = 1,
-            capability = "concertmirror08464.xiaomiAirPa1ChildLock",
-            attribute = "childLock",
-            command = "setChildLock",
-            argument = "childLock",
-            to_st = {
-                [false] = "off",
-                [true] = "on"
-            },
-            from_st = {
-                ["off"] = false,
-                ["on"] = true
-            },
-            initial = false
-        },
-        {
-            kind = "boolean",
-            siid = 6,
-            piid = 1,
-            capability = "concertmirror08464.xiaomiAirPa1Display",
-            attribute = "display",
-            command = "setDisplay",
-            argument = "display",
-            to_st = {
-                [false] = "off",
-                [true] = "on"
-            },
-            from_st = {
-                ["off"] = false,
-                ["on"] = true
-            },
-            initial = false
-        },
-        {
-            kind = "enum",
-            siid = 6,
-            piid = 2,
-            capability = "concertmirror08464.xiaomiAirPa1DisplayLevel",
-            attribute = "displayLevel",
-            command = "setDisplayLevel",
-            argument = "displayLevel",
-            to_st = {
-                [0] = "dim",
-                [1] = "bright"
-            },
-            from_st = {
-                ["dim"] = 0,
-                ["bright"] = 1
-            },
-            initial = 0
+        [capabilities.refresh.ID] = {
+            [capabilities.refresh.commands.refresh.NAME] = refresh_handler
         }
     }
 })
+
+driver:run()

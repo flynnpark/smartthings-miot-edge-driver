@@ -247,7 +247,6 @@ Supported drivers are grouped by protocol and device type.
 | `libs/miot.lua` | MIoT protocol implementation (get_properties / set_properties / action) |
 | `libs/miio.lua` | miIO protocol implementation (get_prop / set_prop) |
 | `libs/md5.lua` | MD5 implementation used for AES key derivation - extracted from [pure_lua_SHA](https://github.com/Egor-Skriptunoff/pure_lua_SHA) (MIT) |
-| `libs/air_purifier_miot.lua` | Shared lifecycle, polling, profile migration, and command runtime for exact-model MIoT air purifiers |
 
 ## Related
 

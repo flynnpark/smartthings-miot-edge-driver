@@ -134,33 +134,6 @@ $groups = @(
         )
     },
     @{
-        Source = "libs\air_purifier_miot.lua"
-        Targets = @(
-            "miot\xiaomi-air-purifier-cpa4\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-mp4\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-mp5\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-pa1\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-rmb3\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-ua3\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-va2b\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-va3\src\air_purifier_miot.lua",
-            "miot\xiaomi-air-purifier-va4\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-mea1\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-mp4\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-mp4a\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-airp-rma2\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-rma3\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-sa4\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-ua1\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-ua1a\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-ua2\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-va2a\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-vb2a\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-oa1\src\air_purifier_miot.lua",
-            "miot\zhimi-air-purifier-xa1\src\air_purifier_miot.lua"
-        )
-    },
-    @{
         Source = "libs\miio.lua"
         Targets = @(
             "miIo\zhimi-air-purifier-mc1\src\miio.lua",
