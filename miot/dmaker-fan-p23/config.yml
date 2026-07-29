@@ -1,0 +1,5 @@
+name: 'Mijia Fan P23'
+packageKey: 'Mijia Fan P23 Driver'
+permissions:
+  lan: {}
+  discovery: {}

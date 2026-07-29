@@ -116,6 +116,10 @@ $groups = @(
             "miot\xiaomi-fan-p30\src\miot.lua",
             "miot\xiaomi-fan-p45\src\miot.lua",
             "miot\xiaomi-fan-p51\src\miot.lua",
+            "miot\zhimi-fan-fa1\src\miot.lua",
+            "miot\zhimi-fan-fa2\src\miot.lua",
+            "miot\zhimi-fan-fb1\src\miot.lua",
+            "miot\dmaker-fan-p23\src\miot.lua",
             "miot\xiaomi-fan-p69\src\miot.lua",
             "miot\xiaomi-fan-p70\src\miot.lua",
             "miot\xiaomi-fan-p76\src\miot.lua",
@@ -157,6 +161,15 @@ $groups = @(
             "miot\zhimi-air-purifier-vb2a\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-oa1\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-xa1\src\air_purifier_miot.lua"
+        )
+    },
+    @{
+        Source = "libs\fan_miot.lua"
+        Targets = @(
+            "miot\zhimi-fan-fa1\src\fan_miot.lua",
+            "miot\zhimi-fan-fa2\src\fan_miot.lua",
+            "miot\zhimi-fan-fb1\src\fan_miot.lua",
+            "miot\dmaker-fan-p23\src\fan_miot.lua"
         )
     },
     @{
@@ -284,6 +297,10 @@ $groups = @(
             "miot\xiaomi-water-purifier-lx20\src\md5.lua",
             "miot\xiaomi-air-conditioner-ra1r00\src\md5.lua",
             "miot\xiaomi-air-conditioner-c38\src\md5.lua",
+            "miot\zhimi-fan-fa1\src\md5.lua",
+            "miot\zhimi-fan-fa2\src\md5.lua",
+            "miot\zhimi-fan-fb1\src\md5.lua",
+            "miot\dmaker-fan-p23\src\md5.lua",
             "miot\xiaomi-air-conditioner-r09h00\src\md5.lua",
             "miIo\xiaomi-aircondition-ma4\src\md5.lua",
             "miot\xiaomi-fish-tank-m100\src\md5.lua",

@@ -1,0 +1,5 @@
+name: 'Zhimi Fan FB1'
+packageKey: 'Zhimi Fan FB1 Driver'
+permissions:
+  lan: {}
+  discovery: {}

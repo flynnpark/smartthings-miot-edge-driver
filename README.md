@@ -146,6 +146,10 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-fan-p45` | `dmaker.fan.p45` | Mijia DC Inverter Tower Fan 2 | `Mijia DC Inverter Tower Fan 2` |
 | `miot/xiaomi-fan-p43` | `xiaomi.fan.p43` | Xiaomi Fan P43 | `Xiaomi Fan P43` |
 | `miot/zhimi-fan-za5` | `zhimi.fan.za5` | Smartmi Standing Fan 3 | `Smartmi Standing Fan 3` |
+| `miot/zhimi-fan-fa1` | `zhimi.fan.fa1` | Zhimi Fan FA1 | `Zhimi Fan FA1` |
+| `miot/zhimi-fan-fa2` | `zhimi.fan.fa2` | Zhimi Fan FA2 | `Zhimi Fan FA2` |
+| `miot/zhimi-fan-fb1` | `zhimi.fan.fb1` | Zhimi Fan FB1 | `Zhimi Fan FB1` |
+| `miot/dmaker-fan-p23` | `dmaker.fan.p23` | Mijia Fan P23 | `Mijia Fan P23` |
 
 ### MIoT Other Devices
 

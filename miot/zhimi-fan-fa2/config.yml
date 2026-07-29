@@ -1,0 +1,5 @@
+name: 'Zhimi Fan FA2'
+packageKey: 'Zhimi Fan FA2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
