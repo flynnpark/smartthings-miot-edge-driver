@@ -1,0 +1,5 @@
+name: 'Xiaomi Water Purifier LX20'
+packageKey: 'Xiaomi Water Purifier LX20 Driver'
+permissions:
+  lan: {}
+  discovery: {}
