@@ -1,0 +1,5 @@
+name: 'Xiaomi Water Purifier LX32'
+packageKey: 'Xiaomi Water Purifier LX32 Driver'
+permissions:
+  lan: {}
+  discovery: {}

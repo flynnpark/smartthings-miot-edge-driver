@@ -1,0 +1,5 @@
+name: 'Xiaomi Water Heater YM02'
+packageKey: 'Xiaomi Water Heater YM02 Driver'
+permissions:
+  lan: {}
+  discovery: {}

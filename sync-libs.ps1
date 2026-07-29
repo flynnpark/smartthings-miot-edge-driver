@@ -120,6 +120,11 @@ $groups = @(
             "miot\zhimi-fan-fa2\src\miot.lua",
             "miot\zhimi-fan-fb1\src\miot.lua",
             "miot\dmaker-fan-p23\src\miot.lua",
+            "miot\xiaomi-airer-lyj3xs\src\miot.lua",
+            "miot\xiaomi-hood-jyjss2\src\miot.lua",
+            "miot\xiaomi-kettle-v20\src\miot.lua",
+            "miot\xiaomi-water-heater-ym02\src\miot.lua",
+            "miot\xiaomi-water-purifier-lx32\src\miot.lua",
             "miot\xiaomi-fan-p69\src\miot.lua",
             "miot\xiaomi-fan-p70\src\miot.lua",
             "miot\xiaomi-fan-p76\src\miot.lua",
@@ -141,14 +146,6 @@ $groups = @(
             "miot\xiaomi-air-purifier-va3\src\air_purifier_miot.lua",
             "miot\xiaomi-air-purifier-va4\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-mea1\src\air_purifier_miot.lua",
-            "miot\airdog-air-purifier-mn\src\air_purifier_miot.lua",
-            "miot\baomi-air-purifier-450a\src\air_purifier_miot.lua",
-            "miot\bj352-air-purifier-y106cm\src\air_purifier_miot.lua",
-            "miot\dmaker-air-purifier-f20\src\air_purifier_miot.lua",
-            "miot\dmaker-air-purifier-swift\src\air_purifier_miot.lua",
-            "miot\dmaker-air-purifier-swift2\src\air_purifier_miot.lua",
-            "miot\hanyi-air-purifier-kj550\src\air_purifier_miot.lua",
-            "miot\viomi-air-purifier-v3\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-mp4\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-mp4a\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-airp-rma2\src\air_purifier_miot.lua",
@@ -161,15 +158,6 @@ $groups = @(
             "miot\zhimi-air-purifier-vb2a\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-oa1\src\air_purifier_miot.lua",
             "miot\zhimi-air-purifier-xa1\src\air_purifier_miot.lua"
-        )
-    },
-    @{
-        Source = "libs\fan_miot.lua"
-        Targets = @(
-            "miot\zhimi-fan-fa1\src\fan_miot.lua",
-            "miot\zhimi-fan-fa2\src\fan_miot.lua",
-            "miot\zhimi-fan-fb1\src\fan_miot.lua",
-            "miot\dmaker-fan-p23\src\fan_miot.lua"
         )
     },
     @{
@@ -301,6 +289,11 @@ $groups = @(
             "miot\zhimi-fan-fa2\src\md5.lua",
             "miot\zhimi-fan-fb1\src\md5.lua",
             "miot\dmaker-fan-p23\src\md5.lua",
+            "miot\xiaomi-airer-lyj3xs\src\md5.lua",
+            "miot\xiaomi-hood-jyjss2\src\md5.lua",
+            "miot\xiaomi-kettle-v20\src\md5.lua",
+            "miot\xiaomi-water-heater-ym02\src\md5.lua",
+            "miot\xiaomi-water-purifier-lx32\src\md5.lua",
             "miot\xiaomi-air-conditioner-r09h00\src\md5.lua",
             "miIo\xiaomi-aircondition-ma4\src\md5.lua",
             "miot\xiaomi-fish-tank-m100\src\md5.lua",

@@ -1,0 +1,5 @@
+name: 'Xiaomi Kettle V20'
+packageKey: 'Xiaomi Kettle V20 Driver'
+permissions:
+  lan: {}
+  discovery: {}

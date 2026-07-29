@@ -1,0 +1,5 @@
+name: 'Xiaomi Airer LYJ3XS'
+packageKey: 'Xiaomi Airer LYJ3XS Driver'
+permissions:
+  lan: {}
+  discovery: {}

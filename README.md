@@ -172,6 +172,11 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-electric-blanket-mj1` | `xiaomi.blanket.mj1` | Xiaomi Electric Blanket MJ1 | `Xiaomi Electric Blanket MJ1` |
 | `miot/xiaomi-hood-ymv5` | `xiaomi.hood.ymv5` | Xiaomi Hood YMV5 | `Xiaomi Hood YMV5` |
 | `miot/xiaomi-water-purifier-lx20` | `xiaomi.waterpuri.lx20` | Xiaomi Water Purifier LX20 | `Xiaomi Water Purifier LX20` |
+| `miot/xiaomi-airer-lyj3xs` | `xiaomi.airer.lyj3xs` | Xiaomi Airer LYJ3XS | `Xiaomi Airer LYJ3XS` |
+| `miot/xiaomi-hood-jyjss2` | `xiaomi.hood.jyjss2` | Xiaomi Hood JYJSS2 | `Xiaomi Hood JYJSS2` |
+| `miot/xiaomi-kettle-v20` | `xiaomi.kettle.v20` | Xiaomi Kettle V20 | `Xiaomi Kettle V20` |
+| `miot/xiaomi-water-heater-ym02` | `xiaomi.waterheater.ym02` | Xiaomi Water Heater YM02 | `Xiaomi Water Heater YM02` |
+| `miot/xiaomi-water-purifier-lx32` | `xiaomi.waterpuri.lx32` | Xiaomi Water Purifier LX32 | `Xiaomi Water Purifier LX32` |
 | `miot/xiaomi-air-conditioner-ra1r00` | `xiaomi.airc.ra1r00` | Xiaomi Air Conditioner RA1 | `Xiaomi Air Conditioner RA1` |
 | `miot/xiaomi-air-conditioner-c38` | `xiaomi.aircondition.c38` | Xiaomi Air Conditioner C38 | `Xiaomi Air Conditioner C38` |
 | `miot/xiaomi-air-conditioner-r09h00` | `xiaomi.airc.r09h00` | Xiaomi Air Conditioner R09 | `Xiaomi Air Conditioner R09` |

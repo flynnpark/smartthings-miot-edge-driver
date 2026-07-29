@@ -1,0 +1,5 @@
+name: 'Xiaomi Hood JYJSS2'
+packageKey: 'Xiaomi Hood JYJSS2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
