@@ -14,24 +14,50 @@ local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 local PROFILE_NAME = "zhimi-air-purifier-oa1"
 
--- Exact local MIoT model: Zhimi Air Purifier OA1
--- Property mappings below come from the exact MIoT specification.
+-- MIoT model: zhimi.airpurifier.oa1
+-- specModel: zhimi-oa1
+-- URN: urn:miot-spec-v2:device:air-purifier:0000A007:zhimi-oa1:1
 --
---   siid=2 piid=1 -> power
---   siid=2 piid=5 -> zhimiAirOa1FanLevel.fanLevel
---   siid=2 piid=7 -> zhimiAirOa1Buzzer.buzzer
---   siid=2 piid=9 -> zhimiAirOa1ChildLock.childLock
---   siid=2 piid=6 -> zhimiAirOa1DisplayLevel.displayLevel
---   siid=4 piid=2 -> filter
+-- Air Purifier service (siid=2)
+--   piid=1 on, bool, RW -> switch
+--   piid=2 fault, uint8, R; 0=No Faults, 1=Motor-stuck: not exposed
+--   piid=5 fan-level, uint8, RW; 1=Level1, 2=Level2, 3=Level3, 4=Level4 -> zhimiAirOa1FanLevel.fanLevel
+--   piid=6 brightness, bool, RW -> zhimiAirOa1DisplayLevel.displayLevel
+--   piid=7 alarm, bool, RW -> zhimiAirOa1Buzzer.buzzer
+--   piid=9 physical-controls-locked, bool, RW -> zhimiAirOa1ChildLock.childLock
+--   piid=10 working-time, uint32, R; range 0..2147483647 step 1 seconds: not exposed
+-- Filter service (siid=4)
+--   piid=1 filter-used-time, uint32, R; range 0..6480000 step 1 seconds: not exposed
+--   piid=2 filter-life-level, uint8, R; range 0..100 step 1 percentage -> filterState.filterLifeRemaining
+-- other service (siid=5)
+--   piid=2 filter-used-debug, uint32, W; range 0..6480000 step 1 hours: not exposed
+--   piid=7 speed-actual, uint16, R; range 0..5000 step 1: not exposed
+--   piid=8 speed-set, uint16, R; range 300..5000 step 1: not exposed
+--   piid=9 door, string, R: not exposed
+--   piid=10 ring-mac, string, RW: not exposed
+--   piid=11 ring-rssi, uint16, R; range 0..200 step 1: not exposed
+--   piid=12 reboot-cause, uint16, R; 0=REASON_HW_BOOT, 1=REASON_USER_REBOOT, 2=REASON_UPDATE, 3=REASON_WDT: not exposed
 
-local FANLEVEL_TO_ST = {
+local AIR_PURIFIER_SIID = 2
+local ON_PIID = 1
+local FAN_LEVEL_PIID = 5
+local BRIGHTNESS_PIID = 6
+local ALARM_PIID = 7
+local PHYSICAL_CONTROLS_LOCKED_PIID = 9
+
+local FILTER_SIID = 4
+local FILTER_LIFE_LEVEL_PIID = 2
+
+-- MIoT -> SmartThings
+local FAN_LEVEL_TO_ST = {
     [1] = "level1",
     [2] = "level2",
     [3] = "level3",
     [4] = "level4"
 }
 
-local ST_TO_FANLEVEL = {
+-- SmartThings -> MIoT
+local ST_TO_FAN_LEVEL = {
     ["level1"] = 1,
     ["level2"] = 2,
     ["level3"] = 3,
@@ -65,12 +91,12 @@ local function poll_device_status(device)
     end
 
     local properties = {
-        {siid = 2, piid = 1},
-        {siid = 2, piid = 5},
-        {siid = 4, piid = 2},
-        {siid = 2, piid = 7},
-        {siid = 2, piid = 9},
-        {siid = 2, piid = 6}
+        {siid = AIR_PURIFIER_SIID, piid = ON_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = FAN_LEVEL_PIID},
+        {siid = FILTER_SIID, piid = FILTER_LIFE_LEVEL_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = ALARM_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = PHYSICAL_CONTROLS_LOCKED_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = BRIGHTNESS_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -84,23 +110,23 @@ local function poll_device_status(device)
             local piid = result.piid
             local value = result.value
 
-            if siid == 2 then
-                if piid == 1 then
+            if siid == AIR_PURIFIER_SIID then
+                if piid == ON_PIID then
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
-                elseif piid == 5 then
-                    local mapped = FANLEVEL_TO_ST[value]
+                elseif piid == FAN_LEVEL_PIID then
+                    local mapped = FAN_LEVEL_TO_ST[value]
                     if mapped then
                         device:emit_event(fanLevelCap.fanLevel({value = mapped}))
                     end
-                elseif piid == 7 then
+                elseif piid == ALARM_PIID then
                     device:emit_event(buzzerCap.buzzer({value = bool_to_st(value)}))
-                elseif piid == 9 then
+                elseif piid == PHYSICAL_CONTROLS_LOCKED_PIID then
                     device:emit_event(childLockCap.childLock({value = bool_to_st(value)}))
-                elseif piid == 6 then
+                elseif piid == BRIGHTNESS_PIID then
                     device:emit_event(displayLevelCap.displayLevel({value = bool_to_st(value)}))
                 end
-            elseif siid == 4 then
-                if piid == 2 then
+            elseif siid == FILTER_SIID then
+                if piid == FILTER_LIFE_LEVEL_PIID then
                     device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
                 end
             end
@@ -128,7 +154,7 @@ local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 1, true)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, ON_PIID, true)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
         device.thread:call_with_delay(1, function()
@@ -141,7 +167,7 @@ local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 1, false)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, ON_PIID, false)
     if ok then
         device:emit_event(capabilities.switch.switch.off())
     end
@@ -152,47 +178,31 @@ local function set_fanLevel_handler(_, device, command)
     if not ip then return end
 
     local requested = command.args.fanLevel
-    local value = ST_TO_FANLEVEL[requested]
+    local value = ST_TO_FAN_LEVEL[requested]
     if value == nil then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 5, value)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, FAN_LEVEL_PIID, value)
     if ok then
         device:emit_event(fanLevelCap.fanLevel({value = requested}))
     end
 end
 
-local function set_buzzer_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
+local function make_bool_handler(siid, piid, capability, attribute, argument)
+    return function(_, device, command)
+        local ip, token = get_device_config(device)
+        if not ip then return end
 
-    local requested = command.args.buzzer
-    local ok = pcall(miot.set, device, ip, token, 2, 7, requested == "on")
-    if ok then
-        device:emit_event(buzzerCap.buzzer({value = requested}))
+        local requested = command.args[argument]
+        local ok = pcall(miot.set, device, ip, token, siid, piid, requested == "on")
+        if ok then
+            device:emit_event(capability[attribute]({value = requested}))
+        end
     end
 end
 
-local function set_childLock_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local requested = command.args.childLock
-    local ok = pcall(miot.set, device, ip, token, 2, 9, requested == "on")
-    if ok then
-        device:emit_event(childLockCap.childLock({value = requested}))
-    end
-end
-
-local function set_displayLevel_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local requested = command.args.displayLevel
-    local ok = pcall(miot.set, device, ip, token, 2, 6, requested == "on")
-    if ok then
-        device:emit_event(displayLevelCap.displayLevel({value = requested}))
-    end
-end
+local set_buzzer_handler = make_bool_handler(AIR_PURIFIER_SIID, ALARM_PIID, buzzerCap, "buzzer", "buzzer")
+local set_childLock_handler = make_bool_handler(AIR_PURIFIER_SIID, PHYSICAL_CONTROLS_LOCKED_PIID, childLockCap, "childLock", "childLock")
+local set_displayLevel_handler = make_bool_handler(AIR_PURIFIER_SIID, BRIGHTNESS_PIID, displayLevelCap, "displayLevel", "displayLevel")
 
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)

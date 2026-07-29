@@ -17,56 +17,120 @@ local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 local PROFILE_NAME = "zhimi-air-purifier-mea1"
 
--- Exact local MIoT model: Zhimi Air Purifier MEA1
--- Property mappings below come from the exact MIoT specification.
+-- MIoT model: zhimi.airp.mea1
+-- specModel: zhimi-mea1
+-- URN: urn:miot-spec-v2:device:air-purifier:0000A007:zhimi-mea1:2
 --
---   siid=2 piid=1 -> power
---   siid=2 piid=4 -> zhimiAirMea1Mode.airPurifierMode
---   siid=2 piid=5 -> zhimiAirMea1FanLevel.fanLevel
---   siid=2 piid=7 -> zhimiAirMea1Uv.uv
---   siid=2 piid=6 -> zhimiAirMea1Plasma.plasma
---   siid=3 piid=1 -> humidity
---   siid=3 piid=7 -> temperature
---   siid=3 piid=4 -> pm25
---   siid=3 piid=8 -> pm10
---   siid=4 piid=1 -> filter
---   siid=6 piid=1 -> zhimiAirMea1Buzzer.buzzer
---   siid=8 piid=1 -> zhimiAirMea1ChildLock.childLock
---   siid=13 piid=2 -> zhimiAirMea1DisplayLevel.displayLevel
+-- Air Purifier service (siid=2)
+--   piid=1 on, bool, RW -> switch
+--   piid=2 fault, uint8, R; 0=No Faults, 1=Sensor PM Error, 2=TempHum Error, 4=No Filter: not exposed
+--   piid=4 mode, uint8, RW; 0=Auto, 1=Sleep, 2=Favorite, 3=Manual -> zhimiAirMea1Mode.airPurifierMode
+--   piid=5 fan-level, uint8, RW; 1=Level1, 2=Level2, 3=Level3 -> zhimiAirMea1FanLevel.fanLevel
+--   piid=6 plasma, bool, RW -> zhimiAirMea1Plasma.plasma
+--   piid=7 uv, bool, RW -> zhimiAirMea1Uv.uv
+--   piid=8 smoke-abnormal-alarm-switch, bool, RW: not exposed
+-- Environment service (siid=3)
+--   piid=1 relative-humidity, uint8, R; range 0..100 step 1 percentage -> relativeHumidityMeasurement
+--   piid=4 pm2.5-density, float, R; range 0..1000 step 1 μg/m3 -> dustSensor.fineDustLevel
+--   piid=7 temperature, float, R; range -30..100 step 0.1 celsius -> temperatureMeasurement
+--   piid=8 pm10-density, float, R; range 0..100 step 1 -> dustSensor.dustLevel
+--   piid=9 air-quality, uint8, R; 0=Excellent, 1=Good, 2=Moderate, 3=Poor, 4=Heavy Pollution, 5=Hazardous: not exposed
+-- Filter service (siid=4)
+--   piid=1 filter-life-level, uint8, R; range 0..100 step 1 percentage -> filterState.filterLifeRemaining
+--   piid=3 filter-used-time, uint16, R; range 0..65000 step 1 hours: not exposed
+-- Alarm service (siid=6)
+--   piid=1 alarm, bool, RW -> zhimiAirMea1Buzzer.buzzer
+-- Physical Control Locked service (siid=8)
+--   piid=1 physical-controls-locked, bool, RW -> zhimiAirMea1ChildLock.childLock
+-- custom-service service (siid=9)
+--   piid=1 moto-speed-rpm, uint16, R; range 0..65535 step 1: not exposed
+--   piid=8 reboot-cause, uint8, R; 0=REASON-HW-BOOT, 1=REASON-USER-REBOOT, 2=REASON-UPDATE, 3=REASON-WDT: not exposed
+--   piid=10 iic-error-count, uint32, R; range 0..65535 step 1: not exposed
+--   piid=11 country-code, uint16, R; 17230=CN: not exposed
+--   piid=12 favorite-square, string, R: not exposed
+-- filter-time service (siid=10)
+--   piid=1 filter-used-debug, uint16, W; range 0..7000 step 1 hours: not exposed
+-- aqi service (siid=11)
+--   piid=4 aqi-updata-heartbeat, uint16, RW; range 0..65535 step 1: not exposed
+-- rfid service (siid=12)
+--   piid=1 rfid-tag, string, R: not exposed
+--   piid=2 rfid-factory-id, string, R: not exposed
+--   piid=3 rfid-product-id, string, R: not exposed
+--   piid=4 rfid-time, string, R: not exposed
+--   piid=5 rfid-serial-num, string, R: not exposed
+-- Screen service (siid=13)
+--   piid=2 brightness, uint8, RW; 0=Close, 1=Bright, 2=Brightest -> zhimiAirMea1DisplayLevel.displayLevel
+-- Air Purifier Favorite service (siid=14)
+--   piid=1 fan-level, uint8, RW; 0=0, 1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7, 8=8, 9=9, 10=10, 11=11, 12=12, 13=13, 14=14: not exposed
+-- Self Check service (siid=16)
+--   piid=1 self-check-items, uint8, R; 0=0, 1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7, 8=8, 9=9, 10=10: not exposed
+--   piid=2 self-check-results, string, R: not exposed
+--   piid=3 manual-check-results, uint8, RW; 0=0, 1=1, 2=2: not exposed
 
-local AIRPURIFIERMODE_TO_ST = {
+local AIR_PURIFIER_SIID = 2
+local ON_PIID = 1
+local MODE_PIID = 4
+local FAN_LEVEL_PIID = 5
+local PLASMA_PIID = 6
+local UV_PIID = 7
+
+local ENVIRONMENT_SIID = 3
+local RELATIVE_HUMIDITY_PIID = 1
+local PM2_5_DENSITY_PIID = 4
+local TEMPERATURE_PIID = 7
+local PM10_DENSITY_PIID = 8
+
+local FILTER_SIID = 4
+local FILTER_LIFE_LEVEL_PIID = 1
+
+local ALARM_SIID = 6
+local ALARM_PIID = 1
+
+local PHYSICAL_CONTROLS_LOCKED_SIID = 8
+local PHYSICAL_CONTROLS_LOCKED_PIID = 1
+
+local SCREEN_SIID = 13
+local BRIGHTNESS_PIID = 2
+
+-- MIoT -> SmartThings
+local MODE_TO_ST = {
     [0] = "auto",
     [1] = "sleep",
     [2] = "favorite",
     [3] = "manual"
 }
 
-local ST_TO_AIRPURIFIERMODE = {
+-- SmartThings -> MIoT
+local ST_TO_MODE = {
     ["auto"] = 0,
     ["favorite"] = 2,
     ["manual"] = 3,
     ["sleep"] = 1
 }
 
-local FANLEVEL_TO_ST = {
+-- MIoT -> SmartThings
+local FAN_LEVEL_TO_ST = {
     [1] = "level1",
     [2] = "level2",
     [3] = "level3"
 }
 
-local ST_TO_FANLEVEL = {
+-- SmartThings -> MIoT
+local ST_TO_FAN_LEVEL = {
     ["level1"] = 1,
     ["level2"] = 2,
     ["level3"] = 3
 }
 
-local DISPLAYLEVEL_TO_ST = {
+-- MIoT -> SmartThings
+local BRIGHTNESS_TO_ST = {
     [0] = "off",
     [1] = "bright",
     [2] = "brightest"
 }
 
-local ST_TO_DISPLAYLEVEL = {
+-- SmartThings -> MIoT
+local ST_TO_BRIGHTNESS = {
     ["bright"] = 1,
     ["brightest"] = 2,
     ["off"] = 0
@@ -99,19 +163,19 @@ local function poll_device_status(device)
     end
 
     local properties = {
-        {siid = 2, piid = 1},
-        {siid = 2, piid = 4},
-        {siid = 2, piid = 5},
-        {siid = 3, piid = 1},
-        {siid = 3, piid = 7},
-        {siid = 3, piid = 4},
-        {siid = 3, piid = 8},
-        {siid = 4, piid = 1},
-        {siid = 2, piid = 7},
-        {siid = 2, piid = 6},
-        {siid = 6, piid = 1},
-        {siid = 8, piid = 1},
-        {siid = 13, piid = 2}
+        {siid = AIR_PURIFIER_SIID, piid = ON_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = MODE_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = FAN_LEVEL_PIID},
+        {siid = ENVIRONMENT_SIID, piid = RELATIVE_HUMIDITY_PIID},
+        {siid = ENVIRONMENT_SIID, piid = TEMPERATURE_PIID},
+        {siid = ENVIRONMENT_SIID, piid = PM2_5_DENSITY_PIID},
+        {siid = ENVIRONMENT_SIID, piid = PM10_DENSITY_PIID},
+        {siid = FILTER_SIID, piid = FILTER_LIFE_LEVEL_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = UV_PIID},
+        {siid = AIR_PURIFIER_SIID, piid = PLASMA_PIID},
+        {siid = ALARM_SIID, piid = ALARM_PIID},
+        {siid = PHYSICAL_CONTROLS_LOCKED_SIID, piid = PHYSICAL_CONTROLS_LOCKED_PIID},
+        {siid = SCREEN_SIID, piid = BRIGHTNESS_PIID}
     }
 
     local ok, response = pcall(miot.gets, device, ip, token, properties)
@@ -125,49 +189,49 @@ local function poll_device_status(device)
             local piid = result.piid
             local value = result.value
 
-            if siid == 2 then
-                if piid == 1 then
+            if siid == AIR_PURIFIER_SIID then
+                if piid == ON_PIID then
                     device:emit_event(capabilities.switch.switch(value and "on" or "off"))
-                elseif piid == 4 then
-                    local mapped = AIRPURIFIERMODE_TO_ST[value]
+                elseif piid == MODE_PIID then
+                    local mapped = MODE_TO_ST[value]
                     if mapped then
                         device:emit_event(airPurifierModeCap.airPurifierMode({value = mapped}))
                     end
-                elseif piid == 5 then
-                    local mapped = FANLEVEL_TO_ST[value]
+                elseif piid == FAN_LEVEL_PIID then
+                    local mapped = FAN_LEVEL_TO_ST[value]
                     if mapped then
                         device:emit_event(fanLevelCap.fanLevel({value = mapped}))
                     end
-                elseif piid == 7 then
+                elseif piid == UV_PIID then
                     device:emit_event(uvCap.uv({value = bool_to_st(value)}))
-                elseif piid == 6 then
+                elseif piid == PLASMA_PIID then
                     device:emit_event(plasmaCap.plasma({value = bool_to_st(value)}))
                 end
-            elseif siid == 3 then
-                if piid == 1 then
+            elseif siid == ENVIRONMENT_SIID then
+                if piid == RELATIVE_HUMIDITY_PIID then
                     device:emit_event(capabilities.relativeHumidityMeasurement.humidity(value))
-                elseif piid == 7 then
+                elseif piid == TEMPERATURE_PIID then
                     device:emit_event(capabilities.temperatureMeasurement.temperature({value = value, unit = "C"}))
-                elseif piid == 4 then
+                elseif piid == PM2_5_DENSITY_PIID then
                     device:emit_event(capabilities.dustSensor.fineDustLevel(math.floor(value)))
-                elseif piid == 8 then
+                elseif piid == PM10_DENSITY_PIID then
                     device:emit_event(capabilities.dustSensor.dustLevel(math.floor(value)))
                 end
-            elseif siid == 4 then
-                if piid == 1 then
+            elseif siid == FILTER_SIID then
+                if piid == FILTER_LIFE_LEVEL_PIID then
                     device:emit_event(capabilities.filterState.filterLifeRemaining({value = value, unit = "%"}))
                 end
-            elseif siid == 6 then
-                if piid == 1 then
+            elseif siid == ALARM_SIID then
+                if piid == ALARM_PIID then
                     device:emit_event(buzzerCap.buzzer({value = bool_to_st(value)}))
                 end
-            elseif siid == 8 then
-                if piid == 1 then
+            elseif siid == PHYSICAL_CONTROLS_LOCKED_SIID then
+                if piid == PHYSICAL_CONTROLS_LOCKED_PIID then
                     device:emit_event(childLockCap.childLock({value = bool_to_st(value)}))
                 end
-            elseif siid == 13 then
-                if piid == 2 then
-                    local mapped = DISPLAYLEVEL_TO_ST[value]
+            elseif siid == SCREEN_SIID then
+                if piid == BRIGHTNESS_PIID then
+                    local mapped = BRIGHTNESS_TO_ST[value]
                     if mapped then
                         device:emit_event(displayLevelCap.displayLevel({value = mapped}))
                     end
@@ -197,7 +261,7 @@ local function switch_on_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 1, true)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, ON_PIID, true)
     if ok then
         device:emit_event(capabilities.switch.switch.on())
         device.thread:call_with_delay(1, function()
@@ -210,7 +274,7 @@ local function switch_off_handler(_, device, _)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 1, false)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, ON_PIID, false)
     if ok then
         device:emit_event(capabilities.switch.switch.off())
     end
@@ -221,10 +285,10 @@ local function set_airPurifierMode_handler(_, device, command)
     if not ip then return end
 
     local requested = command.args.airPurifierMode
-    local value = ST_TO_AIRPURIFIERMODE[requested]
+    local value = ST_TO_MODE[requested]
     if value == nil then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 4, value)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, MODE_PIID, value)
     if ok then
         device:emit_event(airPurifierModeCap.airPurifierMode({value = requested}))
     end
@@ -235,56 +299,12 @@ local function set_fanLevel_handler(_, device, command)
     if not ip then return end
 
     local requested = command.args.fanLevel
-    local value = ST_TO_FANLEVEL[requested]
+    local value = ST_TO_FAN_LEVEL[requested]
     if value == nil then return end
 
-    local ok = pcall(miot.set, device, ip, token, 2, 5, value)
+    local ok = pcall(miot.set, device, ip, token, AIR_PURIFIER_SIID, FAN_LEVEL_PIID, value)
     if ok then
         device:emit_event(fanLevelCap.fanLevel({value = requested}))
-    end
-end
-
-local function set_uv_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local requested = command.args.uv
-    local ok = pcall(miot.set, device, ip, token, 2, 7, requested == "on")
-    if ok then
-        device:emit_event(uvCap.uv({value = requested}))
-    end
-end
-
-local function set_plasma_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local requested = command.args.plasma
-    local ok = pcall(miot.set, device, ip, token, 2, 6, requested == "on")
-    if ok then
-        device:emit_event(plasmaCap.plasma({value = requested}))
-    end
-end
-
-local function set_buzzer_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local requested = command.args.buzzer
-    local ok = pcall(miot.set, device, ip, token, 6, 1, requested == "on")
-    if ok then
-        device:emit_event(buzzerCap.buzzer({value = requested}))
-    end
-end
-
-local function set_childLock_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local requested = command.args.childLock
-    local ok = pcall(miot.set, device, ip, token, 8, 1, requested == "on")
-    if ok then
-        device:emit_event(childLockCap.childLock({value = requested}))
     end
 end
 
@@ -293,14 +313,32 @@ local function set_displayLevel_handler(_, device, command)
     if not ip then return end
 
     local requested = command.args.displayLevel
-    local value = ST_TO_DISPLAYLEVEL[requested]
+    local value = ST_TO_BRIGHTNESS[requested]
     if value == nil then return end
 
-    local ok = pcall(miot.set, device, ip, token, 13, 2, value)
+    local ok = pcall(miot.set, device, ip, token, SCREEN_SIID, BRIGHTNESS_PIID, value)
     if ok then
         device:emit_event(displayLevelCap.displayLevel({value = requested}))
     end
 end
+
+local function make_bool_handler(siid, piid, capability, attribute, argument)
+    return function(_, device, command)
+        local ip, token = get_device_config(device)
+        if not ip then return end
+
+        local requested = command.args[argument]
+        local ok = pcall(miot.set, device, ip, token, siid, piid, requested == "on")
+        if ok then
+            device:emit_event(capability[attribute]({value = requested}))
+        end
+    end
+end
+
+local set_uv_handler = make_bool_handler(AIR_PURIFIER_SIID, UV_PIID, uvCap, "uv", "uv")
+local set_plasma_handler = make_bool_handler(AIR_PURIFIER_SIID, PLASMA_PIID, plasmaCap, "plasma", "plasma")
+local set_buzzer_handler = make_bool_handler(ALARM_SIID, ALARM_PIID, buzzerCap, "buzzer", "buzzer")
+local set_childLock_handler = make_bool_handler(PHYSICAL_CONTROLS_LOCKED_SIID, PHYSICAL_CONTROLS_LOCKED_PIID, childLockCap, "childLock", "childLock")
 
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
