@@ -1,0 +1,5 @@
+name: 'Xiaomi Pet Feeder IV2001'
+packageKey: 'Xiaomi Pet Feeder IV2001 Driver'
+permissions:
+  lan: {}
+  discovery: {}
