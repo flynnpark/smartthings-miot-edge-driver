@@ -82,6 +82,7 @@ Supported drivers are grouped by protocol and device type.
 |---------------|--------------|--------------|-------------------------|
 | `miot/zhimi-humidifier-ca4` | `zhimi.humidifier.ca4` | Smartmi Evaporative Humidifier 2 | `Zhimi Humidifier CA4` |
 | `miot/zhimi-humidifier-ca6` | `zhimi.humidifier.ca6` | Smartmi Evaporative Humidifier CA6 | `Zhimi Humidifier CA6` |
+| `miot/zhimi-humidifier-ca7` | `zhimi.humidifier.ca7` | Zhimi Humidifier CA7 | `Zhimi Humidifier CA7` |
 | `miot/deerma-humidifier-jsq5` | `deerma.humidifier.jsq5` | Xiaomi Mi Smart Antibacterial Humidifier S | `Deerma Humidifier JSQ5` |
 | `miot/deerma-humidifier-jsq2w` | `deerma.humidifier.jsq2w` | Xiaomi Smart Humidifier 2 | `Deerma Humidifier JSQ2W` |
 | `miot/deerma-humidifier-990dw` | `deerma.humidifier.990dw` | Deerma Humidifier 990DW | `Deerma Humidifier 990DW` |
