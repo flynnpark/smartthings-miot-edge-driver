@@ -148,6 +148,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/zhimi-heater-mc2` | `zhimi.heater.mc2` | Mi Smart Space Heater S | `Mi Smart Space Heater S` |
 | `miot/qingping-air-monitor-lite` | `cgllc.airm.cgd1st` | Qingping Air Monitor Lite | `Qingping Air Monitor Lite2` |
 | `miot/xiaomi-pet-waterer-iv02` | `xiaomi.pet_waterer.iv02` | Xiaomi Pet Waterer IV02 | `Xiaomi Pet Waterer IV02` |
+| `miot/xiaomi-pet-waterer-70m2` | `xiaomi.pet_waterer.70m2` | Xiaomi Pet Waterer 70M2 | `Xiaomi Pet Waterer 70M2` |
 
 ### miIO Air Purifiers
 

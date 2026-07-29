@@ -1,0 +1,5 @@
+name: 'Xiaomi Pet Waterer 70M2'
+packageKey: 'Xiaomi Pet Waterer 70M2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
