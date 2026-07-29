@@ -160,6 +160,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-electric-blanket-mj1` | `xiaomi.blanket.mj1` | Xiaomi Electric Blanket MJ1 | `Xiaomi Electric Blanket MJ1` |
 | `miot/xiaomi-hood-ymv5` | `xiaomi.hood.ymv5` | Xiaomi Hood YMV5 | `Xiaomi Hood YMV5` |
 | `miot/xiaomi-water-purifier-lx20` | `xiaomi.waterpuri.lx20` | Xiaomi Water Purifier LX20 | `Xiaomi Water Purifier LX20` |
+| `miot/xiaomi-air-conditioner-ra1r00` | `xiaomi.airc.ra1r00` | Xiaomi Air Conditioner RA1 | `Xiaomi Air Conditioner RA1` |
 
 ### miIO Air Purifiers
 

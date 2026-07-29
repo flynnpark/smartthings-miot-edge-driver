@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Conditioner RA1'
+packageKey: 'Xiaomi Air Conditioner RA1 Driver'
+permissions:
+  lan: {}
+  discovery: {}
