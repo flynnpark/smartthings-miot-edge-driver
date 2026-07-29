@@ -1,0 +1,5 @@
+name: 'Xiaomi Airer Pro 3'
+packageKey: 'Xiaomi Airer Pro 3 Driver'
+permissions:
+  lan: {}
+  discovery: {}
