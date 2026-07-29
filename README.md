@@ -158,6 +158,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-water-heater-ym03` | `xiaomi.waterheater.ym03` | Xiaomi Water Heater YM03 | `Xiaomi Water Heater YM03` |
 | `miot/xiaomi-water-dispenser-a1en` | `xiaomi.ysj.a1en` | Xiaomi Water Dispenser A1EN | `Xiaomi Water Dispenser A1EN` |
 | `miot/xiaomi-electric-blanket-mj1` | `xiaomi.blanket.mj1` | Xiaomi Electric Blanket MJ1 | `Xiaomi Electric Blanket MJ1` |
+| `miot/xiaomi-hood-ymv5` | `xiaomi.hood.ymv5` | Xiaomi Hood YMV5 | `Xiaomi Hood YMV5` |
 
 ### miIO Air Purifiers
 

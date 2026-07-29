@@ -1,0 +1,5 @@
+name: 'Xiaomi Hood YMV5'
+packageKey: 'Xiaomi Hood YMV5 Driver'
+permissions:
+  lan: {}
+  discovery: {}
