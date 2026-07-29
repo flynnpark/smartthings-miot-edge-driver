@@ -1,0 +1,5 @@
+name: 'Deerma Humidifier 990DW'
+packageKey: 'Deerma Humidifier 990DW Driver'
+permissions:
+  lan: {}
+  discovery: {}
