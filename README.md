@@ -155,6 +155,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/brains-occupancy-sensor-r4` | `brains.sensor_occupy.r4` | Brains Occupancy Sensor R4 | `Brains Occupancy Sensor R4` |
 | `miot/xiaomi-curtain-acn009` | `xiaomi.curtain.acn009` | Xiaomi Curtain ACN009 | `Xiaomi Curtain ACN009` |
 | `miot/xiaomi-airer-pro3` | `xiaomi.airer.pro3` | Xiaomi Airer Pro 3 | `Xiaomi Airer Pro 3` |
+| `miot/xiaomi-water-heater-ym03` | `xiaomi.waterheater.ym03` | Xiaomi Water Heater YM03 | `Xiaomi Water Heater YM03` |
 
 ### miIO Air Purifiers
 

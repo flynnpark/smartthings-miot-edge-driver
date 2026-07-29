@@ -1,0 +1,5 @@
+name: 'Xiaomi Water Heater YM03'
+packageKey: 'Xiaomi Water Heater YM03 Driver'
+permissions:
+  lan: {}
+  discovery: {}
