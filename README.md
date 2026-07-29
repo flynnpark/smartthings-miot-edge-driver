@@ -161,6 +161,8 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-hood-ymv5` | `xiaomi.hood.ymv5` | Xiaomi Hood YMV5 | `Xiaomi Hood YMV5` |
 | `miot/xiaomi-water-purifier-lx20` | `xiaomi.waterpuri.lx20` | Xiaomi Water Purifier LX20 | `Xiaomi Water Purifier LX20` |
 | `miot/xiaomi-air-conditioner-ra1r00` | `xiaomi.airc.ra1r00` | Xiaomi Air Conditioner RA1 | `Xiaomi Air Conditioner RA1` |
+| `miot/xiaomi-air-conditioner-c38` | `xiaomi.aircondition.c38` | Xiaomi Air Conditioner C38 | `Xiaomi Air Conditioner C38` |
+| `miot/xiaomi-air-conditioner-r09h00` | `xiaomi.airc.r09h00` | Xiaomi Air Conditioner R09 | `Xiaomi Air Conditioner R09` |
 
 ### miIO Air Purifiers
 
@@ -200,6 +202,12 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/zhimi-fan-za4` | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
 | `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi Smart Wireless Fan 1st Gen (ZLBPLDS01ZM) | `Zhimi Fan V3` |
 | `miIo/dmaker-fan-p5` | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
+
+### miIO Air Conditioners
+
+| Driver folder | Device model | Product name | SmartThings driver name |
+|---------------|--------------|--------------|-------------------------|
+| `miIo/xiaomi-aircondition-ma4` | `xiaomi.aircondition.ma4` | Mijia Air Conditioner MA4 | `Mijia Air Conditioner MA4` |
 
 ### miIO Plugs and Lights
 

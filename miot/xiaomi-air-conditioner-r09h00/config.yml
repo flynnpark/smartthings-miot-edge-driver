@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Conditioner R09'
+packageKey: 'Xiaomi Air Conditioner R09 Driver'
+permissions:
+  lan: {}
+  discovery: {}

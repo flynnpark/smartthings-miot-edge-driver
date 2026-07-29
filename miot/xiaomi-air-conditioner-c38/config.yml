@@ -1,0 +1,5 @@
+name: 'Xiaomi Air Conditioner C38'
+packageKey: 'Xiaomi Air Conditioner C38 Driver'
+permissions:
+  lan: {}
+  discovery: {}

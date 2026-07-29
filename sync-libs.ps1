@@ -80,6 +80,8 @@ $groups = @(
             "miot\xiaomi-hood-ymv5\src\miot.lua",
             "miot\xiaomi-water-purifier-lx20\src\miot.lua",
             "miot\xiaomi-air-conditioner-ra1r00\src\miot.lua",
+            "miot\xiaomi-air-conditioner-c38\src\miot.lua",
+            "miot\xiaomi-air-conditioner-r09h00\src\miot.lua",
             "miot\xiaomi-fish-tank-m100\src\miot.lua",
             "miot\xiaomi-fish-tank-m200\src\miot.lua",
             "miot\zhimi-heater-mc2\src\miot.lua",
@@ -176,7 +178,8 @@ $groups = @(
             "miIo\yeelink-light-lamp1\src\miio.lua",
             "miIo\yeelink-light-bslamp2\src\miio.lua",
             "miIo\yeelink-light-color2\src\miio.lua",
-            "miIo\yeelink-light-mono1\src\miio.lua"
+            "miIo\yeelink-light-mono1\src\miio.lua",
+            "miIo\xiaomi-aircondition-ma4\src\miio.lua"
         )
     },
     @{
@@ -256,6 +259,9 @@ $groups = @(
             "miot\xiaomi-hood-ymv5\src\md5.lua",
             "miot\xiaomi-water-purifier-lx20\src\md5.lua",
             "miot\xiaomi-air-conditioner-ra1r00\src\md5.lua",
+            "miot\xiaomi-air-conditioner-c38\src\md5.lua",
+            "miot\xiaomi-air-conditioner-r09h00\src\md5.lua",
+            "miIo\xiaomi-aircondition-ma4\src\md5.lua",
             "miot\xiaomi-fish-tank-m100\src\md5.lua",
             "miot\xiaomi-fish-tank-m200\src\md5.lua",
             "miot\zhimi-heater-mc2\src\md5.lua",
