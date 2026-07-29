@@ -156,6 +156,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-curtain-acn009` | `xiaomi.curtain.acn009` | Xiaomi Curtain ACN009 | `Xiaomi Curtain ACN009` |
 | `miot/xiaomi-airer-pro3` | `xiaomi.airer.pro3` | Xiaomi Airer Pro 3 | `Xiaomi Airer Pro 3` |
 | `miot/xiaomi-water-heater-ym03` | `xiaomi.waterheater.ym03` | Xiaomi Water Heater YM03 | `Xiaomi Water Heater YM03` |
+| `miot/xiaomi-water-dispenser-a1en` | `xiaomi.ysj.a1en` | Xiaomi Water Dispenser A1EN | `Xiaomi Water Dispenser A1EN` |
 
 ### miIO Air Purifiers
 

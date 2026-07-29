@@ -1,0 +1,5 @@
+name: 'Xiaomi Water Dispenser A1EN'
+packageKey: 'Xiaomi Water Dispenser A1EN Driver'
+permissions:
+  lan: {}
+  discovery: {}
