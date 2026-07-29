@@ -1,0 +1,21 @@
+local discovery = {}
+
+function discovery.create_device(driver)
+    return driver:try_create_device({
+        type = "LAN",
+        device_network_id = "miot-airpurifier-bj352-y106cm-" .. os.time(),
+        label = "BJ352 Air Purifier Y106CM",
+        profile = "bj352-air-purifier-y106cm",
+        manufacturer = "BJ352",
+        model = "bj352.airp.y106cm",
+        vendor_provided_label = "BJ352 Air Purifier Y106CM"
+    })
+end
+
+function discovery.handle_discovery(driver, opts, cont)
+    if #driver:get_devices() == 0 then
+        discovery.create_device(driver)
+    end
+end
+
+return discovery

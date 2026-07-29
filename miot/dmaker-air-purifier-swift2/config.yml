@@ -1,0 +1,5 @@
+name: 'Dmaker Air Purifier Swift 2'
+packageKey: 'Dmaker Air Swift2 Driver'
+permissions:
+  lan: {}
+  discovery: {}

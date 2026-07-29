@@ -63,6 +63,14 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-air-purifier-va3` | `xiaomi.airp.va3` | Xiaomi Air Purifier VA3 | `Xiaomi Air Purifier VA3` |
 | `miot/xiaomi-air-purifier-va4` | `xiaomi.airp.va4` | Xiaomi Air Purifier VA4 | `Xiaomi Air Purifier VA4` |
 | `miot/zhimi-air-purifier-mea1` | `zhimi.airp.mea1` | Zhimi Air Purifier MEA1 | `Zhimi Air Purifier MEA1` |
+| `miot/airdog-air-purifier-mn` | `airdog.airpurifier.mn` | Airdog Air Purifier MN | `Airdog Air Purifier MN` |
+| `miot/baomi-air-purifier-450a` | `baomi.airpurifier.450a` | Baomi Air Purifier 450A | `Baomi Air Purifier 450A` |
+| `miot/bj352-air-purifier-y106cm` | `bj352.airp.y106cm` | BJ352 Air Purifier Y106CM | `BJ352 Air Purifier Y106CM` |
+| `miot/dmaker-air-purifier-f20` | `dmaker.airpurifier.f20` | Dmaker Air Purifier F20 | `Dmaker Air Purifier F20` |
+| `miot/dmaker-air-purifier-swift` | `dmaker.airp.swift` | Dmaker Air Purifier Swift | `Dmaker Air Purifier Swift` |
+| `miot/dmaker-air-purifier-swift2` | `dmaker.airp.swift2` | Dmaker Air Purifier Swift 2 | `Dmaker Air Purifier Swift 2` |
+| `miot/hanyi-air-purifier-kj550` | `hanyi.airpurifier.kj550` | Hanyi Air Purifier KJ550 | `Hanyi Air Purifier KJ550` |
+| `miot/viomi-air-purifier-v3` | `viomi.airp.v3` | Viomi Air Purifier V3 | `Viomi Air Purifier V3` |
 | `miot/zhimi-air-purifier-mp4` | `zhimi.airp.mp4` | Zhimi Air Purifier MP4 | `Zhimi Air Purifier MP4` |
 | `miot/zhimi-air-purifier-mp4a` | `zhimi.airp.mp4a` | Zhimi Air Purifier MP4A | `Zhimi Air Purifier MP4A` |
 | `miot/zhimi-air-purifier-airp-rma2` | `zhimi.airp.rma2` | Zhimi Air Purifier AirP RMA2 | `Zhimi Air Purifier AirP RMA2` |

@@ -1,0 +1,5 @@
+name: 'Baomi Air Purifier 450A'
+packageKey: 'Baomi Air 450A Driver'
+permissions:
+  lan: {}
+  discovery: {}

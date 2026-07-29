@@ -1,0 +1,5 @@
+name: 'Airdog Air Purifier MN'
+packageKey: 'Airdog Air MN Driver'
+permissions:
+  lan: {}
+  discovery: {}

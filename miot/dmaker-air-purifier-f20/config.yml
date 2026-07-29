@@ -1,0 +1,5 @@
+name: 'Dmaker Air Purifier F20'
+packageKey: 'Dmaker Air F20 Driver'
+permissions:
+  lan: {}
+  discovery: {}

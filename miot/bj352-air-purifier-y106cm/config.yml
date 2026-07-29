@@ -1,0 +1,5 @@
+name: 'BJ352 Air Purifier Y106CM'
+packageKey: 'BJ352 Air Y106CM Driver'
+permissions:
+  lan: {}
+  discovery: {}

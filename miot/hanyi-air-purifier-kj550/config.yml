@@ -1,0 +1,5 @@
+name: 'Hanyi Air Purifier KJ550'
+packageKey: 'Hanyi Air KJ550 Driver'
+permissions:
+  lan: {}
+  discovery: {}

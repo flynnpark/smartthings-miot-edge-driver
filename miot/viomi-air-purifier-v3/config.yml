@@ -1,0 +1,5 @@
+name: 'Viomi Air Purifier V3'
+packageKey: 'Viomi Air V3 Driver'
+permissions:
+  lan: {}
+  discovery: {}
