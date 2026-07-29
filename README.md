@@ -152,6 +152,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-pet-feeder-iv2001` | `xiaomi.feeder.iv2001` | Xiaomi Pet Feeder IV2001 | `Xiaomi Pet Feeder IV2001` |
 | `miot/xiaomi-pet-feeder-pi2001` | `xiaomi.feeder.pi2001` | Xiaomi Pet Feeder PI2001 | `Xiaomi Pet Feeder PI2001` |
 | `miot/tmwl-electronic-valve-iotb2` | `tmwl.valve.iotb2` | TMWL Electronic Valve IOTB2 | `TMWL Electronic Valve IOTB2` |
+| `miot/brains-occupancy-sensor-r4` | `brains.sensor_occupy.r4` | Brains Occupancy Sensor R4 | `Brains Occupancy Sensor R4` |
 
 ### miIO Air Purifiers
 

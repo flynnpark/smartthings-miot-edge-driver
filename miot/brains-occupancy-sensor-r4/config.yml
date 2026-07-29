@@ -1,0 +1,5 @@
+name: 'Brains Occupancy Sensor R4'
+packageKey: 'Brains Occupancy Sensor R4 Driver'
+permissions:
+  lan: {}
+  discovery: {}
