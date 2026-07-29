@@ -1,0 +1,5 @@
+name: 'NWT Dehumidifier 24WU1'
+packageKey: 'NWT Dehumidifier 24WU1 Driver'
+permissions:
+  lan: {}
+  discovery: {}
