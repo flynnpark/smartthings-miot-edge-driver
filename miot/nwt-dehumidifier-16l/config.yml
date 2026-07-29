@@ -1,0 +1,5 @@
+name: 'NWT Dehumidifier 16L'
+packageKey: 'NWT Dehumidifier 16L Driver'
+permissions:
+  lan: {}
+  discovery: {}

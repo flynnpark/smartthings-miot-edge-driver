@@ -99,6 +99,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-dehumidifier-13l` | `xiaomi.derh.13l` | Xiaomi Smart Dehumidifier 13L | `Xiaomi Dehumidifier 13L` |
 | `miot/dmaker-dehumidifier-22l` | `dmaker.derh.22l` | Mijia Smart Dehumidifier 22L | `Mijia Dehumidifier 22L` |
 | `miot/nwt-dehumidifier-312en` | `nwt.derh.312en` | NWT Dehumidifier 312EN | `NWT Dehumidifier 312EN` |
+| `miot/nwt-dehumidifier-16l` | `nwt.fan.16l` | NWT Dehumidifier 16L | `NWT Dehumidifier 16L` |
 
 ### MIoT Fans
 
