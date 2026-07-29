@@ -1,0 +1,5 @@
+name: 'Xiaomi Electric Blanket MJ1'
+packageKey: 'Xiaomi Electric Blanket MJ1 Driver'
+permissions:
+  lan: {}
+  discovery: {}

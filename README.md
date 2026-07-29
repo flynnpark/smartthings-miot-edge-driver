@@ -157,6 +157,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-airer-pro3` | `xiaomi.airer.pro3` | Xiaomi Airer Pro 3 | `Xiaomi Airer Pro 3` |
 | `miot/xiaomi-water-heater-ym03` | `xiaomi.waterheater.ym03` | Xiaomi Water Heater YM03 | `Xiaomi Water Heater YM03` |
 | `miot/xiaomi-water-dispenser-a1en` | `xiaomi.ysj.a1en` | Xiaomi Water Dispenser A1EN | `Xiaomi Water Dispenser A1EN` |
+| `miot/xiaomi-electric-blanket-mj1` | `xiaomi.blanket.mj1` | Xiaomi Electric Blanket MJ1 | `Xiaomi Electric Blanket MJ1` |
 
 ### miIO Air Purifiers
 
