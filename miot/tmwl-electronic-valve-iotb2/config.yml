@@ -1,0 +1,5 @@
+name: 'TMWL Electronic Valve IOTB2'
+packageKey: 'TMWL Electronic Valve IOTB2 Driver'
+permissions:
+  lan: {}
+  discovery: {}
