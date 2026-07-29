@@ -1,0 +1,6 @@
+name: 'Xiaomi Pet Feeder PI2001'
+packageKey: 'Xiaomi Pet Feeder PI2001 Driver'
+permissions:
+  lan: {}
+  discovery: {}
+

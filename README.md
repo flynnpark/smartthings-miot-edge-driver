@@ -150,6 +150,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-pet-waterer-iv02` | `xiaomi.pet_waterer.iv02` | Xiaomi Pet Waterer IV02 | `Xiaomi Pet Waterer IV02` |
 | `miot/xiaomi-pet-waterer-70m2` | `xiaomi.pet_waterer.70m2` | Xiaomi Pet Waterer 70M2 | `Xiaomi Pet Waterer 70M2` |
 | `miot/xiaomi-pet-feeder-iv2001` | `xiaomi.feeder.iv2001` | Xiaomi Pet Feeder IV2001 | `Xiaomi Pet Feeder IV2001` |
+| `miot/xiaomi-pet-feeder-pi2001` | `xiaomi.feeder.pi2001` | Xiaomi Pet Feeder PI2001 | `Xiaomi Pet Feeder PI2001` |
 
 ### miIO Air Purifiers
 
