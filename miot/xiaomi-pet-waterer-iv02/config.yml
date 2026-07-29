@@ -1,0 +1,5 @@
+name: 'Xiaomi Pet Waterer IV02'
+packageKey: 'Xiaomi Pet Waterer IV02 Driver'
+permissions:
+  lan: {}
+  discovery: {}

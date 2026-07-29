@@ -147,6 +147,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/xiaomi-fish-tank-m200` | `xiaomi.fishbowl.m200` | Xiaomi Smart Fishbowl M200 | `Xiaomi Smart Fishbowl M200` |
 | `miot/zhimi-heater-mc2` | `zhimi.heater.mc2` | Mi Smart Space Heater S | `Mi Smart Space Heater S` |
 | `miot/qingping-air-monitor-lite` | `cgllc.airm.cgd1st` | Qingping Air Monitor Lite | `Qingping Air Monitor Lite2` |
+| `miot/xiaomi-pet-waterer-iv02` | `xiaomi.pet_waterer.iv02` | Xiaomi Pet Waterer IV02 | `Xiaomi Pet Waterer IV02` |
 
 ### miIO Air Purifiers
 
