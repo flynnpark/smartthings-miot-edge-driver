@@ -100,6 +100,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/dmaker-dehumidifier-22l` | `dmaker.derh.22l` | Mijia Smart Dehumidifier 22L | `Mijia Dehumidifier 22L` |
 | `miot/nwt-dehumidifier-312en` | `nwt.derh.312en` | NWT Dehumidifier 312EN | `NWT Dehumidifier 312EN` |
 | `miot/nwt-dehumidifier-16l` | `nwt.fan.16l` | NWT Dehumidifier 16L | `NWT Dehumidifier 16L` |
+| `miot/nwt-dehumidifier-60l` | `nwt.derh.60l` | NWT Dehumidifier 60L | `NWT Dehumidifier 60L` |
 
 ### MIoT Fans
 

@@ -1,0 +1,5 @@
+name: 'NWT Dehumidifier 60L'
+packageKey: 'NWT Dehumidifier 60L Driver'
+permissions:
+  lan: {}
+  discovery: {}
