@@ -1,0 +1,5 @@
+name: 'Pinlo Humidifier SH01'
+packageKey: 'Pinlo Humidifier SH01 Driver'
+permissions:
+  lan: {}
+  discovery: {}

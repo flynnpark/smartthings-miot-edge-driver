@@ -86,6 +86,7 @@ Supported drivers are grouped by protocol and device type.
 | `miot/deerma-humidifier-jsq5` | `deerma.humidifier.jsq5` | Xiaomi Mi Smart Antibacterial Humidifier S | `Deerma Humidifier JSQ5` |
 | `miot/deerma-humidifier-jsq2w` | `deerma.humidifier.jsq2w` | Xiaomi Smart Humidifier 2 | `Deerma Humidifier JSQ2W` |
 | `miot/deerma-humidifier-990dw` | `deerma.humidifier.990dw` | Deerma Humidifier 990DW | `Deerma Humidifier 990DW` |
+| `miot/pinlo-humidifier-sh01` | `pinlo.humidifier.sh01` | Pinlo Humidifier SH01 | `Pinlo Humidifier SH01` |
 | `miot/xiaomi-humidifier-airmx` | `xiaomi.humidifier.airmx` | Mijia Mist-Free Humidifier 3 Pro | `Mijia Mist-Free Humidifier 3 Pro` |
 | `miot/xiaomi-humidifier-p800` | `xiaomi.humidifier.p800` | Mijia Mist-Free Humidifier 3 (800) | `Xiaomi Humidifier P800` |
 | `miot/xiaomi-humidifier-p1200` | `xiaomi.humidifier.p1200` | Mijia No-Fog Humidifier 3 1200 | `Xiaomi Humidifier P1200` |
