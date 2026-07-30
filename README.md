@@ -250,6 +250,9 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/zhimi-humidifier-ca1` | `zhimi.humidifier.ca1` | Smartmi Evaporative Humidifier 2 | `Zhimi Humidifier CA1` |
 | `miIo/zhimi-humidifier-cb1` | `zhimi.humidifier.cb1` | Smartmi Air Humidifier 2 | `Zhimi Humidifier CB1` |
 | `miIo/zhimi-humidifier-cb2` | `zhimi.humidifier.cb2` | Smartmi Air Humidifier 2 | `Zhimi Humidifier CB2` |
+| `miIo/deerma-humidifier-mjjsq` | `deerma.humidifier.mjjsq` | Mi Smart Antibacterial Humidifier | `Deerma Humidifier MJJSQ` |
+| `miIo/deerma-humidifier-jsq` | `deerma.humidifier.jsq` | Mi Smart Antibacterial Humidifier | `Deerma Humidifier JSQ` |
+| `miIo/deerma-humidifier-jsq1` | `deerma.humidifier.jsq1` | Mi Smart Antibacterial Humidifier | `Deerma Humidifier JSQ1` |
 
 ### miIO Dehumidifiers
 
