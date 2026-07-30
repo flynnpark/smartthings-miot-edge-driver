@@ -1,0 +1,5 @@
+name: 'Mi Smart Space Heater S MC2A'
+packageKey: 'Zhimi Heater MC2A Driver'
+permissions:
+  lan: {}
+  discovery: {}
