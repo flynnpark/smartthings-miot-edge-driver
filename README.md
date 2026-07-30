@@ -256,6 +256,7 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/zhimi-fan-za3` | `zhimi.fan.za3` | Smartmi Pedestal Fan ZA3 | `Zhimi Fan ZA3` |
 | `miIo/zhimi-fan-za4` | `zhimi.fan.za4` | Smartmi Standing Fan 2S | `Smartmi Standing Fan 2S` |
 | `miIo/zhimi-fan-v3` | `zhimi.fan.v3` | Smartmi Smart Wireless Fan 1st Gen (ZLBPLDS01ZM) | `Zhimi Fan V3` |
+| `miIo/zhimi-fan-v2` | `zhimi.fan.v2` | Smartmi DC Pedestal Fan | `Zhimi Fan V2` |
 | `miIo/dmaker-fan-p5` | `dmaker.fan.p5` | Mi Smart Standing Fan 1X | `Mi Smart Standing Fan 1X` |
 
 ### miIO Air Conditioners
