@@ -247,6 +247,12 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/zhimi-humidifier-cb1` | `zhimi.humidifier.cb1` | Smartmi Air Humidifier 2 | `Zhimi Humidifier CB1` |
 | `miIo/zhimi-humidifier-cb2` | `zhimi.humidifier.cb2` | Smartmi Air Humidifier 2 | `Zhimi Humidifier CB2` |
 
+### miIO Dehumidifiers
+
+| Driver folder | Device model | Product name | SmartThings driver name |
+|---------------|--------------|--------------|-------------------------|
+| `miIo/nwt-dehumidifier-wdh318efw1` | `nwt.derh.wdh318efw1` | Xiaomi Widetech Dehumidifier | `Nwt Dehumidifier WDH318EFW1` |
+
 ### miIO Fans
 
 | Driver folder | Device model | Product name | SmartThings driver name |

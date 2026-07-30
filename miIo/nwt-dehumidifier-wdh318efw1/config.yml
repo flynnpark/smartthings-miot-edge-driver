@@ -1,0 +1,5 @@
+name: "Nwt Dehumidifier WDH318EFW1"
+packageKey: "Nwt Derh WDH318EFW1 Driver"
+permissions:
+  lan: {}
+  discovery: {}
