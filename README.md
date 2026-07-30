@@ -238,6 +238,9 @@ Supported drivers are grouped by protocol and device type.
 | `miIo/zhimi-air-purifier-ma2` | `zhimi.airpurifier.ma2` | Xiaomi Air Purifier 2S | `Zhimi Air Purifier MA2` |
 | `miIo/zhimi-air-purifier-sa1` | `zhimi.airpurifier.sa1` | Xiaomi Air Purifier S | `Zhimi Air Purifier SA1` |
 | `miIo/zhimi-air-purifier-sa2` | `zhimi.airpurifier.sa2` | Xiaomi Air Purifier S2 | `Zhimi Air Purifier SA2` |
+| `miIo/airdog-air-purifier-x3` | `airdog.airpurifier.x3` | Airdog Air Purifier X3 | `Airdog Air Purifier X3` |
+| `miIo/airdog-air-purifier-x5` | `airdog.airpurifier.x5` | Airdog Air Purifier X5 | `Airdog Air Purifier X5` |
+| `miIo/airdog-air-purifier-x7sm` | `airdog.airpurifier.x7sm` | Airdog Air Purifier X7sm | `Airdog Air Purifier X7sm` |
 
 ### miIO Humidifiers
 

@@ -1,0 +1,5 @@
+name: "Airdog Air Purifier X7sm"
+packageKey: "Airdog Air X7sm Driver"
+permissions:
+  lan: {}
+  discovery: {}

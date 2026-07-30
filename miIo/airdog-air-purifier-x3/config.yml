@@ -1,0 +1,5 @@
+name: "Airdog Air Purifier X3"
+packageKey: "Airdog Air X3 Driver"
+permissions:
+  lan: {}
+  discovery: {}
