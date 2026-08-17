@@ -1,0 +1,2 @@
+model,protocol,evidence,basis,spec_urn
+xiaomi.fan.p90,native-miot,confirmed,"Exact-model authenticated LAN get_properties response returned code=0 for 2/1, 2/3, 2/4, 2/6, 2/8, 6/1, 7/1, and 8/1; mappings cross-checked against exact MIoT spec",urn:miot-spec-v2:device:fan:0000A005:xiaomi-p90:1:0000D062
