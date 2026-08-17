@@ -22,31 +22,34 @@ SmartThings Edge LAN driver for the Xiaomi MIoT fan model `xiaomi.fan.p90`.
 
 ## Exposed Capabilities
 
-The driver uses SmartThings production capabilities only:
+The driver uses SmartThings production capabilities for the core fan controls and
+the repository's established fan custom capabilities for MIoT-specific controls:
 
 - `switch` on `main`: fan power
 - `fanSpeedPercent`: fan speed, constrained by the device to `1..100`
-- `windMode`: `noWind` for Normal and `naturalWind` for Nature
+- `concertmirror08464.xiaomiFanP43FanMode`: Normal / Nature
 - `fanOscillationMode`: `off`, `horizontal`, `vertical`, and `all`
-- `switch` on `display`: display on/off
-- `switch` on `buzzer`: buzzer on/off
-- `switch` on `childLock`: child lock on/off
+- `concertmirror08464.xiaomiFanP43IndicatorLight`: display on/off
+- `concertmirror08464.xiaomiFanP43Buzzer`: buzzer on/off
+- `concertmirror08464.xiaomiFanP43ChildLock`: child lock on/off
 - `refresh`
 
-The auxiliary functions are separate components because SmartThings has no dedicated standard capability for fan display, buzzer, or child lock. The standard `switch` capability preserves their binary on/off semantics without adding account-scoped custom capabilities.
+The custom capabilities are reused from the p43 driver because their semantics and
+presentations match the p90 properties. Keeping them on `main` prevents the
+SmartThings app from rendering separate component headers and power cards.
 
 ## MIoT Mapping
 
 | Feature | Access | MIoT Key | SmartThings |
 |---|---:|---|---|
 | Power | RW | `siid=2`, `piid=1` | `main.switch` |
-| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `main.windMode`: `noWind` / `naturalWind` |
+| Wind mode | RW | `siid=2`, `piid=3`, `0=normal`, `1=nature` | `xiaomiFanP43FanMode.fanMode` |
 | Fan speed | RW | `siid=2`, `piid=4`, `1..100` | `main.fanSpeedPercent` |
 | Horizontal oscillation | RW | `siid=2`, `piid=6` | `main.fanOscillationMode`: `horizontal` / `all` |
 | Vertical oscillation | RW | `siid=2`, `piid=8` | `main.fanOscillationMode`: `vertical` / `all` |
-| Display | RW | `siid=6`, `piid=1` | `display.switch` |
-| Buzzer | RW | `siid=7`, `piid=1` | `buzzer.switch` |
-| Child lock | RW | `siid=8`, `piid=1` | `childLock.switch` |
+| Display | RW | `siid=6`, `piid=1` | `xiaomiFanP43IndicatorLight.indicatorLight` |
+| Buzzer | RW | `siid=7`, `piid=1` | `xiaomiFanP43Buzzer.buzzer` |
+| Child lock | RW | `siid=8`, `piid=1` | `xiaomiFanP43ChildLock.childLock` |
 
 The speed and horizontal-oscillation keys deliberately differ from `xiaomi.fan.p43`: p90 uses `2/4` for speed and `2/6` for horizontal oscillation.
 

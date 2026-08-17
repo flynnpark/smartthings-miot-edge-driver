@@ -6,26 +6,20 @@ components:
     version: 1
   - id: fanSpeedPercent
     version: 1
-  - id: windMode
+  - id: concertmirror08464.xiaomiFanP43FanMode
     version: 1
   - id: fanOscillationMode
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43IndicatorLight
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43Buzzer
+    version: 1
+  - id: concertmirror08464.xiaomiFanP43ChildLock
     version: 1
   - id: refresh
     version: 1
   categories:
   - name: Fan
-- id: display
-  capabilities:
-  - id: switch
-    version: 1
-- id: buzzer
-  capabilities:
-  - id: switch
-    version: 1
-- id: childLock
-  capabilities:
-  - id: switch
-    version: 1
 deviceConfig:
   dashboard:
     states:
@@ -56,19 +50,19 @@ deviceConfig:
       capability: fanSpeedPercent
       version: 1
     - component: main
-      capability: windMode
+      capability: concertmirror08464.xiaomiFanP43FanMode
       version: 1
     - component: main
       capability: fanOscillationMode
       version: 1
-    - component: display
-      capability: switch
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43IndicatorLight
       version: 1
-    - component: buzzer
-      capability: switch
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43Buzzer
       version: 1
-    - component: childLock
-      capability: switch
+    - component: main
+      capability: concertmirror08464.xiaomiFanP43ChildLock
       version: 1
     - component: main
       capability: refresh
@@ -82,19 +76,19 @@ deviceConfig:
         capability: fanSpeedPercent
         version: 1
       - component: main
-        capability: windMode
+        capability: concertmirror08464.xiaomiFanP43FanMode
         version: 1
       - component: main
         capability: fanOscillationMode
         version: 1
-      - component: display
-        capability: switch
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43IndicatorLight
         version: 1
-      - component: buzzer
-        capability: switch
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43Buzzer
         version: 1
-      - component: childLock
-        capability: switch
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43ChildLock
         version: 1
     actions:
       - component: main
@@ -104,19 +98,19 @@ deviceConfig:
         capability: fanSpeedPercent
         version: 1
       - component: main
-        capability: windMode
+        capability: concertmirror08464.xiaomiFanP43FanMode
         version: 1
       - component: main
         capability: fanOscillationMode
         version: 1
-      - component: display
-        capability: switch
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43IndicatorLight
         version: 1
-      - component: buzzer
-        capability: switch
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43Buzzer
         version: 1
-      - component: childLock
-        capability: switch
+      - component: main
+        capability: concertmirror08464.xiaomiFanP43ChildLock
         version: 1
 preferences:
 - name: ipAddress
