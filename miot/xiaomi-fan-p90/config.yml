@@ -1,0 +1,5 @@
+name: 'Mijia Smart DC Inverter Circulation Fan Pro'
+packageKey: 'Xiaomi Fan P90 Driver'
+permissions:
+  lan: {}
+  discovery: {}
