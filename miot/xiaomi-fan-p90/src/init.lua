@@ -5,13 +5,6 @@ local Driver = require "st.driver"
 local discovery = require "discovery"
 local miot = require "miot"
 
--- These existing capabilities provide the compact fan controls used by the
--- repository's MIoT fan drivers without exposing separate device components.
-local fanModeCap = capabilities["concertmirror08464.xiaomiFanP43FanMode"]
-local indicatorLightCap = capabilities["concertmirror08464.xiaomiFanP43IndicatorLight"]
-local buzzerCap = capabilities["concertmirror08464.xiaomiFanP43Buzzer"]
-local childLockCap = capabilities["concertmirror08464.xiaomiFanP43ChildLock"]
-
 local POLLING_TIMER = "polling_timer"
 local DEFAULT_POLLING_INTERVAL = 60
 local PROFILE_NAME = "xiaomi-fan-p90"
@@ -29,17 +22,24 @@ local BUZZER_SIID = 7
 local CHILD_LOCK_SIID = 8
 local AUXILIARY_PIID = 1
 
-local MODE_TO_ST = {
-    [0] = "normal",
-    [1] = "nature"
+local MODE_TO_WIND_MODE = {
+    [0] = "noWind",
+    [1] = "naturalWind"
 }
 
-local ST_TO_MODE = {
-    normal = 0,
-    nature = 1
+local WIND_MODE_TO_MODE = {
+    noWind = 0,
+    naturalWind = 1
 }
 
+local SUPPORTED_WIND_MODES = {"noWind", "naturalWind"}
 local SUPPORTED_OSCILLATION_MODES = {"off", "horizontal", "vertical", "all"}
+
+local SWITCH_PROPERTIES = {
+    display = {siid = DISPLAY_SIID, piid = AUXILIARY_PIID},
+    buzzer = {siid = BUZZER_SIID, piid = AUXILIARY_PIID},
+    childLock = {siid = CHILD_LOCK_SIID, piid = AUXILIARY_PIID}
+}
 
 local function get_device_config(device)
     local ip = device.preferences.ipAddress
@@ -52,13 +52,18 @@ local function get_device_config(device)
 end
 
 local function ensure_profile(device)
-    if not device:supports_capability_by_id(fanModeCap.ID, "main") then
+    if not device:supports_capability_by_id(capabilities.windMode.ID, "main") then
         device:try_update_metadata({profile = PROFILE_NAME})
     end
 end
 
-local function emit_on_off(device, capability_attr, value)
-    device:emit_event(capability_attr({value = value and "on" or "off"}))
+local function emit_switch_event(device, component_id, value)
+    local event = capabilities.switch.switch(value and "on" or "off")
+    if component_id == "main" then
+        device:emit_event(event)
+        return
+    end
+    device:emit_component_event(device.profile.components[component_id], event)
 end
 
 local function emit_oscillation_event(device, horizontal, vertical)
@@ -105,11 +110,11 @@ local function poll_device_status(device)
             local value = result.value
 
             if siid == FAN_SIID and piid == POWER_PIID then
-                device:emit_event(capabilities.switch.switch(value and "on" or "off"))
+                emit_switch_event(device, "main", value)
             elseif siid == FAN_SIID and piid == MODE_PIID then
-                local mode = MODE_TO_ST[value]
-                if mode then
-                    device:emit_event(fanModeCap.fanMode({value = mode}))
+                local wind_mode = MODE_TO_WIND_MODE[value]
+                if wind_mode then
+                    device:emit_event(capabilities.windMode.windMode({value = wind_mode}))
                 end
             elseif siid == FAN_SIID and piid == FAN_SPEED_PIID then
                 device:emit_event(capabilities.fanSpeedPercent.percent({value = value, unit = "%"}))
@@ -118,11 +123,11 @@ local function poll_device_status(device)
             elseif siid == FAN_SIID and piid == VERTICAL_SWING_PIID then
                 vertical_swing = value
             elseif siid == DISPLAY_SIID and piid == AUXILIARY_PIID then
-                emit_on_off(device, indicatorLightCap.indicatorLight, value)
+                emit_switch_event(device, "display", value)
             elseif siid == BUZZER_SIID and piid == AUXILIARY_PIID then
-                emit_on_off(device, buzzerCap.buzzer, value)
+                emit_switch_event(device, "buzzer", value)
             elseif siid == CHILD_LOCK_SIID and piid == AUXILIARY_PIID then
-                emit_on_off(device, childLockCap.childLock, value)
+                emit_switch_event(device, "childLock", value)
             end
         end
     end
@@ -148,26 +153,34 @@ local function start_polling_timer(device)
     device:set_field(POLLING_TIMER, timer)
 end
 
-local function switch_on_handler(_, device, _)
+local function switch_on_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, true)
+    local property = SWITCH_PROPERTIES[command.component]
+    local siid = property and property.siid or FAN_SIID
+    local piid = property and property.piid or POWER_PIID
+    local ok = pcall(miot.set, device, ip, token, siid, piid, true)
     if ok then
-        device:emit_event(capabilities.switch.switch.on())
-        device.thread:call_with_delay(1, function()
-            pcall(poll_device_status, device)
-        end)
+        emit_switch_event(device, command.component, true)
+        if command.component == "main" then
+            device.thread:call_with_delay(1, function()
+                pcall(poll_device_status, device)
+            end)
+        end
     end
 end
 
-local function switch_off_handler(_, device, _)
+local function switch_off_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, POWER_PIID, false)
+    local property = SWITCH_PROPERTIES[command.component]
+    local siid = property and property.siid or FAN_SIID
+    local piid = property and property.piid or POWER_PIID
+    local ok = pcall(miot.set, device, ip, token, siid, piid, false)
     if ok then
-        device:emit_event(capabilities.switch.switch.off())
+        emit_switch_event(device, command.component, false)
     end
 end
 
@@ -182,17 +195,17 @@ local function set_fan_speed_handler(_, device, command)
     end
 end
 
-local function set_fan_mode_handler(_, device, command)
+local function set_wind_mode_handler(_, device, command)
     local ip, token = get_device_config(device)
     if not ip then return end
 
-    local mode = command.args.mode
-    local value = ST_TO_MODE[mode]
-    if value == nil then return end
+    local wind_mode = command.args.windMode
+    local mode = WIND_MODE_TO_MODE[wind_mode]
+    if mode == nil then return end
 
-    local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, value)
+    local ok = pcall(miot.set, device, ip, token, FAN_SIID, MODE_PIID, mode)
     if ok then
-        device:emit_event(fanModeCap.fanMode({value = mode}))
+        device:emit_event(capabilities.windMode.windMode({value = wind_mode}))
     end
 end
 
@@ -212,53 +225,21 @@ local function set_fan_oscillation_mode_handler(_, device, command)
     end
 end
 
-local function set_indicator_light_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local value = command.args.indicatorLight
-    local ok = pcall(miot.set, device, ip, token, DISPLAY_SIID, AUXILIARY_PIID, value == "on")
-    if ok then
-        device:emit_event(indicatorLightCap.indicatorLight({value = value}))
-    end
-end
-
-local function set_buzzer_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local value = command.args.buzzer
-    local ok = pcall(miot.set, device, ip, token, BUZZER_SIID, AUXILIARY_PIID, value == "on")
-    if ok then
-        device:emit_event(buzzerCap.buzzer({value = value}))
-    end
-end
-
-local function set_child_lock_handler(_, device, command)
-    local ip, token = get_device_config(device)
-    if not ip then return end
-
-    local value = command.args.childLock
-    local ok = pcall(miot.set, device, ip, token, CHILD_LOCK_SIID, AUXILIARY_PIID, value == "on")
-    if ok then
-        device:emit_event(childLockCap.childLock({value = value}))
-    end
-end
-
 local function refresh_handler(_, device, _)
     pcall(poll_device_status, device)
 end
 
 local function device_added(_, device)
     ensure_profile(device)
-    device:emit_event(capabilities.switch.switch.off())
+    emit_switch_event(device, "main", false)
     device:emit_event(capabilities.fanSpeedPercent.percent({value = 1, unit = "%"}))
-    device:emit_event(fanModeCap.fanMode({value = "normal"}))
+    device:emit_event(capabilities.windMode.supportedWindModes({value = SUPPORTED_WIND_MODES}))
+    device:emit_event(capabilities.windMode.windMode({value = "noWind"}))
     device:emit_event(capabilities.fanOscillationMode.supportedFanOscillationModes({value = SUPPORTED_OSCILLATION_MODES}))
     emit_oscillation_event(device, false, false)
-    device:emit_event(indicatorLightCap.indicatorLight({value = "on"}))
-    device:emit_event(buzzerCap.buzzer({value = "on"}))
-    device:emit_event(childLockCap.childLock({value = "off"}))
+    emit_switch_event(device, "display", true)
+    emit_switch_event(device, "buzzer", true)
+    emit_switch_event(device, "childLock", false)
 end
 
 local function device_init(_, device)
@@ -314,23 +295,14 @@ local driver = Driver("miot-xiaomi-fan-p90", {
         [capabilities.fanSpeedPercent.ID] = {
             [capabilities.fanSpeedPercent.commands.setPercent.NAME] = set_fan_speed_handler
         },
-        [fanModeCap.ID] = {
-            [fanModeCap.commands.setFanMode.NAME] = set_fan_mode_handler
+        [capabilities.windMode.ID] = {
+            [capabilities.windMode.commands.setWindMode.NAME] = set_wind_mode_handler
         },
         [capabilities.fanOscillationMode.ID] = {
             [capabilities.fanOscillationMode.commands.setFanOscillationMode.NAME] = set_fan_oscillation_mode_handler
         },
         [capabilities.refresh.ID] = {
             [capabilities.refresh.commands.refresh.NAME] = refresh_handler
-        },
-        [indicatorLightCap.ID] = {
-            [indicatorLightCap.commands.setIndicatorLight.NAME] = set_indicator_light_handler
-        },
-        [buzzerCap.ID] = {
-            [buzzerCap.commands.setBuzzer.NAME] = set_buzzer_handler
-        },
-        [childLockCap.ID] = {
-            [childLockCap.commands.setChildLock.NAME] = set_child_lock_handler
         }
     }
 })
