@@ -1,6 +1,6 @@
 # SmartThings Edge Drivers for Xiaomi Devices
 
-Installation channel (`wonjj_miot`): [open SmartThings channel](https://bestow-regional.api.smartthings.com/invite/r3MyzkOpOz2p)
+Installation channel (`flynnpark-miot`): [open SmartThings channel](https://bestow-regional.api.smartthings.com/invite/Nxlw8YwndgjA)
 
 SmartThings Edge LAN drivers for Xiaomi ecosystem devices using the MIoT and miIO protocols.
 
@@ -15,7 +15,7 @@ Use of the `flynnpark-miot` Driver Channel is subject to the
 
 1. Check the Xiaomi model id from Mi Home, Xiaomi Cloud Tokens Extractor, or the device information page.
 2. Find the exact same value in the `Device model` column below.
-3. Install the matching `SmartThings driver name` from the `wonjj_miot` channel.
+3. Install the matching `SmartThings driver name` from the `flynnpark-miot` channel.
 4. If several rows have the same `Product name`, use `Device model` as the deciding value.
 
 The `SmartThings driver name` column is the name shown in the SmartThings Edge channel. The `Driver folder` column is included for source review and issue reports.
