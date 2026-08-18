@@ -6,6 +6,11 @@ SmartThings Edge LAN drivers for Xiaomi ecosystem devices using the MIoT and miI
 
 Each driver targets one exact Xiaomi model id. Do not choose by retail product name alone because Xiaomi often reuses the same product name for different hardware models.
 
+## Terms
+
+Use of the `flynnpark-miot` Driver Channel is subject to the
+[Driver Channel Terms of Service](TERMS.md).
+
 ## Choosing a Driver
 
 1. Check the Xiaomi model id from Mi Home, Xiaomi Cloud Tokens Extractor, or the device information page.
